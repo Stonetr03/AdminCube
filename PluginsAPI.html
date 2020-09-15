@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="icon" href="favicon.ico" type="image/icon type">
+        <meta charset="utf-8">
+        <title>Admin Cube | Plugins API Documentaion</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="style.css">
+        <link rel="stylesheet" href="w3s.css">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <script src='https://kit.fontawesome.com/a076d05399.js'></script>
+    </head>
+    <body>
+        <!-- Navbar -->
+        <div class="w3-top">
+            <div class="w3-bar w3-red w3-card w3-left-align w3-large">
+            <a class="w3-bar-item w3-button w3-hide-medium w3-hide-large w3-right w3-padding-large w3-hover-white w3-large w3-red" href="javascript:void(0);" onclick="myFunction()" title="Toggle Navigation Menu"><i class="fa fa-bars"></i></a>
+            <a href="index.html" class="w3-bar-item w3-button w3-padding-large  w3-hover-white">Home</a>
+            <a href="https://www.roblox.com/games/4128223887/" target="_blank" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white">Roblox demo</a>
+            <a href="PluginsAPI.html" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-white">Plugins API</a>
+            <a href="CustomCommandsAPI.html" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white">Custom Commands API</a>
+            <a href="https://www.roblox.com/groups/4558094/Stonetr03-Studios" target="_blank" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white">Stonetr03 Studios</a>
+            </div>
+        
+            <!-- Navbar on small screens -->
+            <div id="navDemo" class="w3-bar-block w3-white w3-hide w3-hide-large w3-hide-medium w3-large">
+            <a href="index.html" class="w3-bar-item w3-button w3-padding-large">Home</a>
+            <a href="https://www.roblox.com/games/4128223887/" target="_blank" class="w3-bar-item w3-button w3-padding-large">Roblox demo</a>
+            <a href="PluginsAPI.html" class="w3-bar-item w3-button w3-padding-large">Plugins API</a>
+            <a href="CustomCommandsAPI.html" class="w3-bar-item w3-button w3-padding-large">Custom Commands API</a>
+            <a href="https://www.roblox.com/groups/4558094/Stonetr03-Studios" target="_blank" class="w3-bar-item w3-button w3-padding-large">Stonetr03 Studios</a>
+            </div>
+        </div>
+
+       
+
+         <!-- Second Grid -->
+        <div class="w3-row-padding w3-light-grey w3-padding-64 w3-container">
+            <div class="w3-content">
+            <div class="w3-third w3-center">
+                <i class="fas fa-code w3-padding-64 w3-text-red w3-margin-right"></i>
+            </div>
+        
+            <div class="w3-twothird">
+                <h1>API Coming soon</h1>
+                <h5 class="w3-padding-32">Developer API for custom commands and admin cube plugnis</h5>
+        
+                <p class="w3-text-grey">All official plugins will be verified by Stonetr03 Studios, API Documentaion not online yet.</p>
+            </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="w3-container w3-padding-64 w3-center w3-opacity"> 
+            <a href="https://discord.gg/Cce5kkj" target="_blank">
+                <i class='fab fa-discord' style="font-size:36px"></i>
+            </a>
+            <a href="https://github.com/Stonetr03/AdminCube" target="_blank">
+                <i class="fab fa-github" style="font-size:36px"></i>
+            </a>
+        </div>
+        <p>Website source code on <a href="https://github.com/Stonetr03/AdminCube/tree/gh-pages" target="_blank">github</a></p>
+        </footer>
+        
+        <script>
+        // Used to toggle the menu on small screens when clicking on the menu button
+        function myFunction() {
+            var x = document.getElementById("navDemo");
+            if (x.className.indexOf("w3-show") == -1) {
+            x.className += " w3-show";
+            } else { 
+            x.className = x.className.replace(" w3-show", "");
+            }
+        }
+        </script>
+    </body>
+</html>

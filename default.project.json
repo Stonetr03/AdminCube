@@ -5,10 +5,16 @@
 
     "ServerScriptService": {
       "$className": "ServerScriptService",
+      "$path": "src/ServerScriptService"
+      
+    },
+
+    "ReplicatedStorage": {
+      "$className": "ReplicatedStorage",
   
-      "GameFiles": {
+      "AdminCube": {
         "$className": "Folder",
-        "$path": "src/ServerScriptService"
+        "$path": "src/ReplicatedStorage"
       }
     }
 

@@ -13,11 +13,15 @@ local DefaultData = {
 }
 
 local function CheckData(Data)
-    print("Check Data")
-    for i,o in pairs(DefaultData) do
-        print(i)
-        print(o)
+    local NewData = {}
+    for o,i in pairs(DefaultData) do
+        if Data[o] then
+            NewData[o] = Data[o]
+        else
+            NewData[o] = i
+        end
     end
+    return NewData
 end
 
 function Module:GetDataStore(Key)
@@ -37,6 +41,10 @@ function Module:GetDataStore(Key)
     local NewData = CheckData(Data)
 
     -- Save to Data Folder
+    local EncodedValue = HttpService:JSONEncode(NewData)
+    Create("StringValue",script.Parent.Data,{Name = tostring(Key),Value = EncodedValue})
+    
+    return NewData
 end
 
 return Module

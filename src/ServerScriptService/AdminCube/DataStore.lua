@@ -69,12 +69,15 @@ end
 
 -- Used for when Player is Leaving the server
 function Module:ExitDataStore(Key,Data)
+    -- Save Data
     local s,e = pcall(function()
         DataStore:SetAsync(Key,Data)
     end)
     if not s then
         warn(e)
     end
+    -- Remove Server Data
+    ServerData[Key] = nil
     local Checker = script.Parent.Data:FindFirstChild(tostring(Key))
     if Checker then
         -- Remove the StringValue we created earlyer

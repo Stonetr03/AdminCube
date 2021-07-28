@@ -47,4 +47,36 @@ function Module:GetDataStore(Key)
     return NewData
 end
 
+-- Save Data / Update Data
+function Module:SaveDataStore(Key,Data)
+    local s,e = pcall(function()
+        DataStore:SetAsync(Key,Data)
+        -- Update String Value
+        local Checker = script.Parent.Data:FindFirstChild(tostring(Key))
+        if Checker then
+            Checker.Value = HttpService:JSONEncode(Data)
+        end
+    end)
+    if not s then
+        warn(e)
+    end
+    return s
+end
+
+-- Used for when Player is Leaving the server
+function Module:ExitDataStore(Key,Data)
+    local s,e = pcall(function()
+        DataStore:SetAsync(Key,Data)
+    end)
+    if not s then
+        warn(e)
+    end
+    local Checker = script.Parent.Data:FindFirstChild(tostring(Key))
+    if Checker then
+        -- Remove the StringValue we created earlyer
+        Checker:Destroy()
+    end
+    return s
+end
+
 return Module

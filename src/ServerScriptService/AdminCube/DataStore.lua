@@ -7,6 +7,7 @@ local Create = require(script.Parent:WaitForChild("CreateModule"))
 local HttpService = game:GetService("HttpService")
 
 local Module = {}
+local ServerData = {}
 
 local DefaultData = {
     Rank = 0; -- Player
@@ -39,7 +40,7 @@ function Module:GetDataStore(Key)
 
     -- Check Data / Update Data
     local NewData = CheckData(Data)
-
+    ServerData[Key] = Data
     -- Save to Data Folder
     local EncodedValue = HttpService:JSONEncode(NewData)
     Create("StringValue",script.Parent.Data,{Name = tostring(Key),Value = EncodedValue})
@@ -50,12 +51,15 @@ end
 -- Save Data / Update Data
 function Module:SaveDataStore(Key,Data)
     local s,e = pcall(function()
-        DataStore:SetAsync(Key,Data)
         -- Update String Value
+        ServerData[Key] = Data
         local Checker = script.Parent.Data:FindFirstChild(tostring(Key))
         if Checker then
             Checker.Value = HttpService:JSONEncode(Data)
         end
+
+        -- Save to DataStore
+        DataStore:SetAsync(Key,Data)
     end)
     if not s then
         warn(e)
@@ -77,6 +81,10 @@ function Module:ExitDataStore(Key,Data)
         Checker:Destroy()
     end
     return s
+end
+
+function Module:GetData(Key)
+    return ServerData[Key]
 end
 
 return Module

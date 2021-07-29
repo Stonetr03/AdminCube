@@ -13,6 +13,9 @@ return {
     Vips = { -- 1
 
     };
+    Players = { -- 0
+
+    };
 
     Prefix = "!";
     DataStoreKey = "AdminCube-DataStore-1"; -- If Changed All Data is Reset

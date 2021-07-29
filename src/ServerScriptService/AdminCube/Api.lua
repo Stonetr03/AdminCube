@@ -9,4 +9,12 @@ function Module:GetRank(p)
     return Data.Rank
 end
 
+function Module:GetPlayer(Name,p) -- Name Requested to Find, Player who Sent 
+    if Name == "me" then
+        return p
+    else
+        
+    end
+end
+
 return Module

@@ -3,16 +3,28 @@
 local Settings = require(script:WaitForChild("Settings"))
 local DataStoreModule = require(script:WaitForChild("DataStore"))
 local Players = game:GetService("Players")
+local Api = require(script:WaitForChild("Api"))
 
 local ServerData = {}
 
 local function CommandRunner(p,str)
-    local PrefixLen = string.len(Settings.Prefix)
-    local split = string.split(str," ")
-    
-    if string.sub(split[1],1,PrefixLen) == Settings.Prefix then
-        
-    end
+    local s,e = pcall(function()
+        str = string.lower(str)
+        local Split = str:split(" ")
+        local PrefixCommand = Split[1]
+        local cmd = PrefixCommand:split(Settings.Prefix)
+        local Command = cmd[2]
+        if script.Commands:FindFirstChild(Command) then
+            local args = {}
+            for i = 2, #Split,1 do
+                table.insert(args,Split[i])
+            end
+            require(script.Commands:FindFirstChild(Command)):Run(p,args)
+        else
+            -- Invalid Notification
+        end
+    end)
+    if not s then warn("Command Runner Error : " .. e) end
 end
 
 Players.PlayerAdded:Connect(function(p)
@@ -21,6 +33,43 @@ Players.PlayerAdded:Connect(function(p)
     p.Chatted:Connect(function(c)
         CommandRunner(p,c)
     end)
+
+    -- Update Rank if on Settings
+    -- Is on Defined Players list
+    for i = 1,#Settings.Players,1 do
+        if Settings.Players[i] == p.UserId or Settings.Players[i] == p.Name then
+            ServerData[p].Rank = 0
+            DataStoreModule:SaveDataStore(p.UserId,ServerData[p])
+        end
+    end
+    -- Is on Defined Vips List
+    for i = 1,#Settings.Vips,1 do
+        if Settings.Vips[i] == p.UserId or Settings.Vips[i] == p.Name then
+            ServerData[p].Rank = 1
+            DataStoreModule:SaveDataStore(p.UserId,ServerData[p])
+        end
+    end
+    -- Is on Defined Mods List
+    for i = 1,#Settings.Mods,1 do
+        if Settings.Mods[i] == p.UserId or Settings.Mods[i] == p.Name then
+            ServerData[p].Rank = 2
+            DataStoreModule:SaveDataStore(p.UserId,ServerData[p])
+        end
+    end
+    -- Is on Defined Admins List
+    for i = 1,#Settings.Admins,1 do
+        if Settings.Admins[i] == p.UserId or Settings.Admins[i] == p.Name then
+            ServerData[p].Rank = 3
+            DataStoreModule:SaveDataStore(p.UserId,ServerData[p])
+        end
+    end
+    -- Is on Defined Owners List
+    for i = 1,#Settings.Owners,1 do
+        if Settings.Owners[i] == p.UserId or Settings.Owners[i] == p.Name then
+            ServerData[p].Rank = 4
+            DataStoreModule:SaveDataStore(p.UserId,ServerData[p])
+        end
+    end
 end)
 
 Players.PlayerRemoving:Connect(function(p)

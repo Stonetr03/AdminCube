@@ -14,5 +14,6 @@ return {
 
     };
 
+    Prefix = "!";
     DataStoreKey = "AdminCube-DataStore-1"; -- If Changed All Data is Reset
 }

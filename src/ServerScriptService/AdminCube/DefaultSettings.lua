@@ -16,6 +16,9 @@ return {
     Players = { -- 0
 
     };
+    Banned = {
+
+    };
 
     Prefix = "!";
     DataStoreKey = "AdminCube-DataStore-1"; -- If Changed All Data is Reset

@@ -35,6 +35,26 @@ Players.PlayerAdded:Connect(function(p)
         CommandRunner(p,c)
     end)
 
+    -- Check Ban 
+    if ServerData[p].Banned == true then
+        if ServerData[p].BanTime == -1 then
+            -- Perm Ban
+            p:Kick("\nYou are Banned from this game.\n" .. ServerData[p].BanReason)
+        elseif ServerData[p].BanTime > tick() then
+            -- Ban > current time
+            p:Kick("\nYou are Banned from this game.\n" .. ServerData[p].BanReason)
+        else
+            -- Ban < Current Time, Unban
+            ServerData[p].Banned = false
+        end
+    end
+    -- Check if on Ban List
+    for i = 1,#Settings.Banned,1 do
+        if Settings.Banned[i] == p.UserId or Settings.Banned[i] == p.Name then
+            p:Kick("You are Banned from this game.")
+        end
+    end
+
     -- Update Rank if on Settings
     -- Is on Defined Players list
     for i = 1,#Settings.Players,1 do

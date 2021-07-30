@@ -11,6 +11,9 @@ local ServerData = {}
 
 local DefaultData = {
     Rank = 0; -- Player
+    Banned = false; -- True / False
+    BanTime = 0; -- UTC Unban Time
+    BanReason = ""; -- Ban Reason
 }
 
 local function CheckData(Data)

@@ -31,4 +31,8 @@ function Module:GetCommands()
     return Commands
 end
 
+function Module:InvalidPermissionsNotification(p)
+    return true
+end
+
 return Module

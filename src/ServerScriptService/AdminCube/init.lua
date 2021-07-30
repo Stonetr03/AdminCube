@@ -20,7 +20,7 @@ local function CommandRunner(p,str)
             for i = 2, #Split,1 do
                 table.insert(args,Split[i])
             end
-            Commands[Command].Run()
+            Commands[Command].Run(p,args)
         else
             -- Invalid Notification
         end

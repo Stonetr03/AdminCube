@@ -3,6 +3,7 @@
 local DataStore = require(script.Parent:WaitForChild("DataStore"))
 
 local Module = {}
+local Commands = {}
 
 function Module:GetRank(p)
     local Data = DataStore:GetData(p.UserId)
@@ -15,6 +16,19 @@ function Module:GetPlayer(Name,p) -- Name Requested to Find, Player who Sent
     else
         
     end
+end
+
+function Module:RegisterCommand(Name,Desc,Run)
+    print("Register Cmd" .. Name)
+    Commands[Name] = {
+        Name = Name;
+        Desc = Desc;
+        Run = Run;
+    }
+end
+
+function Module:GetCommands()
+    return Commands
 end
 
 return Module

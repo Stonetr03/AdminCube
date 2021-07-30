@@ -2,12 +2,7 @@
 
 local Api = require(script.Parent.Parent:WaitForChild("Api"))
 
-local Command = {}
-
-Command.Name = "Speed"
-Command.Desc = "Changes the WalkSpeed of a Player's Character"
-
-function Command:Run(p,Args)
+Api:RegisterCommand("Speed","Changes the WalkSpeed of a Player's Character",function(p,Args)
     local s,e = pcall(function()
         if Api:GetRank(p) >= 2 then
             local Target = Api:GetPlayer(Args[1],p)
@@ -21,6 +16,6 @@ function Command:Run(p,Args)
         warn(e)
     end
 
-end
+end)
 
-return Command
+return true

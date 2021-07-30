@@ -8,18 +8,19 @@ local Api = require(script:WaitForChild("Api"))
 local ServerData = {}
 
 local function CommandRunner(p,str)
+    local Commands = Api:GetCommands()
     local s,e = pcall(function()
         str = string.lower(str)
         local Split = str:split(" ")
         local PrefixCommand = Split[1]
         local cmd = PrefixCommand:split(Settings.Prefix)
         local Command = cmd[2]
-        if script.Commands:FindFirstChild(Command) then
+        if Commands[Command] then
             local args = {}
             for i = 2, #Split,1 do
                 table.insert(args,Split[i])
             end
-            require(script.Commands:FindFirstChild(Command)):Run(p,args)
+            Commands[Command].Run()
         else
             -- Invalid Notification
         end
@@ -77,6 +78,18 @@ Players.PlayerRemoving:Connect(function(p)
     DataStoreModule:ExitDataStore(p.UserId, ServerData[p])
     ServerData[p] = nil
 
+end)
+
+-- Register All Commands
+for _,o in pairs(script.Commands:GetChildren()) do
+    if o:IsA("ModuleScript") then
+        require(o)
+    end
+end
+script.Commands.ChildAdded:Connect(function(o)
+    if o:IsA("ModuleScript") then
+        require(o)
+    end
 end)
 
 return 1

@@ -29,6 +29,23 @@ function Module:GetPlayer(Name,p) -- Name Requested to Find, Player who Sent
                 end
             end
         end
+
+        -- Match Username again
+        for _,o in pairs(game.Players:GetPlayers()) do
+            if string.find(Name ,string.lower(o.Name)) ~= nil then
+                return o
+            end
+        end
+
+        -- Match Display name again
+        if Settings.DisplayNames == true then
+            for _,o in pairs(game.Players:GetPlayers()) do
+                if string.find(Name ,string.lower(o.Name)) ~= nil then
+                    return o
+                end
+            end
+        end
+        
     end
 end
 

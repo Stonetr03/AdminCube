@@ -18,6 +18,7 @@ function Module:GetPlayer(Name,p) -- Name Requested to Find, Player who Sent
         -- Match UserNames
         for _,o in pairs(game.Players:GetPlayers()) do
             if string.lower(o.Name) == Name then
+                print("Player Found " .. o.Name)
                 return o
             end
         end
@@ -25,6 +26,7 @@ function Module:GetPlayer(Name,p) -- Name Requested to Find, Player who Sent
         if Settings.DisplayNames == true then
             for _,o in pairs(game.Players:GetPlayers()) do
                 if string.lower(o.DisplayName) == Name then
+                    print("Player Found " .. o.Name)
                     return o
                 end
             end
@@ -32,15 +34,17 @@ function Module:GetPlayer(Name,p) -- Name Requested to Find, Player who Sent
 
         -- Match Username again
         for _,o in pairs(game.Players:GetPlayers()) do
-            if string.find(Name ,string.lower(o.Name)) ~= nil then
+            if string.find(string.lower(o.Name),Name) ~= nil then
+                print("Player Found " .. o.Name)
                 return o
             end
         end
-
+        
         -- Match Display name again
         if Settings.DisplayNames == true then
             for _,o in pairs(game.Players:GetPlayers()) do
-                if string.find(Name ,string.lower(o.Name)) ~= nil then
+                if string.find(string.lower(o.Name),Name) ~= nil then
+                    print("Player Found " .. o.Name)
                     return o
                 end
             end

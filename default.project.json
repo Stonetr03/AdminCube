@@ -16,6 +16,11 @@
         "$className": "Folder",
         "$path": "src/ReplicatedStorage"
       }
+    },
+
+    "StarterGui": {
+      "$className": "StarterGui",
+      "$path": "src/StarterGui"
     }
 
   }

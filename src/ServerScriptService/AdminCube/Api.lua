@@ -54,7 +54,7 @@ function Module:GetPlayer(Name,p) -- Name Requested to Find, Player who Sent
 end
 
 function Module:RegisterCommand(Name,Desc,Run)
-    print("Register Cmd" .. Name)
+    print("Register Cmd " .. Name)
     Commands[Name] = {
         Name = Name;
         Desc = Desc;

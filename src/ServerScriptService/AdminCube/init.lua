@@ -55,6 +55,11 @@ Players.PlayerAdded:Connect(function(p)
         end
     end
 
+    -- Temp Perms
+    if Settings.TempPerms == true then
+        ServerData[p].Rank = 0
+    end
+
     -- Update Rank if on Settings
     -- Is on Defined Players list
     for i = 1,#Settings.Players,1 do

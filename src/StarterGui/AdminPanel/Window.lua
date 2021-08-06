@@ -83,7 +83,23 @@ function Window:render()
             BackgroundColor3 = Color3.new(0,0,0);
             Size = UDim2.new(1,0,0,self.props.SizeY);
         });
-        -- Buttons
+        -- Bar
+        BarIcon = Roact.createElement("ImageLabel",{
+            BackgroundTransparency = 1;
+            Position = UDim2.new(0,2,0,2);
+            Size = UDim2.new(0,16,0,16);
+            Image = "rbxassetid://6064221669";
+        });
+        -- 25
+        Title = Roact.createElement("TextLabel",{
+            Position = UDim2.new(0,25,0,0);
+            Size = UDim2.new(1,-25,1,0);
+            BackgroundTransparency = 1;
+            TextColor3 = Color3.new(1,1,1);
+            Text = "Admin Cube";
+            TextXAlignment = Enum.TextXAlignment.Left;
+        });
+
         CloseBtn = Roact.createElement("TextButton",{
             BackgroundColor3 = Color3.new(1,1,1);
             Size = UDim2.new(0,20,0,20);

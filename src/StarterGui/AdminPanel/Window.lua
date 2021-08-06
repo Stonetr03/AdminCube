@@ -13,9 +13,12 @@ icon:setProperty("deselectWhenOtherIconSelected",false)
 local Window = Roact.Component:extend("Window")
 
 function Window:init()
-	self.Visible, self.SetVisiblility = Roact.createBinding(true)
+	self.Visible, self.SetVisiblility = Roact.createBinding(false)
     self.Position, self.SetPosition = Roact.createBinding(UDim2.new(0,100,0,100))
     self.CloseBtnTransparency, self.SetCloseBtnTransparency = Roact.createBinding(1)
+    self.MinimizeBtnTransparency, self.SetMinimizeBtnTransparency = Roact.createBinding(1)
+    self.Minimize, self.SetMinimize = Roact.createBinding(true)
+    self.MiniText, self.SetMiniText = Roact.createBinding("-")
 end
 
 function Window:render()
@@ -74,17 +77,65 @@ function Window:render()
     },{
         -- Container Frame
         Frame = Roact.createElement("Frame",{
+            Visible = self.Minimize;
             Position = UDim2.new(0,0,0,21);
             BorderSizePixel = 0;
             BackgroundColor3 = Color3.new(0,0,0);
             Size = UDim2.new(1,0,0,self.props.SizeY);
         });
+        -- Buttons
         CloseBtn = Roact.createElement("TextButton",{
             BackgroundColor3 = Color3.new(1,1,1);
             Size = UDim2.new(0,20,0,20);
             BackgroundTransparency = self.CloseBtnTransparency;
             Position = UDim2.new(1,-20,0,0);
             Text = "X";
+            Font = Enum.Font.SourceSans;
+            TextSize = 20;
+            TextColor3 = Color3.new(1,1,1);
+            AutoButtonColor = false;
+            BorderSizePixel = 0;
+
+            [Roact.Event.MouseEnter] = function()
+                self.SetCloseBtnTransparency(0.85)
+            end;
+            [Roact.Event.MouseLeave] = function()
+                self.SetCloseBtnTransparency(1)
+            end;
+            [Roact.Event.MouseButton1Up] = function()
+                self.SetVisiblility(false)
+                icon:deselect()
+            end;
+            
+        });
+        MinimizeBtn = Roact.createElement("TextButton",{
+            BackgroundColor3 = Color3.new(1,1,1);
+            Size = UDim2.new(0,20,0,20);
+            BackgroundTransparency = self.MinimizeBtnTransparency;
+            Position = UDim2.new(1,-40,0,0);
+            Text = self.MiniText;
+            Font = Enum.Font.SourceSans;
+            TextSize = 20;
+            TextColor3 = Color3.new(1,1,1);
+            AutoButtonColor = false;
+            BorderSizePixel = 0;
+
+            [Roact.Event.MouseEnter] = function()
+                self.SetMinimizeBtnTransparency(0.85)
+            end;
+            [Roact.Event.MouseLeave] = function()
+                self.SetMinimizeBtnTransparency(1)
+            end;
+
+            [Roact.Event.MouseButton1Up] = function()
+                self.SetMinimize(not self.Minimize:getValue())
+
+                if self.Minimize:getValue() == true then
+                    self.SetMiniText("-")
+                else
+                    self.SetMiniText("+")
+                end
+            end;
         })
     })
 end

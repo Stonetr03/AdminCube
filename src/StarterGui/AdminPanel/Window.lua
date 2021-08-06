@@ -7,12 +7,15 @@ local UserInputService = game:GetService("UserInputService")
 -- Topbar
 local icon = Topbar.new()
 icon:setImage("http://www.roblox.com/asset/?id=5010019455") -- 24x24
+icon:setName("AdminCubeMainAdminPanel")
+icon:setProperty("deselectWhenOtherIconSelected",false)
 
 local Window = Roact.Component:extend("Window")
 
 function Window:init()
 	self.Visible, self.SetVisiblility = Roact.createBinding(true)
     self.Position, self.SetPosition = Roact.createBinding(UDim2.new(0,100,0,100))
+    self.CloseBtnTransparency, self.SetCloseBtnTransparency = Roact.createBinding(1)
 end
 
 function Window:render()
@@ -41,7 +44,7 @@ function Window:render()
     end)
 
 	return Roact.createElement("Frame",{
-        -- Visual
+        -- Topbar Frame
         Visible = self.Visible;
         BackgroundColor3 = Color3.new(0,0,0);
         BorderSizePixel = 0;
@@ -69,12 +72,19 @@ function Window:render()
         end;
 
     },{
-        -- Container
+        -- Container Frame
         Frame = Roact.createElement("Frame",{
             Position = UDim2.new(0,0,0,21);
             BorderSizePixel = 0;
             BackgroundColor3 = Color3.new(0,0,0);
             Size = UDim2.new(1,0,0,self.props.SizeY);
+        });
+        CloseBtn = Roact.createElement("TextButton",{
+            BackgroundColor3 = Color3.new(1,1,1);
+            Size = UDim2.new(0,20,0,20);
+            BackgroundTransparency = self.CloseBtnTransparency;
+            Position = UDim2.new(1,-20,0,0);
+            Text = "X";
         })
     })
 end

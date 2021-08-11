@@ -90,6 +90,18 @@ function Window:render()
                 Name = "MainMenu";
                 BackgroundTransparency = 1;
             },{
+                Padding = Roact.createElement("UIPadding",{
+                    PaddingBottom = UDim.new(0,5);
+                    PaddingLeft = UDim.new(0,5);
+                    PaddingRight = UDim.new(0,5);
+                    PaddingTop = UDim.new(0,5);
+                });
+
+                Grid = Roact.createElement("UIGridLayout",{
+                    CellPadding = UDim2.new(0,5,0,5);
+                    CellSize = UDim2.new(0.5,-3,0,25);
+                });
+
                 Buttons = Roact.createElement(MainMenus);
             })
         });

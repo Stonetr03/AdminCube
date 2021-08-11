@@ -3,6 +3,7 @@
 local Roact = require(game.ReplicatedStorage:WaitForChild("AdminCube"):WaitForChild("Roact"))
 local Topbar = require(game.ReplicatedStorage:WaitForChild("AdminCube"):WaitForChild("Topbar"))
 local UserInputService = game:GetService("UserInputService")
+local MainMenus = require(script.Parent.MainMenus)
 
 -- Topbar
 local icon = Topbar.new()
@@ -82,6 +83,15 @@ function Window:render()
             BorderSizePixel = 0;
             BackgroundColor3 = Color3.new(0,0,0);
             Size = UDim2.new(1,0,0,self.props.SizeY);
+        },{
+            -- Main Menus Frame
+            MainMenu = Roact.createElement("Frame",{
+                Size = UDim2.new(1,0,1,0);
+                Name = "MainMenu";
+                BackgroundTransparency = 1;
+            },{
+                Buttons = Roact.createElement(MainMenus);
+            })
         });
         -- Bar
         BarIcon = Roact.createElement("ImageLabel",{

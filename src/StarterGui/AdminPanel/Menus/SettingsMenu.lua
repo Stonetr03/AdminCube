@@ -9,6 +9,9 @@ function MenuBtn:render()
     return Roact.createElement("TextButton",{
         Name = "Settings";
         Text = "Settings";
+        Size = UDim2.new(0.5,-10,0,25);
+        BackgroundColor3 = Color3.new(1,1,1);
+        
     })
 end
 

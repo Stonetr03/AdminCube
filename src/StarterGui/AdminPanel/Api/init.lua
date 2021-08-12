@@ -2,6 +2,6 @@
 
 local Api = {}
 
-
+Api.CurrentTheme = "Dark"
 
 return Api

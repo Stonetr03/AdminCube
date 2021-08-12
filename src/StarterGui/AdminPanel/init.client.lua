@@ -8,6 +8,7 @@ local Window = require(script:WaitForChild("Window"))
 local Ui = Roact.createElement("ScreenGui",{
     Name = "AdminCubePanel";
     ResetOnSpawn = false;
+    DisplayOrder = 10000000;
 },{
     Panel = Roact.createElement(Window,{
         SizeX = 350;

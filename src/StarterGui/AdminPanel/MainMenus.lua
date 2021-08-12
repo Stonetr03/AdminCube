@@ -3,18 +3,38 @@
 local Roact = require(game.ReplicatedStorage:WaitForChild("AdminCube"):WaitForChild("Roact"))
 
 local MainMenus = Roact.Component:extend("MainMenus")
+local Menus = Roact.Component:extend("Menus")
 
 function MainMenus:init()
     self.partRef = Roact.createRef()
 end
 
 function MainMenus:render()
-    local Menus = {}
+    local Buttons = {}
     for i,o in pairs(script.Parent.Menus:GetChildren()) do
         local Menu = require(o)
-        Menus[i] = Roact.createElement(Menu[1])
+        Buttons[i] = Roact.createElement(Menu[1])
     end
-    return Roact.createFragment(Menus)
+    return Roact.createFragment(Buttons)
 end
 
-return MainMenus
+local BackCallBacks = {}
+for i,o in pairs(script.Parent.Menus:GetChildren()) do
+    local Menu = require(o)
+    BackCallBacks[i] = Menu[3]
+end
+
+function Menus:init()
+    self.partRef = Roact.createRef()
+end
+
+function Menus:render()
+    local Frames = {}
+    for i,o in pairs(script.Parent.Menus:GetChildren()) do
+        local Menu = require(o)
+        Frames[i] = Roact.createElement(Menu[2])
+    end
+    return Roact.createFragment(Frames)
+end
+
+return {MainMenus,Menus,BackCallBacks}

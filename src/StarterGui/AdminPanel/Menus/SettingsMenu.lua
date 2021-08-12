@@ -5,14 +5,40 @@ local Roact = require(game.ReplicatedStorage:WaitForChild("AdminCube"):WaitForCh
 local MenuBtn = Roact.Component:extend("SettingsBtn");
 local Menu = Roact.Component:extend("SettingsMenu")
 
+local SetVis
+
 function MenuBtn:render()
     return Roact.createElement("TextButton",{
         Name = "Settings";
         Text = "Settings";
         Size = UDim2.new(0.5,-10,0,25);
         BackgroundColor3 = Color3.new(1,1,1);
-        
+        [Roact.Event.MouseButton1Up] = function()
+            SetVis(true)
+        end
     })
 end
 
-return {MenuBtn,Menu}
+function BackCallBack()
+    SetVis(false)
+end
+
+function Menu:init()
+    self.Visible, self.SetVisiblility = Roact.createBinding(false)
+
+    SetVis = function(Vis)
+        self.SetVisiblility(Vis)
+    end
+end
+
+function Menu:render()
+    return Roact.createElement("Frame",{
+        Name = "Settings";
+        BackgroundTransparency = 1;
+        Size = UDim2.new(1,0,1,0);
+        Visible = self.Visible;
+        ZIndex = 5;
+    })
+end
+
+return {MenuBtn,Menu,BackCallBack}

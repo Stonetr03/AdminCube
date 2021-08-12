@@ -13,11 +13,14 @@ icon:setProperty("deselectWhenOtherIconSelected",false)
 
 local Window = Roact.Component:extend("Window")
 
+local BackCallback = MainMenus[3]
+
 function Window:init()
 	self.Visible, self.SetVisiblility = Roact.createBinding(false)
     self.Position, self.SetPosition = Roact.createBinding(UDim2.new(0,100,0,100))
     self.CloseBtnTransparency, self.SetCloseBtnTransparency = Roact.createBinding(1)
     self.MinimizeBtnTransparency, self.SetMinimizeBtnTransparency = Roact.createBinding(1)
+    self.BackBtnTransparency, self.SetBackBtnTransparency = Roact.createBinding(1)
     self.Minimize, self.SetMinimize = Roact.createBinding(true)
     self.MiniText, self.SetMiniText = Roact.createBinding("-")
 end
@@ -102,8 +105,9 @@ function Window:render()
                     CellSize = UDim2.new(0.5,-3,0,25);
                 });
 
-                Buttons = Roact.createElement(MainMenus);
-            })
+                Buttons = Roact.createElement(MainMenus[1]);
+            });
+            OtherMenus = Roact.createElement(MainMenus[2]);
         });
         -- Bar
         BarIcon = Roact.createElement("ImageLabel",{
@@ -172,6 +176,32 @@ function Window:render()
                     self.SetMiniText("-")
                 else
                     self.SetMiniText("+")
+                end
+            end;
+        });
+
+        BackBtn = Roact.createElement("TextButton",{
+            BackgroundColor3 = Color3.new(1,1,1);
+            Size = UDim2.new(0,20,0,20);
+            BackgroundTransparency = self.BackBtnTransparency;
+            Position = UDim2.new(1,-60,0,0);
+            Text = "<";
+            Font = Enum.Font.SourceSans;
+            TextSize = 20;
+            TextColor3 = Color3.new(1,1,1);
+            AutoButtonColor = false;
+            BorderSizePixel = 0;
+
+            [Roact.Event.MouseEnter] = function()
+                self.SetBackBtnTransparency(0.85)
+            end;
+            [Roact.Event.MouseLeave] = function()
+                self.SetBackBtnTransparency(1)
+            end;
+
+            [Roact.Event.MouseButton1Up] = function()
+                for i = 1,#BackCallback,1 do
+                    BackCallback[i]()
                 end
             end;
         })

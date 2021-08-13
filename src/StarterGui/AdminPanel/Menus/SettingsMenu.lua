@@ -2,8 +2,11 @@
 
 local Roact = require(game.ReplicatedStorage:WaitForChild("AdminCube"):WaitForChild("Roact"))
 
-local MenuBtn = Roact.Component:extend("SettingsBtn");
+local MenuBtn = Roact.Component:extend("SettingsBtn")
 local Menu = Roact.Component:extend("SettingsMenu")
+
+local Api = require(script.Parent.Parent:WaitForChild("Api"))
+local Style = Api:GetStyle()
 
 local SetVis
 
@@ -34,7 +37,8 @@ end
 function Menu:render()
     return Roact.createElement("Frame",{
         Name = "Settings";
-        BackgroundTransparency = 1;
+        BackgroundColor3 = Style.Background;
+        BorderSizePixel = 0;
         Size = UDim2.new(1,0,1,0);
         Visible = self.Visible;
         ZIndex = 5;

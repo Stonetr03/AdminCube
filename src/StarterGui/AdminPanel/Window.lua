@@ -5,6 +5,9 @@ local Topbar = require(game.ReplicatedStorage:WaitForChild("AdminCube"):WaitForC
 local UserInputService = game:GetService("UserInputService")
 local MainMenus = require(script.Parent.MainMenus)
 
+local Api = require(script.Parent:WaitForChild("Api"))
+local Style = Api:GetStyle()
+
 -- Topbar
 local icon = Topbar.new()
 icon:setImage("http://www.roblox.com/asset/?id=5010019455") -- 24x24
@@ -53,7 +56,7 @@ function Window:render()
 	return Roact.createElement("Frame",{
         -- Topbar Frame
         Visible = self.Visible;
-        BackgroundColor3 = Color3.new(0,0,0);
+        BackgroundColor3 = Style.Background;
         BorderSizePixel = 0;
         Size = UDim2.new(0,self.props.SizeX,0,20);
         Position = self.Position;
@@ -84,7 +87,7 @@ function Window:render()
             Visible = self.Minimize;
             Position = UDim2.new(0,0,0,21);
             BorderSizePixel = 0;
-            BackgroundColor3 = Color3.new(0,0,0);
+            BackgroundColor3 = Style.Background;
             Size = UDim2.new(1,0,0,self.props.SizeY);
         },{
             -- Main Menus Frame
@@ -121,20 +124,20 @@ function Window:render()
             Position = UDim2.new(0,25,0,0);
             Size = UDim2.new(1,-25,1,0);
             BackgroundTransparency = 1;
-            TextColor3 = Color3.new(1,1,1);
+            TextColor3 = Style.ButtonColor;
             Text = "Admin Cube";
             TextXAlignment = Enum.TextXAlignment.Left;
         });
 
         CloseBtn = Roact.createElement("TextButton",{
-            BackgroundColor3 = Color3.new(1,1,1);
+            BackgroundColor3 = Style.ButtonColor;
             Size = UDim2.new(0,20,0,20);
             BackgroundTransparency = self.CloseBtnTransparency;
             Position = UDim2.new(1,-20,0,0);
             Text = "X";
             Font = Enum.Font.SourceSans;
             TextSize = 20;
-            TextColor3 = Color3.new(1,1,1);
+            TextColor3 = Style.TextColor;
             AutoButtonColor = false;
             BorderSizePixel = 0;
 
@@ -151,14 +154,14 @@ function Window:render()
             
         });
         MinimizeBtn = Roact.createElement("TextButton",{
-            BackgroundColor3 = Color3.new(1,1,1);
+            BackgroundColor3 = Style.ButtonColor;
             Size = UDim2.new(0,20,0,20);
             BackgroundTransparency = self.MinimizeBtnTransparency;
             Position = UDim2.new(1,-40,0,0);
             Text = self.MiniText;
             Font = Enum.Font.SourceSans;
             TextSize = 20;
-            TextColor3 = Color3.new(1,1,1);
+            TextColor3 = Style.TextColor;
             AutoButtonColor = false;
             BorderSizePixel = 0;
 
@@ -181,14 +184,14 @@ function Window:render()
         });
 
         BackBtn = Roact.createElement("TextButton",{
-            BackgroundColor3 = Color3.new(1,1,1);
+            BackgroundColor3 = Style.ButtonColor;
             Size = UDim2.new(0,20,0,20);
             BackgroundTransparency = self.BackBtnTransparency;
             Position = UDim2.new(1,-60,0,0);
             Text = "<";
             Font = Enum.Font.SourceSans;
             TextSize = 20;
-            TextColor3 = Color3.new(1,1,1);
+            TextColor3 = Style.TextColor;
             AutoButtonColor = false;
             BorderSizePixel = 0;
 

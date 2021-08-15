@@ -7,6 +7,10 @@ local Api = require(script:WaitForChild("Api"))
 
 local ServerData = {}
 
+local RS = script.ReplicatedStorage
+RS.Name = "AdminCube"
+RS.Parent = game:GetService("ReplicatedStorage")
+
 local function CommandRunner(p,str)
     local Commands = Api:GetCommands()
     local s,e = pcall(function()

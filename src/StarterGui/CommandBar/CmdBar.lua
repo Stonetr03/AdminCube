@@ -7,12 +7,15 @@ local CmdBar = Roact.Component:extend("Window")
 
 function CmdBar:init()
     self.Visible, self.SetVisiblility = Roact.createBinding(false)
+    self.InputRef = Roact.createRef()
+    self.Text, self.SetText = Roact.createBinding("!")
 
-    UserInputService.InputBegan:Connect(function(Input)
+    UserInputService.InputEnded:Connect(function(Input)
         if UserInputService:GetFocusedTextBox() == nil then
             if Input.KeyCode == Enum.KeyCode.BackSlash then
                 self.SetVisiblility(true)
-                -- Continue maybe : https://roblox.github.io/roact/advanced/bindings-and-refs/
+                self.SetText("!")
+                self.InputRef.current:CaptureFocus()
             end
         end
     end)
@@ -36,9 +39,15 @@ function CmdBar:render()
             BorderSizePixel = 0;
             ClearTextOnFocus = false;
             TextSize = 20;
-            Text = "!";
+            Text = self.Text;
             TextColor3 = Color3.new(1,1,1);
             Font = Enum.Font.SourceSans;
+
+            [Roact.Ref] = self.InputRef;
+            [Roact.Event.FocusLost] = function(_,Enter)
+                
+                print(self.InputRef.current.Text)
+            end;
         })
     })
 end

@@ -2,6 +2,7 @@
 
 local Roact = require(game.ReplicatedStorage:WaitForChild("AdminCube"):WaitForChild("Roact"))
 local UserInputService = game:GetService("UserInputService")
+local Api = require(game.ReplicatedStorage:WaitForChild("AdminCube"):WaitForChild("Api"))
 
 local CmdBar = Roact.Component:extend("Window")
 
@@ -45,8 +46,10 @@ function CmdBar:render()
 
             [Roact.Ref] = self.InputRef;
             [Roact.Event.FocusLost] = function(_,Enter)
-                
-                print(self.InputRef.current.Text)
+                if Enter then
+                    Api:PushRemote("CmdBar",self.InputRef.current.Text)
+                    self.SetVisiblility(false)
+                end
             end;
         })
     })

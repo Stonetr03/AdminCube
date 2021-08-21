@@ -5,7 +5,7 @@ local Roact = require(game.ReplicatedStorage:WaitForChild("AdminCube"):WaitForCh
 local MenuBtn = Roact.Component:extend("SettingsBtn")
 local Menu = Roact.Component:extend("SettingsMenu")
 
-local Api = require(script.Parent.Parent:WaitForChild("Api"))
+local Api = require(game.ReplicatedStorage:WaitForChild("AdminCube"):WaitForChild("Api"))
 local Style = Api:GetStyle()
 
 local SetVis

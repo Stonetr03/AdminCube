@@ -5,7 +5,7 @@ local Topbar = require(game.ReplicatedStorage:WaitForChild("AdminCube"):WaitForC
 local UserInputService = game:GetService("UserInputService")
 local MainMenus = require(script.Parent.MainMenus)
 
-local Api = require(script.Parent:WaitForChild("Api"))
+local Api = require(game.ReplicatedStorage:WaitForChild("AdminCube"):WaitForChild("Api"))
 local Style = Api:GetStyle()
 
 -- Topbar

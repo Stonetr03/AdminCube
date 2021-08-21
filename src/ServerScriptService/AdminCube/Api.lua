@@ -70,4 +70,20 @@ function Module:InvalidPermissionsNotification(p)
     return true
 end
 
+function Module:PushRemote(p,Key,Args)
+    if p == "all" then
+        game.ReplicatedStorage:WaitForChild("AdminCube").ACEvent:FireAllClients(Key,Args)
+    else
+        game.ReplicatedStorage:WaitForChild("AdminCube").ACEvent:FireClient(p,Key,Args)
+    end
+end
+
+function Module:ListenRemote(Key,Callback)
+    game.ReplicatedStorage:WaitForChild("AdminCube").ACEvent.OnServerEvent:Connect(function(p,CallingKey,Args)
+        if CallingKey == Key then
+            Callback(p,Args)
+        end
+    end)
+end
+
 return Module

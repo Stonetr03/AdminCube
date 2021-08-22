@@ -2,7 +2,7 @@
 
 local Roact = require(game.ReplicatedStorage:WaitForChild("AdminCube"):WaitForChild("Roact"))
 
-local CmdBar = require(script.CmdBar)
+local CmdBar = require(script:WaitForChild("CmdBar"))
 
 local ScreenGui = Roact.createElement("ScreenGui",{
     ResetOnSpawn = false;

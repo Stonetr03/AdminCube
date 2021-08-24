@@ -1,10 +1,21 @@
 -- Admin Cube - Client Api
 
+local Roact = require(game.ReplicatedStorage:WaitForChild("AdminCube"):WaitForChild("Roact"))
+
+local Background, SetBackground = Roact.createBinding(Color3.new(0,0,0));
+
 local Api = {
     Settings = {
         CurrentTheme = "Dark"
+    };
+    Style = {
+        Background = Background;
     }
 }
+
+local function UpdateTheme()
+
+end
 
 function Api:GetStyle()
     local StyleSheet = script:FindFirstChild("Stylesheet." .. Api.Settings.CurrentTheme)

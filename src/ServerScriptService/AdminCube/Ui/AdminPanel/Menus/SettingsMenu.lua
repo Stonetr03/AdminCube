@@ -40,7 +40,7 @@ end
 function Menu:render()
     return Roact.createElement("Frame",{
         Name = "Settings";
-        BackgroundColor3 = Style.Background;
+        BackgroundColor3 = Api.Style.Background;
         BorderSizePixel = 0;
         Size = UDim2.new(1,0,1,0);
         Visible = self.Visible;

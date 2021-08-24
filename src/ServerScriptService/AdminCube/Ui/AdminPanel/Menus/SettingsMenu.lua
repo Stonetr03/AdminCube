@@ -14,8 +14,11 @@ function MenuBtn:render()
     return Roact.createElement("TextButton",{
         Name = "Settings";
         Text = "Settings";
+        BackgroundTransparency = Style.ButtonTransparency;
         Size = UDim2.new(0.5,-10,0,25);
-        BackgroundColor3 = Color3.new(1,1,1);
+        BorderSizePixel = 0;
+        BackgroundColor3 = Style.ButtonColor;
+        TextColor3 = Style.TextColor;
         [Roact.Event.MouseButton1Up] = function()
             SetVis(true)
         end

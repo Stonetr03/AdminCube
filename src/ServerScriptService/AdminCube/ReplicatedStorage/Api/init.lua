@@ -7,6 +7,8 @@ local ButtonColor, SetButtonColor = Roact.createBinding(Color3.new(1,1,1));
 local TextColor, SetTextColor = Roact.createBinding(Color3.new(1,1,1));
 local ButtonTransparency, SetButtonTransparency = Roact.createBinding(0.85);
 
+local ThemeUpdateEvents = {}
+
 local Api = {
     Settings = {
         CurrentTheme = "Dark"
@@ -19,6 +21,17 @@ local Api = {
     }
 }
 
+local Themes = {}
+local CurrentTheme = 0
+for i,o in pairs(script:GetChildren()) do
+    if string.sub(o.Name,1,11) == "Stylesheet." then
+        Themes[i] = string.sub(o.Name,12)
+        if string.sub(o.Name,12) == Api.Settings.CurrentTheme then
+            CurrentTheme = i
+        end
+    end
+end
+
 local function UpdateTheme()
     local Style = require(script:FindFirstChild("Stylesheet." .. Api.Settings.CurrentTheme))
     if Style then
@@ -26,6 +39,10 @@ local function UpdateTheme()
         SetButtonColor(Style.ButtonColor)
         SetTextColor(Style.TextColor)
         SetButtonTransparency(Style.ButtonTransparency)
+
+        for i = 1,#ThemeUpdateEvents,1 do
+            ThemeUpdateEvents[i]()
+        end
     end
 end
 
@@ -34,6 +51,17 @@ function Api:UpdateTheme(Theme)
         Api.Settings.CurrentTheme = Theme
         UpdateTheme()
     else
+        CurrentTheme = CurrentTheme + 1
+        if CurrentTheme > #Themes then
+            CurrentTheme = 1
+        end
+
+        Api.Settings.CurrentTheme = Themes[CurrentTheme]
+
+        print("Update Theme")
+        print("New Theme = " .. Api.Settings.CurrentTheme)
+        print(Themes)
+
         UpdateTheme()
     end
 end
@@ -48,6 +76,10 @@ function Api:ListenRemote(Key,Callback)
             Callback(Args)
         end
     end)
+end
+
+function Api:ThemeUpdateEvent(Func)
+    ThemeUpdateEvents[#ThemeUpdateEvents+1] = Func
 end
 
 return Api

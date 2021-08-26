@@ -6,7 +6,6 @@ local MenuBtn = Roact.Component:extend("SettingsBtn")
 local Menu = Roact.Component:extend("SettingsMenu")
 
 local Api = require(game.ReplicatedStorage:WaitForChild("AdminCube"):WaitForChild("Api"))
-local Style = Api:GetStyle()
 
 local SetVis
 
@@ -14,11 +13,11 @@ function MenuBtn:render()
     return Roact.createElement("TextButton",{
         Name = "Settings";
         Text = "Settings";
-        BackgroundTransparency = Style.ButtonTransparency;
+        BackgroundTransparency = Api.Style.ButtonTransparency;
         Size = UDim2.new(0.5,-10,0,25);
         BorderSizePixel = 0;
-        BackgroundColor3 = Style.ButtonColor;
-        TextColor3 = Style.TextColor;
+        BackgroundColor3 = Api.Style.ButtonColor;
+        TextColor3 = Api.Style.TextColor;
         [Roact.Event.MouseButton1Up] = function()
             SetVis(true)
         end

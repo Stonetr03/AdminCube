@@ -3,6 +3,9 @@
 local Roact = require(game.ReplicatedStorage:WaitForChild("AdminCube"):WaitForChild("Roact"))
 
 local Background, SetBackground = Roact.createBinding(Color3.new(0,0,0));
+local ButtonColor, SetButtonColor = Roact.createBinding(Color3.new(1,1,1));
+local TextColor, SetTextColor = Roact.createBinding(Color3.new(1,1,1));
+local ButtonTransparency, SetButtonTransparency = Roact.createBinding(0.85);
 
 local Api = {
     Settings = {
@@ -10,19 +13,28 @@ local Api = {
     };
     Style = {
         Background = Background;
+        ButtonColor = ButtonColor;
+        TextColor = TextColor;
+        ButtonTransparency = ButtonTransparency;
     }
 }
 
 local function UpdateTheme()
-
+    local Style = require(script:FindFirstChild("Stylesheet." .. Api.Settings.CurrentTheme))
+    if Style then
+        SetBackground(Style.Background)
+        SetButtonColor(Style.ButtonColor)
+        SetTextColor(Style.TextColor)
+        SetButtonTransparency(Style.ButtonTransparency)
+    end
 end
 
-function Api:GetStyle()
-    local StyleSheet = script:FindFirstChild("Stylesheet." .. Api.Settings.CurrentTheme)
-    if StyleSheet then
-        return require(StyleSheet)
+function Api:UpdateTheme(Theme)
+    if Theme then
+        Api.Settings.CurrentTheme = Theme
+        UpdateTheme()
     else
-        return require(script["Stylesheet.Dark"])
+        UpdateTheme()
     end
 end
 

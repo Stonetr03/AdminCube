@@ -3,6 +3,8 @@
 local DataStore = require(script.Parent:WaitForChild("DataStore"))
 local Settings = require(script.Parent:WaitForChild("Settings"))
 
+local MessagingService = game:GetService("MessagingService")
+
 local Module = {}
 local Commands = {}
 
@@ -96,6 +98,21 @@ function Module:ListenFunction(Key,Callback)
             Callback(p,Args)
         end
     end
+end
+
+local BroadcastCallbacks = {}
+
+function Module:SubscribeBroadcast(Key,Callback)
+    if BroadcastCallbacks[Key] == nil then
+        BroadcastCallbacks[Key] = {}
+    end
+    BroadcastCallbacks[Key][#BroadcastCallbacks[Key] + 1] = Callback
+
+    print(BroadcastCallbacks)
+end
+
+function Module:BroadcastMessage(Key,Message)
+    MessagingService:PublishAsync("AdminCube",{Key = Key; Msg = Message;})
 end
 
 return Module

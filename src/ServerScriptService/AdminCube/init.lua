@@ -13,7 +13,7 @@ local RS = script.ReplicatedStorage
 RS.Name = "AdminCube"
 RS.Parent = game:GetService("ReplicatedStorage")
 CreateModule("RemoteEvent",RS,{Name = "ACEvent"})
-CreateModule("RemoteFunction",RS,{"Name = ACFunc"})
+CreateModule("RemoteFunction",RS,{Name = "ACFunc"})
 
 local function CommandRunner(p,str)
     local Commands = Api:GetCommands()

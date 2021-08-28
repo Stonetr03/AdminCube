@@ -86,4 +86,16 @@ function Module:ListenRemote(Key,Callback)
     end)
 end
 
+function Module:PushFunction(p,Key,Args)
+    game.ReplicatedStorage:WaitForChild("AdminCube").ACFunc:InvokeClient(p,Key,Args)
+end
+
+function Module:ListenFunction(Key,Callback)
+    game.ReplicatedStorage:WaitForChild("AdminCube").ACFunc.OnServerInvoke = function(p,CallingKey,Args)
+        if CallingKey == Key then
+            Callback(p,Args)
+        end
+    end
+end
+
 return Module

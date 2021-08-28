@@ -78,6 +78,18 @@ function Api:ListenRemote(Key,Callback)
     end)
 end
 
+function Api:PushFunction(Key,Args)
+    game.ReplicatedStorage:WaitForChild("AdminCube").ACFunc:InvokeServer(Key,Args)
+end
+
+function Api:ListenFunction(Key,Callback)
+    game.ReplicatedStorage:WaitForChild("AdminCube").ACFunc.OnClientInvoke = function(CallingKey,Args)
+        if CallingKey == Key then
+            Callback(Args)
+        end
+    end
+end
+
 function Api:ThemeUpdateEvent(Func)
     ThemeUpdateEvents[#ThemeUpdateEvents+1] = Func
 end

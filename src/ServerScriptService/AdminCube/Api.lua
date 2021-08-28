@@ -100,6 +100,10 @@ function Module:ListenFunction(Key,Callback)
     end
 end
 
+function Module:AddPanelMenu(Menu)
+    Menu.Parent = script.Parent.Ui.AdminPanel.Menus
+end
+
 local BroadcastCallbacks = {}
 
 function Module:SubscribeBroadcast(Key,Callback)

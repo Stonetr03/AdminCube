@@ -95,7 +95,7 @@ end
 function Module:ListenFunction(Key,Callback)
     game.ReplicatedStorage:WaitForChild("AdminCube").ACFunc.OnServerInvoke = function(p,CallingKey,Args)
         if CallingKey == Key then
-            Callback(p,Args)
+            return Callback(p,Args)
         end
     end
 end
@@ -116,7 +116,18 @@ function Module:SubscribeBroadcast(Key,Callback)
 end
 
 function Module:BroadcastMessage(Key,Message)
+    print("BroadCast:" .. Key)
     MessagingService:PublishAsync("AdminCube",{Key = Key; Msg = Message;})
 end
+
+task.spawn(function()
+    MessagingService:SubscribeAsync("AdminCube",function(Data)
+        print("Broadcast")
+        print(Data)
+        for i = 1,#BroadcastCallbacks[Data.Data.Key],1 do
+            BroadcastCallbacks[Data.Data.Key][i](Data.Data.Msg)
+        end
+    end)
+end)
 
 return Module

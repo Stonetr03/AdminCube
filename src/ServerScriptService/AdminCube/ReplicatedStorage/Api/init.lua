@@ -79,7 +79,7 @@ function Api:ListenRemote(Key,Callback)
 end
 
 function Api:PushFunction(Key,Args)
-    game.ReplicatedStorage:WaitForChild("AdminCube").ACFunc:InvokeServer(Key,Args)
+    return game.ReplicatedStorage:WaitForChild("AdminCube").ACFunc:InvokeServer(Key,Args)
 end
 
 function Api:ListenFunction(Key,Callback)

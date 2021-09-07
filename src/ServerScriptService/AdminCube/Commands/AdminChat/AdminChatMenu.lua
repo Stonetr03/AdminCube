@@ -8,7 +8,7 @@ local Menu = Roact.Component:extend("SettingsMenu")
 local Api = require(game.ReplicatedStorage:WaitForChild("AdminCube"):WaitForChild("Api"))
 
 local Visible, SetVisiblility = Roact.createBinding(false)
-local ChatText, SetChatText = Roact.createBinding("a\na\na\na\na\na\na\na\na\na\na\na\na\na\na\na\na\na\n")
+local ChatText, SetChatText = Roact.createBinding("")
 local InputText, SetInputText = Roact.createBinding("")
 InputRef = Roact.createRef()
 ChatRef = Roact.createRef()
@@ -36,7 +36,7 @@ local function ReloadText()
     local Msgs = Api:PushFunction("AdminChat-Get")
     local LastText = " "
     for i = 1,#Msgs,1 do
-        local NewText = LastText .. '<font color="rgb(200,200,200)"> &lt;' .. Msgs[i].Name .. '&gt; </font><font color="rgb(255,255,255)">' .. Msgs[i].Msg .. '</font>\n'
+        local NewText = LastText .. '<font color="rgb(' .. Api.Style.ButtonSubColor:getValue().R  .. ',' .. Api.Style.ButtonSubColor:getValue().B .. ',' .. Api.Style.ButtonSubColor:getValue().B .. ')"> &lt;' .. Msgs[i].Name .. '&gt; </font><font color="rgb(' .. Api.Style.TextColor:getValue().R  .. ',' .. Api.Style.TextColor:getValue().B .. ',' .. Api.Style.TextColor:getValue().B .. ')">' .. Msgs[i].Msg .. '</font>\n'
         SetChatText(NewText)
 
         print("Text Fits :")

@@ -4,16 +4,9 @@ local Settings = require(script:WaitForChild("Settings"))
 local DataStoreModule = require(script:WaitForChild("DataStore"))
 local Players = game:GetService("Players")
 local Api = require(script:WaitForChild("Api"))
-local CreateModule = require(script.CreateModule)
 
 local ConnectedPlrs = {}
 local ServerData = {}
-
-local RS = script.ReplicatedStorage
-RS.Name = "AdminCube"
-RS.Parent = game:GetService("ReplicatedStorage")
-CreateModule("RemoteEvent",RS,{Name = "ACEvent"})
-CreateModule("RemoteFunction",RS,{Name = "ACFunc"})
 
 local function CommandRunner(p,str)
     local Commands = Api:GetCommands()

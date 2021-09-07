@@ -4,9 +4,16 @@ local DataStore = require(script.Parent:WaitForChild("DataStore"))
 local Settings = require(script.Parent:WaitForChild("Settings"))
 
 local MessagingService = game:GetService("MessagingService")
+local CreateModule = require(script.Parent.CreateModule)
 
 local Module = {}
 local Commands = {}
+
+local RS = script.Parent.ReplicatedStorage
+RS.Name = "AdminCube"
+RS.Parent = game:GetService("ReplicatedStorage")
+CreateModule("RemoteEvent",RS,{Name = "ACEvent"})
+CreateModule("RemoteFunction",RS,{Name = "ACFunc"})
 
 function Module:GetRank(p)
     local Data = DataStore:GetData(p.UserId)
@@ -118,6 +125,20 @@ end
 function Module:BroadcastMessage(Key,Message)
     print("BroadCast:" .. Key)
     MessagingService:PublishAsync("AdminCube",{Key = Key; Msg = Message;})
+end
+
+function Module:CreateRSFolder(FolderName)
+    local Check = RS:FindFirstChild(FolderName)
+    if Check then
+        if Check:IsA("Folder") then
+            return Check
+        else
+            warn("REQUESTED FOLDER ALREADY EXISTS, AND IS NOT A FOLDER")
+            return nil
+        end
+    else
+        return CreateModule("Folder",RS,{Name = FolderName})
+    end
 end
 
 task.spawn(function()

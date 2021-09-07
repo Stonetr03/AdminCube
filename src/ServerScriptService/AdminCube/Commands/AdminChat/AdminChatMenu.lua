@@ -32,11 +32,20 @@ function BackCallBack()
     SetVisiblility(false)
 end
 
+local function Slice(Num)
+    Num = Num * 255
+    local Str = tostring(Num)
+    local Sli = string.split(Str,".")
+    return Sli[1]
+end
+
 local function ReloadText()
     local Msgs = Api:PushFunction("AdminChat-Get")
     local LastText = " "
     for i = 1,#Msgs,1 do
-        local NewText = LastText .. '<font color="rgb(' .. Api.Style.ButtonSubColor:getValue().R  .. ',' .. Api.Style.ButtonSubColor:getValue().B .. ',' .. Api.Style.ButtonSubColor:getValue().B .. ')"> &lt;' .. Msgs[i].Name .. '&gt; </font><font color="rgb(' .. Api.Style.TextColor:getValue().R  .. ',' .. Api.Style.TextColor:getValue().B .. ',' .. Api.Style.TextColor:getValue().B .. ')">' .. Msgs[i].Msg .. '</font>\n'
+        print(Api.Style.ButtonSubColor:getValue())
+        print(typeof(Api.Style.ButtonSubColor:getValue()))
+        local NewText = LastText .. '<font color="rgb(' .. Slice(Api.Style.ButtonSubColor:getValue().R)  .. ',' .. Slice(Api.Style.ButtonSubColor:getValue().B ) .. ',' .. Slice(Api.Style.ButtonSubColor:getValue().B ) .. ')"> &lt;' .. Msgs[i].Name .. '&gt; </font><font color="rgb(' .. Slice(Api.Style.TextColor:getValue().R )  .. ',' .. Slice(Api.Style.TextColor:getValue().G ) .. ',' .. Slice(Api.Style.TextColor:getValue().B ) .. ')">' .. Msgs[i].Msg .. '</font>\n'
         SetChatText(NewText)
 
         print("Text Fits :")

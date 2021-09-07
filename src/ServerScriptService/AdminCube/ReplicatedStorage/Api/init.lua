@@ -6,6 +6,7 @@ local Background, SetBackground = Roact.createBinding(Color3.new(0,0,0));
 local ButtonColor, SetButtonColor = Roact.createBinding(Color3.new(1,1,1));
 local TextColor, SetTextColor = Roact.createBinding(Color3.new(1,1,1));
 local ButtonTransparency, SetButtonTransparency = Roact.createBinding(0.85);
+local ButtonSubColor, SetButtonSubColor = Roact.createBinding(Color3.fromRGB(200,200,200))
 
 local ThemeUpdateEvents = {}
 
@@ -18,6 +19,7 @@ local Api = {
         ButtonColor = ButtonColor;
         TextColor = TextColor;
         ButtonTransparency = ButtonTransparency;
+        ButtonSubColor = ButtonSubColor;
     }
 }
 
@@ -39,6 +41,7 @@ local function UpdateTheme()
         SetButtonColor(Style.ButtonColor)
         SetTextColor(Style.TextColor)
         SetButtonTransparency(Style.ButtonTransparency)
+        SetButtonSubColor(Style.ButtonSubColor)
 
         for i = 1,#ThemeUpdateEvents,1 do
             ThemeUpdateEvents[i]()

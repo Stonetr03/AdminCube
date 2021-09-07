@@ -47,20 +47,10 @@ function Menu:render()
             TextSize = 25;
             ZIndex = 10;
         });
-        Country = Roact.createElement("TextLabel",{
-            Size = UDim2.new(1,0,0,20);
-            Position = UDim2.new(0,0,0,20);
-            Text = "Country : " .. ServerStats.Country.Value;
-            Font = Enum.Font.SourceSans;
-            TextColor3 = Api.Style.TextColor;
-            BackgroundTransparency = 1;
-            TextSize = 20;
-            ZIndex = 10;
-        });
         Region = Roact.createElement("TextLabel",{
             Size = UDim2.new(1,0,0,20);
-            Position = UDim2.new(0,0,0,40);
-            Text = "Region : " .. ServerStats.Region.Value;
+            Position = UDim2.new(0,0,0,20);
+            Text = "Server Region : " .. ServerStats.Region.Value .. ", " .. ServerStats.Country.Value;
             Font = Enum.Font.SourceSans;
             TextColor3 = Api.Style.TextColor;
             BackgroundTransparency = 1;

@@ -1,13 +1,20 @@
 -- Admin Cube
 
 local Roact = require(game.ReplicatedStorage:WaitForChild("AdminCube"):WaitForChild("Roact"))
-local Topbar = require(game.ReplicatedStorage:WaitForChild("AdminCube"):WaitForChild("Topbar"))
+
 local UserInputService = game:GetService("UserInputService")
 local MainMenus = require(script.Parent.MainMenus)
 
 local Api = require(game.ReplicatedStorage:WaitForChild("AdminCube"):WaitForChild("Api"))
 
 -- Topbar
+local TopbarPath = game.ReplicatedStorage:WaitForChild("AdminCube"):WaitForChild("Topbar")
+local TBCheck = game.ReplicatedStorage:FindFirstChild("TopbarPlusReference")
+if TBCheck then
+    TopbarPath = TBCheck.Value
+end
+local Topbar = require(TopbarPath)
+
 local icon = Topbar.new()
 icon:setImage("http://www.roblox.com/asset/?id=5010019455") -- 24x24
 icon:setName("AdminCubeMainAdminPanel")

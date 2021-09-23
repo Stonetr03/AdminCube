@@ -7,8 +7,11 @@ local Menu = Roact.Component:extend("SettingsMenu")
 
 local Api = require(game.ReplicatedStorage:WaitForChild("AdminCube"):WaitForChild("Api"))
 local ServerStats = game.ReplicatedStorage.AdminCube:WaitForChild("ServerStats")
+local RunService = game:GetService("RunService")
 
 local Visible, SetVisiblility = Roact.createBinding(false)
+local Fps, SetFps = Roact.createBinding("")
+local VisRef = Roact.createRef()
 
 function MenuBtn:render()
     return Roact.createElement("TextButton",{
@@ -37,6 +40,8 @@ function Menu:render()
         Size = UDim2.new(1,0,1,0);
         Visible = Visible;
         ZIndex = 5;
+
+        [Roact.Ref] = VisRef;
     },{
         TitleTextBox1 = Roact.createElement("TextLabel",{
             Size = UDim2.new(1,0,0,20);
@@ -57,8 +62,35 @@ function Menu:render()
             TextSize = 20;
             ZIndex = 10;
         });
+        Fps = Roact.createElement("TextLabel",{
+            Size = UDim2.new(1,0,0,20);
+            Position = UDim2.new(0,0,0,40);
+            Text = Fps;
+            Font = Enum.Font.SourceSans;
+            TextColor3 = Api.Style.TextColor;
+            BackgroundTransparency = 1;
+            TextSize = 20;
+            ZIndex = 10;
+        });
     })
 end
+
+local Last, Start = 0,0
+local Updates = {}
+
+RunService.Heartbeat:Connect(function()
+    if VisRef:getValue().Visible == true then
+        Last = tick()
+		for Index = #Updates, 1, -1 do
+			Updates[Index + 1] = (Updates[Index] >= Last - 1) and Updates[Index] or nil
+		end
+
+		Updates[1] = Last
+		local CurrentFPS = (tick() - Start >= 1 and #Updates) or (#Updates / (tick() - Start))
+		CurrentFPS = math.floor(CurrentFPS)
+		SetFps("Fps : " .. CurrentFPS)
+    end
+end)
 
 return {MenuBtn,Menu,BackCallBack}
 

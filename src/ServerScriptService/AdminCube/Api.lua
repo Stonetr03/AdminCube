@@ -148,6 +148,10 @@ task.spawn(function()
         for i = 1,#BroadcastCallbacks[Data.Data.Key],1 do
             BroadcastCallbacks[Data.Data.Key][i](Data.Data.Msg)
         end
+    end);
+
+    Module:ListenFunction("Response",function()
+        return true
     end)
 end)
 

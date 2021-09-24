@@ -11,6 +11,7 @@ local RunService = game:GetService("RunService")
 
 local Visible, SetVisiblility = Roact.createBinding(false)
 local Fps, SetFps = Roact.createBinding("")
+local Ping, SetPing = Roact.createBinding("")
 local VisRef = Roact.createRef()
 
 function MenuBtn:render()
@@ -72,11 +73,23 @@ function Menu:render()
             TextSize = 20;
             ZIndex = 10;
         });
+        Ping = Roact.createElement("TextLabel",{
+            Size = UDim2.new(1,0,0,20);
+            Position = UDim2.new(0,0,0,60);
+            Text = Ping;
+            Font = Enum.Font.SourceSans;
+            TextColor3 = Api.Style.TextColor;
+            BackgroundTransparency = 1;
+            TextSize = 20;
+            ZIndex = 10;
+        });
     })
 end
 
 local Last, Start = 0,0
 local Updates = {}
+
+local LastPingUpdate = tick()
 
 RunService.Heartbeat:Connect(function()
     if VisRef:getValue().Visible == true then
@@ -89,6 +102,15 @@ RunService.Heartbeat:Connect(function()
 		local CurrentFPS = (tick() - Start >= 1 and #Updates) or (#Updates / (tick() - Start))
 		CurrentFPS = math.floor(CurrentFPS)
 		SetFps("Fps : " .. CurrentFPS)
+
+        if tick() > LastPingUpdate then
+            LastPingUpdate = tick() + 30
+            local St = tick()
+            Api:PushFunction("Response")
+            local Re = tick()
+            local Pi = tostring(math.floor(Re - St))
+            SetPing("Ping : " .. Pi)
+        end
     end
 end)
 

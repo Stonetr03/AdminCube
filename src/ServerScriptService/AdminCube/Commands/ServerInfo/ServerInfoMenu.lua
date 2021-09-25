@@ -89,7 +89,7 @@ end
 local Last, Start = 0,0
 local Updates = {}
 
-local LastPingUpdate = tick()
+local Counter = 120
 
 RunService.Heartbeat:Connect(function()
     if VisRef:getValue().Visible == true then
@@ -102,14 +102,16 @@ RunService.Heartbeat:Connect(function()
 		local CurrentFPS = (tick() - Start >= 1 and #Updates) or (#Updates / (tick() - Start))
 		CurrentFPS = math.floor(CurrentFPS)
 		SetFps("Fps : " .. CurrentFPS)
-
-        if tick() > LastPingUpdate then
-            LastPingUpdate = tick() + 30
+        
+        -- Counter updates ping evey 120 frames (2 seconds @ 60 fps)
+        Counter = Counter + 1
+        if Counter > 119 then
+            Counter = 0
             local St = tick()
             Api:PushFunction("Response")
             local Re = tick()
-            local Pi = tostring(math.floor(Re - St))
-            SetPing("Ping : " .. Pi)
+            local Pi = tostring(math.floor((Re - St)*1000))
+            SetPing("Ping : " .. Pi .. " ms")
         end
     end
 end)

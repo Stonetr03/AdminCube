@@ -11,12 +11,14 @@ function CmdBar:init()
     self.InputRef = Roact.createRef()
     self.Text, self.SetText = Roact.createBinding("!")
 
-    UserInputService.InputEnded:Connect(function(Input)
+    UserInputService.InputBegan:Connect(function(Input)
         if UserInputService:GetFocusedTextBox() == nil then
             if Input.KeyCode == Enum.KeyCode.BackSlash then
                 self.SetVisiblility(true)
                 self.SetText("!")
+                wait()
                 self.InputRef.current:CaptureFocus()
+                --print("Capture")
             end
         end
     end)

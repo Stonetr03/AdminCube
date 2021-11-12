@@ -105,6 +105,19 @@ local function PlayerJoined(p)
             end
         end
 
+        task.spawn(function()
+            task.wait(5)
+            if Api:GetRank(p) == 1 then
+                Api:Notification(p,true,"You're a VIP")
+            elseif Api:GetRank(p) == 2 then
+                Api:Notification(p,true,"You're a Mod")
+            elseif Api:GetRank(p) == 3 then
+                Api:Notification(p,true,"You're a Admin")
+            elseif Api:GetRank(p) == 4 then
+                Api:Notification(p,true,"You're a Owner")
+            end
+        end)
+
         -- Admin Panel
         if ServerData[p].Rank >= 2 then
             print("Give Panel")

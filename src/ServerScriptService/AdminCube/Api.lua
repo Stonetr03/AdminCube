@@ -75,10 +75,6 @@ function Module:GetCommands()
     return Commands
 end
 
-function Module:InvalidPermissionsNotification(p)
-    return true
-end
-
 function Module:PushRemote(p,Key,Args)
     if p == "all" then
         game.ReplicatedStorage:WaitForChild("AdminCube").ACEvent:FireAllClients(Key,Args)
@@ -140,6 +136,17 @@ function Module:CreateRSFolder(FolderName)
         return CreateModule("Folder",RS,{Name = FolderName})
     end
 end
+
+function Module:Notification(p,Image,Text)
+    Module:PushRemote(p,"Notification",{Image = Image,Text = Text})
+    return true
+end
+
+function Module:InvalidPermissionsNotification(p)
+    Module:Notification(p,false,"Invalid Permissions")
+    return true
+end
+
 
 task.spawn(function()
     MessagingService:SubscribeAsync("AdminCube",function(Data)

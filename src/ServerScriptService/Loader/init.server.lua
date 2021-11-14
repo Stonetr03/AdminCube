@@ -3,4 +3,4 @@
 
 _G.AdminCubeCustomSettings = require(script.Settings)
 
-require(script.Parent:WaitForChild("AdminCube"))(script.Commands,script.Plugins)
+require(script.Parent:WaitForChild("AdminCube"))(script.Commands)

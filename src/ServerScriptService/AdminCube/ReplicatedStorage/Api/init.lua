@@ -3,6 +3,7 @@
 local Roact = require(game.ReplicatedStorage:WaitForChild("AdminCube"):WaitForChild("Roact"))
 
 local Background, SetBackground = Roact.createBinding(Color3.new(0,0,0));
+local BackgroundSubColor, SetBackgroundSubColor = Roact.createBinding(Color3.new(0,0,0));
 local ButtonColor, SetButtonColor = Roact.createBinding(Color3.new(1,1,1));
 local TextColor, SetTextColor = Roact.createBinding(Color3.new(1,1,1));
 local ButtonTransparency, SetButtonTransparency = Roact.createBinding(0.85);
@@ -20,6 +21,7 @@ local Api = {
         TextColor = TextColor;
         ButtonTransparency = ButtonTransparency;
         ButtonSubColor = ButtonSubColor;
+        BackgroundSubColor = BackgroundSubColor;
     }
 }
 
@@ -42,6 +44,7 @@ local function UpdateTheme()
         SetTextColor(Style.TextColor)
         SetButtonTransparency(Style.ButtonTransparency)
         SetButtonSubColor(Style.ButtonSubColor)
+        SetBackgroundSubColor(Style.BackgroundSubColor)
 
         for i = 1,#ThemeUpdateEvents,1 do
             ThemeUpdateEvents[i]()
@@ -60,10 +63,6 @@ function Api:UpdateTheme(Theme)
         end
 
         Api.Settings.CurrentTheme = Themes[CurrentTheme]
-
-        print("Update Theme")
-        print("New Theme = " .. Api.Settings.CurrentTheme)
-        print(Themes)
 
         UpdateTheme()
     end

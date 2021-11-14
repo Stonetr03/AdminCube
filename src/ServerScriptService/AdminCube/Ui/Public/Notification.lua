@@ -44,13 +44,13 @@ function NotificationList:render()
         end
         if ToRender[i].Image ~= false then
             List[i] = Roact.createElement("Frame",{
-                BackgroundColor3 = Color3.fromRGB(49,49,49);
+                BackgroundColor3 = Api.Style.BackgroundSubColor;
                 BorderSizePixel = 0;
                 Size = UDim2.new(0,250,0,110);
                 ZIndex = 1;
             },{
                 Frame = Roact.createElement("Frame",{
-                    BackgroundColor3 = Color3.new(0,0,0);
+                    BackgroundColor3 = Api.Style.Background;
                     BorderSizePixel = 0;
                     AnchorPoint = Vector2.new(0.5,0.5);
                     Position = UDim2.new(0.5,0,0.5,0);
@@ -66,7 +66,7 @@ function NotificationList:render()
                     end;
                 },{
                     CloseBtn = Roact.createElement("TextButton",{
-                        BackgroundColor3 = Color3.fromRGB(49, 49, 49);
+                        BackgroundColor3 = Api.Style.BackgroundSubColor;
                         BorderSizePixel = 0;
                         AnchorPoint = Vector2.new(1,0);
                         Position = UDim2.new(1,0,0,0);
@@ -74,7 +74,7 @@ function NotificationList:render()
                         ZIndex = 5;
                         Font = Enum.Font.SourceSansBold;
                         Text = "X";
-                        TextColor3 = Color3.new(1,1,1);
+                        TextColor3 = Api.Style.TextColor;
                         TextSize = 16;
                         
                         [Roact.Event.MouseButton1Up] = function()
@@ -96,7 +96,7 @@ function NotificationList:render()
                         ZIndex = 5;
                         Font = Enum.Font.SourceSans;
                         Text = ToRender[i].Text;
-                        TextColor3 = Color3.new(1,1,1);
+                        TextColor3 = Api.Style.TextColor;
                         TextSize = 16;
                         TextWrapped = true;
                         TextXAlignment = Enum.TextXAlignment.Left;
@@ -109,7 +109,7 @@ function NotificationList:render()
                         ZIndex = 5;
                         Font = Enum.Font.SourceSans;
                         Text = "Admin Cube";
-                        TextColor3 = Color3.new(1,1,1);
+                        TextColor3 = Api.Style.TextColor;
                         TextSize = 15;
                         TextXAlignment = Enum.TextXAlignment.Left;
                         TextYAlignment = Enum.TextYAlignment.Center;
@@ -118,13 +118,13 @@ function NotificationList:render()
             })
         else
             List[i] = Roact.createElement("Frame",{
-                BackgroundColor3 = Color3.fromRGB(49,49,49);
+                BackgroundColor3 = Api.Style.BackgroundSubColor;
                 BorderSizePixel = 0;
                 Size = UDim2.new(0,250,0,110);
                 ZIndex = 1;
             },{
                 Frame = Roact.createElement("Frame",{
-                    BackgroundColor3 = Color3.new(0,0,0);
+                    BackgroundColor3 = Api.Style.Background;
                     BorderSizePixel = 0;
                     AnchorPoint = Vector2.new(0.5,0.5);
                     Position = UDim2.new(0.5,0,0.5,0);
@@ -132,7 +132,7 @@ function NotificationList:render()
                     ZIndex = 3;
                 },{
                     CloseBtn = Roact.createElement("TextButton",{
-                        BackgroundColor3 = Color3.fromRGB(49, 49, 49);
+                        BackgroundColor3 = Api.Style.BackgroundSubColor;
                         BorderSizePixel = 0;
                         AnchorPoint = Vector2.new(1,0);
                         Position = UDim2.new(1,0,0,0);
@@ -140,7 +140,7 @@ function NotificationList:render()
                         ZIndex = 5;
                         Font = Enum.Font.SourceSansBold;
                         Text = "X";
-                        TextColor3 = Color3.new(1,1,1);
+                        TextColor3 = Api.Style.TextColor;
                         TextSize = 16;
                     });
                     Body = Roact.createElement("TextLabel",{
@@ -150,7 +150,7 @@ function NotificationList:render()
                         ZIndex = 5;
                         Font = Enum.Font.SourceSans;
                         Text = ToRender[i].Text;
-                        TextColor3 = Color3.new(1,1,1);
+                        TextColor3 = Api.Style.TextColor;
                         TextSize = 16;
                         TextWrapped = true;
                         TextXAlignment = Enum.TextXAlignment.Left;
@@ -163,7 +163,7 @@ function NotificationList:render()
                         ZIndex = 5;
                         Font = Enum.Font.SourceSans;
                         Text = "Admin Cube";
-                        TextColor3 = Color3.new(1,1,1);
+                        TextColor3 = Api.Style.TextColor;
                         TextSize = 15;
                         TextXAlignment = Enum.TextXAlignment.Left;
                         TextYAlignment = Enum.TextYAlignment.Center;
@@ -180,7 +180,7 @@ function Notifications:render()
         Size = UDim2.new(0,250,1,-5);
         Position = UDim2.new(1,-5,0,0);
         AnchorPoint = Vector2.new(1,0);
-        BackgroundTransparency = .5;
+        BackgroundTransparency = 1;
     },{
         UiListLayout = Roact.createElement("UIListLayout",{
             Padding = UDim.new(0,5);

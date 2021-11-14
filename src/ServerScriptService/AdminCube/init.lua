@@ -155,4 +155,12 @@ Api:ListenRemote("CmdBar",function(p,c)
     CommandRunner(p,c)
 end)
 
-return 1
+return function (Commands,Plugins)
+    pcall(function()
+        for _,i in pairs(Commands:GetChildren()) do
+            if i:IsA("ModuleScript") then
+                i.Parent = script.Commands
+            end
+        end
+    end)
+end

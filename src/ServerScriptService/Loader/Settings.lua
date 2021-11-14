@@ -1,4 +1,6 @@
-_G.AdminCubeCustomSettings = {
+-- Admin Cube - Custom Settings
+
+return {
     Owners = { -- 4
         442141997,
         -1
@@ -13,5 +15,3 @@ _G.AdminCubeCustomSettings = {
 
     };
 }
-
-require(script.Parent:WaitForChild("AdminCube"))

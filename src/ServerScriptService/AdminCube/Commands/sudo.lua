@@ -1,17 +1,17 @@
 -- Admin Cube - Sudo Command
 
 local Api = require(script.Parent.Parent:WaitForChild("Api"))
-local Settings = require(script:WaitForChild("Settings"))
+local Settings = require(script.Parent.Parent:WaitForChild("Settings"))
 local HttpService = game:GetService("HttpService")
 
-local function CommandRunner(str)
+local function CommandRunner(p,str)
     local Commands = Api:GetCommands()
+    print(Commands)
     local s,e = pcall(function()
         str = string.lower(str)
         local Split = str:split(" ")
-        local PrefixCommand = Split[1]
-        local cmd = PrefixCommand:split(Settings.Prefix)
-        local Command = cmd[2]
+        print(Split)
+        local Command = Split[1]
         if Commands[Command] then
             local args = {}
             for i = 2, #Split,1 do
@@ -20,12 +20,13 @@ local function CommandRunner(str)
             Commands[Command].Run("sudo",args)
         else
             -- Invalid Notification
+            Api:Notification(p,false,"Invalid Command")
         end
     end)
     if not s then warn("Command Runner Error : " .. e) end
 end
 
-Api:RegisterCommand("speed","Changes the WalkSpeed of a Player's Character",function(p,Args)
+Api:RegisterCommand("sudo","Run commands in other servers and with Root permissions",function(p,Args)
     if Settings.sudo == true then
         local s,e = pcall(function()
             if Api:GetRank(p) >= 4 then
@@ -41,12 +42,14 @@ Api:RegisterCommand("speed","Changes the WalkSpeed of a Player's Character",func
                         msg = msg
                     }))
                 else
+                    print("sudo")
+                    print(Args)
                     -- Run Command
-                    local msg = ""
-                    for i = 1,#Args,1 do
+                    local msg = Args[1]
+                    for i = 2,#Args,1 do
                         msg = msg .. " " .. Args[i]
                     end
-                    CommandRunner(msg)
+                    CommandRunner(p,msg)
                 end
             else
                 -- Invalid Rank Notification
@@ -63,7 +66,7 @@ end)
 
 Api:SubscribeBroadcast("SudoBroadcast",function(Encoded)
     local Data = HttpService:JSONDecode(Encoded)
-    CommandRunner(Data.msg)
+    CommandRunner(nil,Data.msg)
 end)
 
 return true

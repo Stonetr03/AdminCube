@@ -9,7 +9,6 @@ local ConnectedPlrs = {}
 local ServerData = {}
 
 local function CommandRunner(p,str)
-    print(p.Name .. "Chatted " .. str)
     local Commands = Api:GetCommands()
     local s,e = pcall(function()
         str = string.lower(str)

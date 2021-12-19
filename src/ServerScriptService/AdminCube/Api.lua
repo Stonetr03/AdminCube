@@ -100,10 +100,18 @@ function Module:PushFunction(p,Key,Args)
     game.ReplicatedStorage:WaitForChild("AdminCube").ACFunc:InvokeClient(p,Key,Args)
 end
 
+local RemoteFunctions = {}
 function Module:ListenFunction(Key,Callback)
-    game.ReplicatedStorage:WaitForChild("AdminCube").ACFunc.OnServerInvoke = function(p,CallingKey,Args)
-        if CallingKey == Key then
-            return Callback(p,Args)
+    print("Listen " .. Key)
+    table.insert(RemoteFunctions,{
+        Key = Key;
+        Callback = Callback;
+    })
+end
+game.ReplicatedStorage:WaitForChild("AdminCube").ACFunc.OnServerInvoke = function(p,CallingKey,Args)
+    for _,o in pairs(RemoteFunctions) do
+        if o.Key == CallingKey then
+            return o.Callback(p,Args)            
         end
     end
 end
@@ -152,6 +160,19 @@ function Module:InvalidPermissionsNotification(p)
     return true
 end
 
+Module:ListenFunction("GetCommands",function()
+    print("GET COMMANDS")
+    local Cmd = Module:GetCommands()
+    -- Clone Table
+    local Cmds = {}
+    for i,v in pairs(Cmd) do
+        local Tab = {unpack(v)} -- Clone Table
+        Tab.Run = nil
+        table.insert(Cmds,Tab)
+    end
+    print(Cmds)
+    return Cmds
+end)
 
 task.spawn(function()
     MessagingService:SubscribeAsync("AdminCube",function(Data)

@@ -96,4 +96,11 @@ function Api:ThemeUpdateEvent(Func)
     ThemeUpdateEvents[#ThemeUpdateEvents+1] = Func
 end
 
+function Api:GetCommands()
+    local Cmds = Api:PushFunction("GetCommands")
+    print("GET CMDS")
+    print(Cmds)
+    return Cmds
+end
+
 return Api

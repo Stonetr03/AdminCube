@@ -34,6 +34,36 @@ function BackCallBack()
 end
 
 function Menu:render()
+    local Last, Start = 0,0
+    local Updates = {}
+    
+    local Next = 0
+    
+    RunService.Heartbeat:Connect(function()
+        if VisRef:getValue().Visible == true then
+            Last = tick()
+            for Index = #Updates, 1, -1 do
+                Updates[Index + 1] = (Updates[Index] >= Last - 1) and Updates[Index] or nil
+            end
+    
+            Updates[1] = Last
+            local CurrentFPS = (tick() - Start >= 1 and #Updates) or (#Updates / (tick() - Start))
+            CurrentFPS = math.floor(CurrentFPS)
+            SetFps("Fps : " .. CurrentFPS)
+            
+            
+            if Next < tick() then
+                print("Update")
+                Next = tick() + 5
+                local St = tick()
+                Api:PushFunction("Response")
+                local Re = tick()
+                local Pi = tostring(math.floor((Re - St)*1000))
+                SetPing("Ping : " .. Pi .. " ms")
+            end
+        end
+    end)
+
     return Roact.createElement("Frame",{
         Name = "AdminChat";
         BackgroundColor3 = Api.Style.Background;
@@ -85,36 +115,6 @@ function Menu:render()
         });
     })
 end
-
-local Last, Start = 0,0
-local Updates = {}
-
-local Next = 0
-
-RunService.Heartbeat:Connect(function()
-    if VisRef:getValue().Visible == true then
-        Last = tick()
-		for Index = #Updates, 1, -1 do
-			Updates[Index + 1] = (Updates[Index] >= Last - 1) and Updates[Index] or nil
-		end
-
-		Updates[1] = Last
-		local CurrentFPS = (tick() - Start >= 1 and #Updates) or (#Updates / (tick() - Start))
-		CurrentFPS = math.floor(CurrentFPS)
-		SetFps("Fps : " .. CurrentFPS)
-        
-        
-        if Next < tick() then
-            print("Update")
-            Next = tick() + 5
-            local St = tick()
-            Api:PushFunction("Response")
-            local Re = tick()
-            local Pi = tostring(math.floor((Re - St)*1000))
-            SetPing("Ping : " .. Pi .. " ms")
-        end
-    end
-end)
 
 return {MenuBtn,Menu,BackCallBack}
 

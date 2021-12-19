@@ -17,18 +17,20 @@ function Btns:render()
     local Frames = {}
     local Size = 0
     for i,o in pairs(Cmds) do
-        Size += 35
+        Size += 25
         Frames[i] = Roact.createElement("Frame",{
             BackgroundTransparency = 1;
-            Size = UDim2.new(1,0,0,30);
+            Size = UDim2.new(1,0,0,20);
+            ZIndex = 10;
         },{
             NameDisplay = Roact.createElement("TextLabel",{
                 BackgroundTransparency = 1;
                 TextColor3 = Api.Style.TextColor;
                 Size = UDim2.new(0.3,0,1,0);
                 TextXAlignment = Enum.TextXAlignment.Left;
-                TextSize = 14;
+                TextSize = 8;
                 Text = o.Name;
+                ZIndex = 15;
             });
             Desc = Roact.createElement("TextLabel",{
                 BackgroundTransparency = 1;
@@ -36,8 +38,10 @@ function Btns:render()
                 Size = UDim2.new(0.7,0,1,0);
                 Position = UDim2.new(0.3,0,0,0);
                 TextXAlignment = Enum.TextXAlignment.Left;
-                TextSize = 14;
+                TextSize = 8;
                 Text = o.Desc;
+                TextWrapped = true;
+                ZIndex = 15;
             })
         })
     end

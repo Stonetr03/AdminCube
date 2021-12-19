@@ -160,18 +160,11 @@ function Module:InvalidPermissionsNotification(p)
     return true
 end
 
-Module:ListenFunction("GetCommands",function()
-    print("GET COMMANDS")
-    local Cmd = Module:GetCommands()
-    -- Clone Table
-    local Cmds = {}
-    for i,v in pairs(Cmd) do
-        local Tab = {unpack(v)} -- Clone Table
-        Tab.Run = nil
-        table.insert(Cmds,Tab)
+Module:ListenFunction("GetCommands",function(p)
+    if Module:GetRank(p) > 2 then
+        local Cmd = Module:GetCommands()
+        return Cmd
     end
-    print(Cmds)
-    return Cmds
 end)
 
 task.spawn(function()

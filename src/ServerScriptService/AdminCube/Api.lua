@@ -26,6 +26,8 @@ end
 function Module:GetPlayer(Name,p) -- Name Requested to Find, Player who Sent 
     if Name == "me" then
         return p
+    elseif Name == nil then
+        return p
     else
         -- Match UserNames
         for _,o in pairs(game.Players:GetPlayers()) do

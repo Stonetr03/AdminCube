@@ -5,13 +5,9 @@ local Roact = require(game.ReplicatedStorage:WaitForChild("AdminCube"):WaitForCh
 local CmdBar = require(script:WaitForChild("CmdBar"))
 local Notification = require(script:WaitForChild("Notification"))
 
-local Folder = Instance.new("Folder");
-Folder.Parent = game.Players.LocalPlayer.PlayerGui
-Folder.Name = "AdminCube"
-
 local ScreenGui = Roact.createElement("ScreenGui",{
-    ResetOnSpawn = false;
     Name = "AdminCubeBar";
+    ResetOnSpawn = false;
 },{
     CmdBar = Roact.createElement(CmdBar);
 })
@@ -22,8 +18,8 @@ local NotificationPanel = Roact.createElement("ScreenGui",{
     Notification = Roact.createElement(Notification.Comp)
 })
 
-local Alert = Roact.mount(NotificationPanel,Folder)
-Roact.mount(ScreenGui,Folder)
+local Alert = Roact.mount(NotificationPanel,game.Players.LocalPlayer.PlayerGui)
+Roact.mount(ScreenGui,game.Players.LocalPlayer.PlayerGui)
 
 Notification.ReloadFunc = function()
     local New = Roact.createElement("ScreenGui",{

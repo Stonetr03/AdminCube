@@ -155,6 +155,13 @@ Api:ListenRemote("CmdBar",function(p,c)
     CommandRunner(p,c)
 end)
 
+-- Early Joiners
+task.delay(1,function()
+    for _,p in pairs(game.Players:GetPlayers()) do
+        PlayerJoined(p)
+    end
+end)
+
 return function (Commands)
     pcall(function()
         for _,i in pairs(Commands:GetChildren()) do

@@ -2,8 +2,7 @@
 
 return {
     Owners = { -- 4
-        442141997,
-        -1
+    
     };
     Admins = { -- 3
 

@@ -16,4 +16,4 @@ local Ui = Roact.createElement("ScreenGui",{
     })
 })
 
-Roact.mount(Ui,game.Players.LocalPlayer.PlayerGui)
+Roact.mount(Ui,game.Players.LocalPlayer.PlayerGui,"__AdminCube__AdminPanel")

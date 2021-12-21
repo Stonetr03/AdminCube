@@ -18,8 +18,8 @@ local NotificationPanel = Roact.createElement("ScreenGui",{
     Notification = Roact.createElement(Notification.Comp)
 })
 
-local Alert = Roact.mount(NotificationPanel,game.Players.LocalPlayer.PlayerGui)
-Roact.mount(ScreenGui,game.Players.LocalPlayer.PlayerGui)
+local Alert = Roact.mount(NotificationPanel,game.Players.LocalPlayer.PlayerGui,"__AdminCube__Notifications")
+Roact.mount(ScreenGui,game.Players.LocalPlayer.PlayerGui,"__AdminCube__CommandBar")
 
 Notification.ReloadFunc = function()
     local New = Roact.createElement("ScreenGui",{

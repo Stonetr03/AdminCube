@@ -7,15 +7,6 @@ local Api = require(game.ReplicatedStorage:WaitForChild("AdminCube"):WaitForChil
 local Notifications = Roact.Component:extend("NotificationMain")
 local ToRender = {}
 
-local function ResetRender()
-    local NewRen = {}
-    for _,o in pairs(ToRender) do
-        NewRen[#NewRen+1] = o
-    end
-    ToRender = NewRen
-    return
-end
-
 local Tab = {
     ReloadFunc = nil;
     Comp = Notifications;
@@ -23,13 +14,12 @@ local Tab = {
 
 Api:ListenRemote("Notification",function(Args)
     -- Reload Notifications
-    ToRender[#ToRender+1] = {
+    table.insert(ToRender,{
         Image = Args.Image;
         Text = Args.Text;
         TimePaused = false;
         Time = 10;
-    }
-    ResetRender()
+    })
     Tab.ReloadFunc()
 end)
 
@@ -78,8 +68,8 @@ function NotificationList:render()
                         TextSize = 16;
                         
                         [Roact.Event.MouseButton1Up] = function()
-                            ToRender[i].TimePaused = false
-                            ToRender[i].Time = 0
+                            ToRender[i] = nil
+                            Tab.ReloadFunc()
                         end
                     });
                     Image = Roact.createElement("ImageLabel",{
@@ -142,6 +132,11 @@ function NotificationList:render()
                         Text = "X";
                         TextColor3 = Api.Style.TextColor;
                         TextSize = 16;
+
+                        [Roact.Event.MouseButton1Up] = function()
+                            ToRender[i] = nil
+                            Tab.ReloadFunc()
+                        end
                     });
                     Body = Roact.createElement("TextLabel",{
                         BackgroundTransparency = 1;
@@ -197,12 +192,11 @@ task.spawn(function()
     task.wait(1)
     while true do
         task.wait(1)
-        for i = 1,#ToRender,1 do
+        for i,v in pairs(ToRender) do
             if ToRender[i].TimePaused == false then
                 ToRender[i].Time -= 1
                 if ToRender[i].Time <= 0 then
                     ToRender[i] = nil
-                    ResetRender()
                     Tab.ReloadFunc()
                 end
             end

@@ -61,7 +61,7 @@ local function PlayerJoined(p)
         -- Ui
         print("NewUi")
         local NewUi = script.Ui.Public:Clone()
-        NewUi.Parent = p:WaitForChild("Backpack")
+        NewUi.Parent = p:WaitForChild("PlayerGui")
 
         -- Temp Perms
         if Settings.TempPerms == true then
@@ -122,7 +122,7 @@ local function PlayerJoined(p)
         if ServerData[p].Rank >= 2 then
             print("Give Panel")
             local Panel = script.Ui.AdminPanel:Clone()
-            Panel.Parent = p:WaitForChild("Backpack")
+            Panel.Parent = p:WaitForChild("PlayerGui")
         end
     end
 end

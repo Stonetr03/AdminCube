@@ -5,7 +5,7 @@
 Admin Cube is a administrative system for your Roblox games. Admin Cube is built to have custom commands, themes and plugins in mind.
 
 ## How to install Admin Cube
-The Most recent version of Admin Cube can be found [here](https://www.roblox.com/library/6490802893/Admin-Cube).
+The Most recent version of Admin Cube can be found [here on roblox](https://www.roblox.com/library/6490802893/Admin-Cube) or [here on github](https://github.com/Stonetr03/AdminCube/releases).
 
 The offical loader can be found [here](https://github.com/Stonetr03/AdminCube/releases/download/v1.0.3/Loader.rbxm).
 ###### Make sure the require line in the loader, requires 6490802893 for the most recent version of Admin Cube.

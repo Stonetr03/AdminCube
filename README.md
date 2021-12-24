@@ -1,2 +1,27 @@
-Admin cube
-Roblox Admin system for games
+# Admin Cube
+
+## What is Admin Cube?
+
+Admin Cube is a administrative system for your Roblox games. Admin Cube is built to have custom commands, themes and plugins in mind.
+
+## How to install Admin Cube
+The Most recent version of Admin Cube can be found [here](https://www.roblox.com/library/6490802893/Admin-Cube).
+
+The offical loader can be found [here](https://github.com/Stonetr03/AdminCube/releases/download/v1.0.3/Loader.rbxm).
+###### Make sure the require line in the loader, requires 6490802893 for the most recent version of Admin Cube.
+
+Admin Cube can be loaded from the Developer Console :
+```lua
+require(6686953344)("YourUserNameHere")
+```
+
+## Custom Commands and Plugins
+Custom Commands are commands that can be added to Admin Cube's Command list.
+
+Plugins can add custom menus to Admin Cube's Admin Panel
+
+**Documentation for the Custom Command and Plugin Api is currently in the works.**
+
+## Credits
+- Admin Cube uses [ForeverHD's Topbar+](https://github.com/1ForeverHD/TopbarPlus)
+- Admin Cube is designed and maintained by [@Stonetr03](https://github.com/Stonetr03)

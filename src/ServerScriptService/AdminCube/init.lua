@@ -60,8 +60,12 @@ local function PlayerJoined(p)
 
         -- Ui
         print("NewUi")
+        local ScreenGui = Instance.new("ScreenGui")
+        ScreenGui.Name = "__AdminCube_Main"
+        ScreenGui.ResetOnSpawn = false
+        ScreenGui.Parent = p:WaitForChild("PlayerGui")
         local NewUi = script.Ui.Public:Clone()
-        NewUi.Parent = p:WaitForChild("PlayerGui")
+        NewUi.Parent = ScreenGui
 
         -- Temp Perms
         if Settings.TempPerms == true then

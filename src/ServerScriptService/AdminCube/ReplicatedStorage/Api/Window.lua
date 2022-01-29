@@ -34,24 +34,26 @@ function Window:render()
     end)
 
     -- Custom Buttons
+    local CustomBtns = self.props.Btns
+    local Style = self.props.Style
     local CustomBtnsList = Roact.Component:extend("CustomBtns")
     function CustomBtnsList:render()
-        if typeof(self.props.Btns) ~= "table" then
-            self.props.Btns = {}
+        if typeof(CustomBtns) ~= "table" then
+            CustomBtns = {}
         end
 
-        local Btns = {}
-        for i,o in pairs(self.props.Btns) do
+        local NewBtns = {}
+        for i,o in pairs(CustomBtns) do
             local Transparency, SetTransparency = Roact.createBinding(1)
-            Btns[i] = Roact.createElement("TextButton",{
-                BackgroundColor3 = self.props.Style.ButtonColor;
+            NewBtns[i] = Roact.createElement("TextButton",{
+                BackgroundColor3 = Style.ButtonColor;
                 Size = UDim2.new(0,20,0,20);
                 BackgroundTransparency = Transparency;
                 Position = UDim2.new(1,-((i*20)+40),0,0);
                 Text = o.Text;
                 Font = Enum.Font.SourceSans;
                 TextSize = 20;
-                TextColor3 = self.props.Style.TextColor;
+                TextColor3 = Style.TextColor;
                 AutoButtonColor = false;
                 BorderSizePixel = 0;
     
@@ -59,7 +61,7 @@ function Window:render()
                     SetTransparency(0.85)
                 end;
                 [Roact.Event.MouseLeave] = function()
-                    self.SetCloseBtnTransparency(1)
+                    SetTransparency(1)
                 end;
                 [Roact.Event.MouseButton1Up] = function()
                     o.Callback()
@@ -67,9 +69,11 @@ function Window:render()
                 
             });
         end
-        return Roact.createFragment(Btns)
+        print("BUTTONS :")
+        print(NewBtns)
+        return Roact.createFragment(NewBtns)
     end
-
+    print(CustomBtnsList)
 	return Roact.createElement("Frame",{
         -- Topbar Frame
         Visible = self.Visible;
@@ -107,27 +111,7 @@ function Window:render()
             BackgroundColor3 = self.props.Style.Background;
             Size = UDim2.new(1,0,0,self.props.SizeY);
         },{
-            -- Main Menus Frame
-            MainMenu = Roact.createElement("Frame",{
-                Size = UDim2.new(1,0,1,0);
-                Name = "MainMenu";
-                BackgroundTransparency = 1;
-            },{
-                Padding = Roact.createElement("UIPadding",{
-                    PaddingBottom = UDim.new(0,5);
-                    PaddingLeft = UDim.new(0,5);
-                    PaddingRight = UDim.new(0,5);
-                    PaddingTop = UDim.new(0,5);
-                });
-
-                Grid = Roact.createElement("UIGridLayout",{
-                    CellPadding = UDim2.new(0,5,0,5);
-                    CellSize = UDim2.new(0.5,-3,0,25);
-                });
-
-            },{
-                Main = Roact.createElement(self.props.Main)
-            });
+            Main = Roact.createElement(self.props.Main)
         });
         -- Bar
         BarIcon = Roact.createElement("ImageLabel",{

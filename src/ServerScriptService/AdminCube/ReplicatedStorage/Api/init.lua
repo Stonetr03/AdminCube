@@ -74,7 +74,7 @@ end
 
 function Api:ListenRemote(Key,Callback)
     game.ReplicatedStorage:WaitForChild("AdminCube").ACEvent.OnClientEvent:Connect(function(CallingKey,Args)
-        if CallingKey == Key then
+        if CallingKey == Key and typeof(Callback) == "function" then
             Callback(Args)
         end
     end)
@@ -101,6 +101,26 @@ function Api:GetCommands()
     print("GET CMDS")
     print(Cmds)
     return Cmds
+end
+
+local WindowComp = require(script.Window)
+function Api:CreateWindow(Props,Component)
+    local WindowFrame = Roact.createElement(WindowComp,{
+        Btns = Props.Buttons;
+        SizeX = Props.SizeX;
+        SizeY = Props.SizeY;
+        Main = Component;
+        Title = Props.Title;
+        Style = Api.Style;
+    })
+    local Tree = Roact.mount(WindowFrame,game.Players.LocalPlayer.PlayerGui:FindFirstChild("__AdminCube_Main"),"Window-" .. Props.Title)
+    local ReturnTab = {}
+
+    function ReturnTab.unmount()
+        Roact.unmount(Tree)
+    end
+
+    return ReturnTab
 end
 
 return Api

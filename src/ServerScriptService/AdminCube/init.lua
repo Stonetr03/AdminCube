@@ -126,7 +126,7 @@ local function PlayerJoined(p)
         if ServerData[p].Rank >= 2 then
             print("Give Panel")
             local Panel = script.Ui.AdminPanel:Clone()
-            Panel.Parent = p:WaitForChild("PlayerGui")
+            Panel.Parent = ScreenGui
         end
     end
 end

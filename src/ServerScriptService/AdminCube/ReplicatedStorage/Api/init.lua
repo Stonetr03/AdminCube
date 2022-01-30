@@ -103,8 +103,9 @@ function Api:GetCommands()
     return Cmds
 end
 
-local WindowComp = require(script.Window)
 function Api:CreateWindow(Props,Component)
+    local WindowModule = require(script.Window)
+    local WindowComp,Functions = WindowModule:CreateWindow()
     local WindowFrame = Roact.createElement(WindowComp,{
         Btns = Props.Buttons;
         SizeX = Props.SizeX;
@@ -119,6 +120,8 @@ function Api:CreateWindow(Props,Component)
     function ReturnTab.unmount()
         Roact.unmount(Tree)
     end
+
+    ReturnTab.SetVis = Functions.SetVis
 
     return ReturnTab
 end

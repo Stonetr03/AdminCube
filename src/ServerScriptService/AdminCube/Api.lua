@@ -160,6 +160,23 @@ function Module:InvalidPermissionsNotification(p)
     return true
 end
 
+-- Prompts
+local OpenPrompts = {}
+function Module:ShowPrompt(p,Prompts)
+    if OpenPrompts[p] ~= nil then
+        -- Another prompt is open
+        return false
+    end
+    OpenPrompts[p] = Prompts
+
+end
+Module:ListenRemote("Prompts",function(p,Results)
+    if OpenPrompts[p] ~= nil then
+        -- Prompt is open
+        
+    end
+end)
+
 Module:ListenFunction("GetCommands",function(p)
     if Module:GetRank(p) > 2 then
         local Cmd = Module:GetCommands()

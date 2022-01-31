@@ -126,4 +126,9 @@ function Api:CreateWindow(Props,Component)
     return ReturnTab
 end
 
+-- Prompts
+Api:ListenRemote("Prompts",function(Prompts)
+    
+end)
+
 return Api

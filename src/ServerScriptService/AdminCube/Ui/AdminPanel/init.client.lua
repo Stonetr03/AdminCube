@@ -70,3 +70,16 @@ local Window = Api:CreateWindow({
     };
 
 },WindowFrame)
+Window.SetVis(false)
+
+Window.OnClose:Connect(function()
+    icon:deselect()
+end)
+
+icon.selected:Connect(function()
+    Window.SetVis(true)
+end)
+
+icon.deselected:Connect(function()
+    Window.SetVis(false)
+end)

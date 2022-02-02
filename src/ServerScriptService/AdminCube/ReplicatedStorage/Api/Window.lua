@@ -9,6 +9,7 @@ function Module:CreateWindow()
     local Window = Roact.Component:extend("Window")
     local ReturnTab = {
         SetVis = nil;
+        OnClose = nil;
     }
 
     function Window:init()
@@ -158,6 +159,10 @@ function Module:CreateWindow()
                 end;
                 [Roact.Event.MouseButton1Up] = function()
                     self.SetVisiblility(false)
+                    if typeof(ReturnTab.OnClose) == "function" then
+                        ReturnTab.OnClose()
+
+                    end
                 end;
                 
             });

@@ -115,12 +115,30 @@ function Api:CreateWindow(Props,Component)
         Style = Api.Style;
     })
     local Tree = Roact.mount(WindowFrame,game.Players.LocalPlayer.PlayerGui:FindFirstChild("__AdminCube_Main"),"Window-" .. Props.Title)
-    local ReturnTab = {}
+    local ReturnTab = {
+        OnClose = {}
+    }
 
+    local Close = {}
     function ReturnTab.unmount()
         Roact.unmount(Tree)
+
+        Close = nil
     end
 
+    function ReturnTab.OnClose:Connect(f)
+        if typeof(f) == "function" then
+            Close[#Close+1] = f
+        end
+        
+    end
+
+    Functions.OnClose = function()
+        for _,f in pairs(Close) do
+            f()
+        end
+    end
+    
     ReturnTab.SetVis = Functions.SetVis
 
     return ReturnTab

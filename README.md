@@ -10,6 +10,11 @@ The Most recent version of Admin Cube can be found [here on roblox](https://www.
 The offical loader can be found [here](https://github.com/Stonetr03/AdminCube/releases/download/v1.0.3/Loader.rbxm).
 ###### Make sure the require line in the loader, requires 6490802893 for the most recent version of Admin Cube.
 
+## Admin Cube Nightly can be found at rbxassetid://8713742492
+Admin Cube Nightly has new features, that are not in the current release.
+This is a Beta Testing Release and some features will break.
+To enable the beta add the id `8713742492` into your loader.
+
 Admin Cube can be loaded from the Developer Console :
 ```lua
 require(6686953344)("YourUserNameHere")

@@ -30,3 +30,4 @@ Plugins can add custom menus to Admin Cube's Admin Panel
 ## Credits
 - Admin Cube uses [ForeverHD's Topbar+](https://github.com/1ForeverHD/TopbarPlus)
 - Admin Cube is designed and maintained by [@Stonetr03](https://github.com/Stonetr03)
+- Admin Cube uses [Roact](https://github.com/Roblox/roact/)

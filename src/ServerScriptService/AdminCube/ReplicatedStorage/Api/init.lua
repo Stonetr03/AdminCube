@@ -4,6 +4,7 @@ local Roact = require(game.ReplicatedStorage:WaitForChild("AdminCube"):WaitForCh
 
 local Background, SetBackground = Roact.createBinding(Color3.new(0,0,0));
 local BackgroundSubColor, SetBackgroundSubColor = Roact.createBinding(Color3.new(0,0,0));
+local BackgroundSubSubColor, SetBackgroundSubSubColor = Roact.createBinding(Color3.new(0,0,0));
 local ButtonColor, SetButtonColor = Roact.createBinding(Color3.new(1,1,1));
 local TextColor, SetTextColor = Roact.createBinding(Color3.new(1,1,1));
 local ButtonTransparency, SetButtonTransparency = Roact.createBinding(0.85);
@@ -18,6 +19,7 @@ local Api = {
     Style = {
         Background = Background;
         ButtonColor = ButtonColor;
+        BackgroundSubSubColor = BackgroundSubSubColor;
         TextColor = TextColor;
         ButtonTransparency = ButtonTransparency;
         ButtonSubColor = ButtonSubColor;
@@ -45,6 +47,7 @@ local function UpdateTheme()
         SetButtonTransparency(Style.ButtonTransparency)
         SetButtonSubColor(Style.ButtonSubColor)
         SetBackgroundSubColor(Style.BackgroundSubColor)
+        SetBackgroundSubSubColor(Style.BackgroundSubSubColor)
 
         for i = 1,#ThemeUpdateEvents,1 do
             ThemeUpdateEvents[i]()
@@ -145,8 +148,88 @@ function Api:CreateWindow(Props,Component)
 end
 
 -- Prompts
+local PromptBoolean,PromptString,PromptDropdown = require(script.Prompts)
 Api:ListenRemote("Prompts",function(Prompts)
-    
+    -- Generate Uis
+
+    local ButtonComp = Roact.Component:extend("Prompt-Button-Comp")
+    local CurrentValues = {}
+    local Y = 25
+    function ButtonComp:render()
+        local ButtonFragments = {}
+        for i,o in pairs(Prompts.Prompts) do
+            if o.Type == "Boolean" then
+                local Button = Roact.createElement(PromptBoolean,{
+                    Style = Api.Style;
+                    Y = Y;
+                    Title = o.Title;
+                    DefaultValue = o.DefaultValue;
+                    UpdateValue = function(NewValue)
+                        CurrentValues[i] = NewValue
+                    end
+                })
+                CurrentValues[i] = o.DefaultValue
+                ButtonFragments[i] = Button
+
+            elseif o.Type == "String" then
+                local Button = Roact.createElement(PromptString,{
+                    Style = Api.Style;
+                    Y = Y;
+                    Title = o.Title;
+                    DefaultValue = o.DefaultValue;
+                    UpdateValue = function(NewValue)
+                        CurrentValues[i] = NewValue
+                    end
+                })
+                CurrentValues[i] = ""
+                ButtonFragments[i] = Button
+
+            elseif o.Type == "Dropdown" then
+                local Button = Roact.createElement(PromptDropdown,{
+                    Style = Api.Style;
+                    Y = Y;
+                    Title = o.Title;
+                    Value = o.Value;
+                    DefaultValue = o.DefaultValue;
+                    UpdateValue = function(NewValue)
+                        CurrentValues[i] = NewValue
+                    end
+                })
+                CurrentValues[i] = ""
+                ButtonFragments[i] = Button
+            end
+            Y += 25
+        end
+        return Roact.createFragment(ButtonFragments)
+    end
+
+    local PromptComp = Roact.Component:extend("PromptComp")
+    function PromptComp:render()
+        return Roact.createElement("ScrollingFrame",{
+            BackgroundTransparency = 1;
+            Size = UDim2.new(1,0,1,0);
+            BottomImage = "";
+            CanvasSize = UDim2.new(0,0,0,Y+25);
+            MidImage = "rbxasset://textures/ui/Scroll/scroll-middle.png";
+            ScrollBarImageColor3 = Api.Style.ButtonColor;
+            ScrollBarThickness = 5;
+            ScrollingDirection = Enum.ScrollingDirection.Y;
+            TopImage = "";
+        },{
+            Title = Roact.createElement("TextLabel",{
+                BackgroundColor3 = Api.Style.ButtonColor;
+                BackgroundTransparency = 0.9;
+                BorderSizePixel = 0;
+                Size = UDim2.new(1,0,0,25);
+                Font = Enum.Font.SourceSans;
+                Text = Prompts.Title;
+                TextColor3 = Api.Style.TextColor;
+                TextSize = 25;
+            });
+            Buttons = Roact.createElement(ButtonComp);
+            
+        })
+    end
 end)
 
 return Api

@@ -151,57 +151,54 @@ end
 local PromptBoolean,PromptString,PromptDropdown = require(script.Prompts)
 Api:ListenRemote("Prompts",function(Prompts)
     -- Generate Uis
-
-    local ButtonComp = Roact.Component:extend("Prompt-Button-Comp")
+    local Window
     local CurrentValues = {}
-    local Y = 25
-    function ButtonComp:render()
-        local ButtonFragments = {}
-        for i,o in pairs(Prompts.Prompts) do
-            if o.Type == "Boolean" then
-                local Button = Roact.createElement(PromptBoolean,{
-                    Style = Api.Style;
-                    Y = Y;
-                    Title = o.Title;
-                    DefaultValue = o.DefaultValue;
-                    UpdateValue = function(NewValue)
-                        CurrentValues[i] = NewValue
-                    end
-                })
-                CurrentValues[i] = o.DefaultValue
-                ButtonFragments[i] = Button
+    local Y = 2
+    local ButtonFragments = {}
+    for i,o in pairs(Prompts.Prompts) do
+        if o.Type == "Boolean" then
+            local Button = Roact.createElement(PromptBoolean,{
+                Style = Api.Style;
+                Y = Y;
+                Title = o.Title;
+                DefaultValue = o.DefaultValue;
+                UpdateValue = function(NewValue)
+                    CurrentValues[i] = NewValue
+                end
+            })
+            CurrentValues[i] = o.DefaultValue
+            ButtonFragments[i] = Button
 
-            elseif o.Type == "String" then
-                local Button = Roact.createElement(PromptString,{
-                    Style = Api.Style;
-                    Y = Y;
-                    Title = o.Title;
-                    DefaultValue = o.DefaultValue;
-                    UpdateValue = function(NewValue)
-                        CurrentValues[i] = NewValue
-                    end
-                })
-                CurrentValues[i] = ""
-                ButtonFragments[i] = Button
+        elseif o.Type == "String" then
+            local Button = Roact.createElement(PromptString,{
+                Style = Api.Style;
+                Y = Y;
+                Title = o.Title;
+                DefaultValue = o.DefaultValue;
+                UpdateValue = function(NewValue)
+                    CurrentValues[i] = NewValue
+                end
+            })
+            CurrentValues[i] = ""
+            ButtonFragments[i] = Button
 
-            elseif o.Type == "Dropdown" then
-                local Button = Roact.createElement(PromptDropdown,{
-                    Style = Api.Style;
-                    Y = Y;
-                    Title = o.Title;
-                    Value = o.Value;
-                    DefaultValue = o.DefaultValue;
-                    UpdateValue = function(NewValue)
-                        CurrentValues[i] = NewValue
-                    end
-                })
-                CurrentValues[i] = ""
-                ButtonFragments[i] = Button
-            end
-            Y += 25
+        elseif o.Type == "Dropdown" then
+            local Button = Roact.createElement(PromptDropdown,{
+                Style = Api.Style;
+                Y = Y;
+                Title = o.Title;
+                Value = o.Value;
+                DefaultValue = o.DefaultValue;
+                UpdateValue = function(NewValue)
+                    CurrentValues[i] = NewValue
+                end
+            })
+            CurrentValues[i] = ""
+            ButtonFragments[i] = Button
         end
-        return Roact.createFragment(ButtonFragments)
+        Y += 25
     end
+    local Buttons = Roact.createFragment(ButtonFragments)
 
     local PromptComp = Roact.Component:extend("PromptComp")
     function PromptComp:render()
@@ -209,7 +206,7 @@ Api:ListenRemote("Prompts",function(Prompts)
             BackgroundTransparency = 1;
             Size = UDim2.new(1,0,1,0);
             BottomImage = "";
-            CanvasSize = UDim2.new(0,0,0,Y+25);
+            CanvasSize = UDim2.new(0,0,0,Y+50);
             MidImage = "rbxasset://textures/ui/Scroll/scroll-middle.png";
             ScrollBarImageColor3 = Api.Style.ButtonColor;
             ScrollBarThickness = 5;
@@ -225,11 +222,54 @@ Api:ListenRemote("Prompts",function(Prompts)
                 Text = Prompts.Title;
                 TextColor3 = Api.Style.TextColor;
                 TextSize = 25;
+                LayoutOrder = 1;
             });
-            Buttons = Roact.createElement(ButtonComp);
-            
+            Buttons = Roact.createElement(Buttons);
+            Frame = Roact.createElement("Frame",{
+                BackgroundTransparency = 1;
+                Position = UDim2.new(0,0,0,Y+25);
+                Size = UDim2.new(1,0,0,25);
+            },{
+                Confirm = Roact.createElement("TextButton",{
+                    BackgroundColor3 = Api.Style.ButtonColor;
+                    BackgroundTransparency = Api.Style.ButtonTransparency;
+                    BorderSizePixel = 0;
+                    Size = UDim2.new(0.5,-1,1,0);
+                    Font = Enum.Font.SourceSans;
+                    Text = "Confirm";
+                    TextColor3 = Api.Style.TextColor;
+                    TextSize = 22;
+
+                    [Roact.Event.MouseButton1Up] = function()
+                        Api:PushRemote("Prompts",{true,CurrentValues})
+                        Window.unmount()
+                    end;
+                });
+                Cancel = Roact.createElement("TextButton",{
+                    BackgroundColor3 = Api.Style.ButtonColor;
+                    BackgroundTransparency = Api.Style.ButtonTransparency;
+                    BorderSizePixel = 0;
+                    Size = UDim2.new(0.5,-1,1,0);
+                    Position = UDim2.new(0.5,1,0,0);
+                    Font = Enum.Font.SourceSans;
+                    Text = "Cancel";
+                    TextColor3 = Api.Style.TextColor;
+                    TextSize = 22;
+
+                    [Roact.Event.MouseButton1Up] = function()
+                        Api:PushRemote("Prompts",{false})
+                        Window.unmount()
+                    end;
+                })
+            })
         })
     end
+
+    Window = Api:CreateWindow({
+        SizeX = 250;
+        SizeY = Y+50;
+        Title = "Prompt";
+    })
 end)
 
 return Api

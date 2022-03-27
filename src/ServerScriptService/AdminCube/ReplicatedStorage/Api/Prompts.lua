@@ -237,4 +237,4 @@ function DropdownMenu:render(props)
     })
 end
 
-return Boolean,StringValue,DropdownMenu
+return {Boolean,StringValue,DropdownMenu}

@@ -148,7 +148,8 @@ function Api:CreateWindow(Props,Component)
 end
 
 -- Prompts
-local PromptBoolean,PromptString,PromptDropdown = require(script.Prompts)
+local PromptItems = require(script.Prompts)
+local PromptBoolean,PromptString,PromptDropdown = PromptItems[1],PromptItems[2],PromptItems[3]
 Api:ListenRemote("Prompts",function(Prompts)
     -- Generate Uis
     local Window

@@ -1097,8 +1097,6 @@ function Module:RenderClient()
 		game.Lighting,
 		game.ReplicatedFirst,
 		game.ReplicatedStorage,
-		game.ServerScriptService,
-		game.ServerStorage,
 		game.StarterGui,
 		game.StarterPack,
 		game.StarterPlayer,

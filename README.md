@@ -15,7 +15,8 @@ Admin Cube Nightly has new features, that are not in the current release.
 This is a Beta Testing Release and some features will break.
 To enable the beta add the id `8713742492` into your loader.
 
-Admin Cube can be loaded from the Developer Console :
+# Load from Developer Console
+If you are a game developer you can load Admin Cube from the developer console.
 ```lua
 require(6686953344)("YourUserNameHere")
 ```

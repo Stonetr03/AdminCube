@@ -137,7 +137,7 @@ end)
 
 Players.PlayerRemoving:Connect(function(p)
     -- Save Data and Remove Server Copy of Data
-    DataStoreModule:ExitDataStore(p.UserId, ServerData[p])
+    DataStoreModule:ExitDataStore(p.UserId, DataStoreModule:GetData(p.UserId))
     ServerData[p] = nil
     ConnectedPlrs[p] = nil
 end)

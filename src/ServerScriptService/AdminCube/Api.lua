@@ -150,7 +150,7 @@ function Module:CreateRSFolder(FolderName)
     end
 end
 
-function Module:Notification(p,Image,Text)
+function Module:Notification(p,Image,Text) -- Image - True for Headshot, False for No-Image, Other for image
     Module:PushRemote(p,"Notification",{Image = Image,Text = Text})
     return true
 end

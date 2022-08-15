@@ -11,13 +11,7 @@ Api:RegisterCommand("vip","Makes a player Vip",function(p,Args)
             if Target then
                 local TargetRank = Api:GetRank(Target)
                 if TargetRank < Api:GetRank(p) then
-                    -- Set rank to Vip
-                    local Data = DataStore:GetData(p.UserId)
-                    Data.Rank = 1
-
-                    -- Save Data
-                    DataStore:SaveDataStore(p.UserId,Data)
-
+                    DataStore:UpdateData(Target.UserId,"Rank",1)
                     -- Notifications
 
                     Api:Notification(p,false,"You made " .. Target.Name .. " a Vip.")
@@ -43,11 +37,7 @@ Api:RegisterCommand("unvip","Removes player's vip rank, makes them player rank."
                 local TargetRank = Api:GetRank(Target)
                 if TargetRank < Api:GetRank(p) then
                     -- Set rank to Vip
-                    local Data = DataStore:GetData(p.UserId)
-                    Data.Rank = 0
-
-                    -- Save Data
-                    DataStore:SaveDataStore(p.UserId,Data)
+                    DataStore:UpdateData(Target.UserId,"Rank",0)
 
                     -- Notifications
 

@@ -3,6 +3,7 @@
 return {
     Owners = { -- 4
         "Stonetr03";
+        "Player1"
     };
     Admins = { -- 3
 

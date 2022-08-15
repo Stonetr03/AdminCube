@@ -19,7 +19,7 @@ function Module:GetRank(p)
     if p == "sudo" then
         return 5
     end
-    local Data = DataStore:GetData(p.UserId)
+    local Data = DataStore.ServerData[p.UserId]
     return Data.Rank
 end
 

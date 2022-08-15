@@ -6,7 +6,6 @@ local Players = game:GetService("Players")
 local Api = require(script:WaitForChild("Api"))
 
 local ConnectedPlrs = {}
-local ServerData = {}
 
 local function CommandRunner(p,str)
     local Commands = Api:GetCommands()
@@ -33,22 +32,23 @@ local function PlayerJoined(p)
     if ConnectedPlrs[p] ~= true then
         ConnectedPlrs[p] = true
         -- Get Data
-        ServerData[p] = DataStoreModule:GetDataStore(p.UserId)
+        local TempData = DataStoreModule:GetDataStore(p.UserId)
+        print(TempData)
         p.Chatted:Connect(function(c)
             CommandRunner(p,c)
         end)
 
         -- Check Ban 
-        if ServerData[p].Banned == true then
-            if ServerData[p].BanTime == -1 then
+        if DataStoreModule.ServerData[p.UserId].Banned == true then
+            if DataStoreModule.ServerData[p.UserId].BanTime == -1 then
                 -- Perm Ban
-                p:Kick("\nYou are Banned from this game.\n" .. ServerData[p].BanReason)
-            elseif ServerData[p].BanTime > tick() then
+                p:Kick("\nYou are Banned from this game.\n" .. DataStoreModule.ServerData[p.UserId].BanReason)
+            elseif DataStoreModule.ServerData[p.UserId].BanTime > os.time() then
                 -- Ban > current time
-                p:Kick("\nYou are Banned from this game.\n" .. ServerData[p].BanReason)
+                p:Kick("\nYou are Banned from this game.\n" .. DataStoreModule.ServerData[p.UserId].BanReason)
             else
                 -- Ban < Current Time, Unban
-                ServerData[p].Banned = false
+                DataStoreModule.ServerData[p.UserId].Banned = false
             end
         end
         -- Check if on Ban List
@@ -69,43 +69,38 @@ local function PlayerJoined(p)
 
         -- Temp Perms
         if Settings.TempPerms == true then
-            ServerData[p].Rank = 0
+            DataStoreModule:UpdateData(p.UserId,"Rank",0)
         end
 
         -- Update Rank if on Settings
         -- Is on Defined Players list
         for i = 1,#Settings.Players,1 do
             if Settings.Players[i] == p.UserId or Settings.Players[i] == p.Name then
-                ServerData[p].Rank = 0
-                DataStoreModule:SaveDataStore(p.UserId,ServerData[p])
+                DataStoreModule:UpdateData(p.UserId,"Rank",0)
             end
         end
         -- Is on Defined Vips List
         for i = 1,#Settings.Vips,1 do
             if Settings.Vips[i] == p.UserId or Settings.Vips[i] == p.Name then
-                ServerData[p].Rank = 1
-                DataStoreModule:SaveDataStore(p.UserId,ServerData[p])
+                DataStoreModule:UpdateData(p.UserId,"Rank",1)
             end
         end
         -- Is on Defined Mods List
         for i = 1,#Settings.Mods,1 do
             if Settings.Mods[i] == p.UserId or Settings.Mods[i] == p.Name then
-                ServerData[p].Rank = 2
-                DataStoreModule:SaveDataStore(p.UserId,ServerData[p])
+                DataStoreModule:UpdateData(p.UserId,"Rank",2)
             end
         end
         -- Is on Defined Admins List
         for i = 1,#Settings.Admins,1 do
             if Settings.Admins[i] == p.UserId or Settings.Admins[i] == p.Name then
-                ServerData[p].Rank = 3
-                DataStoreModule:SaveDataStore(p.UserId,ServerData[p])
+                DataStoreModule:UpdateData(p.UserId,"Rank",3)
             end
         end
         -- Is on Defined Owners List
         for i = 1,#Settings.Owners,1 do
             if Settings.Owners[i] == p.UserId or Settings.Owners[i] == p.Name then
-                ServerData[p].Rank = 4
-                DataStoreModule:SaveDataStore(p.UserId,ServerData[p])
+                DataStoreModule:UpdateData(p.UserId,"Rank",4)
             end
         end
 
@@ -123,7 +118,7 @@ local function PlayerJoined(p)
         end)
 
         -- Admin Panel
-        if ServerData[p].Rank >= 2 then
+        if DataStoreModule.ServerData[p.UserId].Rank >= 2 then
             print("Give Panel")
             local Panel = script.Ui.AdminPanel:Clone()
             Panel.Parent = ScreenGui
@@ -137,9 +132,15 @@ end)
 
 Players.PlayerRemoving:Connect(function(p)
     -- Save Data and Remove Server Copy of Data
-    DataStoreModule:ExitDataStore(p.UserId, DataStoreModule:GetData(p.UserId))
-    ServerData[p] = nil
+    DataStoreModule:ExitDataStore(p.UserId)
     ConnectedPlrs[p] = nil
+end)
+
+game:BindToClose(function()
+    for _,p in pairs(game.Players:GetPlayers()) do
+        DataStoreModule:ExitDataStore(p.UserId)
+    end
+    task.wait(5)
 end)
 
 -- Register All Commands

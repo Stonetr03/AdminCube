@@ -42,7 +42,7 @@ local function Slice(Num)
 end
 
 local function ReloadText()
-    local Msgs = Api:PushFunction("AdminChat-Get")
+    local Msgs = Api:Invoke("AdminChat-Get")
     local LastText = " "
     for i = 1,#Msgs,1 do
         print(Api.Style.ButtonSubColor:getValue())
@@ -60,7 +60,7 @@ local function ReloadText()
     SetChatText(LastText)
 end
 
-Api:ListenRemote("AdminChat-Update",function()
+Api:OnEvent("AdminChat-Update",function()
     ReloadText()
 end)
 
@@ -108,7 +108,7 @@ function Menu:render()
                 if Enter then
                     -- Send
                     print("SEND")
-                    Api:PushRemote("AdminChat-Send",InputRef.current.Text)
+                    Api:Fire("AdminChat-Send",InputRef.current.Text)
                     SetInputText("")
                 end
             end

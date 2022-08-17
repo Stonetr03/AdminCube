@@ -42,7 +42,13 @@
 			<Ref name="RootLocalizationTable">null</Ref>
 			<float name="Rotation">0</float>
 			<bool name="Selectable">false</bool>
+			<token name="SelectionBehaviorDown">0</token>
+			<token name="SelectionBehaviorLeft">0</token>
+			<token name="SelectionBehaviorRight">0</token>
+			<token name="SelectionBehaviorUp">0</token>
+			<bool name="SelectionGroup">false</bool>
 			<Ref name="SelectionImageObject">null</Ref>
+			<int name="SelectionOrder">0</int>
 			<UDim2 name="Size">
 				<XS>1</XS>
 				<XO>0</XO>
@@ -96,7 +102,13 @@
 				<Ref name="RootLocalizationTable">null</Ref>
 				<float name="Rotation">0</float>
 				<bool name="Selectable">false</bool>
+				<token name="SelectionBehaviorDown">0</token>
+				<token name="SelectionBehaviorLeft">0</token>
+				<token name="SelectionBehaviorRight">0</token>
+				<token name="SelectionBehaviorUp">0</token>
+				<bool name="SelectionGroup">false</bool>
 				<Ref name="SelectionImageObject">null</Ref>
+				<int name="SelectionOrder">0</int>
 				<UDim2 name="Size">
 					<XS>0.200000003</XS>
 					<XO>0</XO>
@@ -150,7 +162,13 @@
 					<Ref name="RootLocalizationTable">null</Ref>
 					<float name="Rotation">0</float>
 					<bool name="Selectable">false</bool>
+					<token name="SelectionBehaviorDown">0</token>
+					<token name="SelectionBehaviorLeft">0</token>
+					<token name="SelectionBehaviorRight">0</token>
+					<token name="SelectionBehaviorUp">0</token>
+					<bool name="SelectionGroup">false</bool>
 					<Ref name="SelectionImageObject">null</Ref>
+					<int name="SelectionOrder">0</int>
 					<UDim2 name="Size">
 						<XS>1</XS>
 						<XO>0</XO>
@@ -226,7 +244,13 @@
 						<token name="ScaleType">3</token>
 						<bool name="Selectable">true</bool>
 						<bool name="Selected">false</bool>
+						<token name="SelectionBehaviorDown">0</token>
+						<token name="SelectionBehaviorLeft">0</token>
+						<token name="SelectionBehaviorRight">0</token>
+						<token name="SelectionBehaviorUp">0</token>
+						<bool name="SelectionGroup">false</bool>
 						<Ref name="SelectionImageObject">null</Ref>
+						<int name="SelectionOrder">0</int>
 						<UDim2 name="Size">
 							<XS>0</XS>
 							<XO>16</XO>
@@ -320,7 +344,13 @@
 						<token name="ScaleType">0</token>
 						<bool name="Selectable">true</bool>
 						<bool name="Selected">false</bool>
+						<token name="SelectionBehaviorDown">0</token>
+						<token name="SelectionBehaviorLeft">0</token>
+						<token name="SelectionBehaviorRight">0</token>
+						<token name="SelectionBehaviorUp">0</token>
+						<bool name="SelectionGroup">false</bool>
 						<Ref name="SelectionImageObject">null</Ref>
+						<int name="SelectionOrder">0</int>
 						<UDim2 name="Size">
 							<XS>0</XS>
 							<XO>16</XO>
@@ -414,7 +444,13 @@
 						<token name="ScaleType">3</token>
 						<bool name="Selectable">true</bool>
 						<bool name="Selected">false</bool>
+						<token name="SelectionBehaviorDown">0</token>
+						<token name="SelectionBehaviorLeft">0</token>
+						<token name="SelectionBehaviorRight">0</token>
+						<token name="SelectionBehaviorUp">0</token>
+						<bool name="SelectionGroup">false</bool>
 						<Ref name="SelectionImageObject">null</Ref>
+						<int name="SelectionOrder">0</int>
 						<UDim2 name="Size">
 							<XS>0</XS>
 							<XO>16</XO>
@@ -511,7 +547,13 @@
 					<token name="ScrollingDirection">4</token>
 					<bool name="ScrollingEnabled">true</bool>
 					<bool name="Selectable">true</bool>
+					<token name="SelectionBehaviorDown">0</token>
+					<token name="SelectionBehaviorLeft">0</token>
+					<token name="SelectionBehaviorRight">0</token>
+					<token name="SelectionBehaviorUp">0</token>
+					<bool name="SelectionGroup">true</bool>
 					<Ref name="SelectionImageObject">null</Ref>
+					<int name="SelectionOrder">0</int>
 					<UDim2 name="Size">
 						<XS>1</XS>
 						<XO>0</XO>
@@ -584,7 +626,13 @@
 					<Ref name="RootLocalizationTable">null</Ref>
 					<float name="Rotation">0</float>
 					<bool name="Selectable">false</bool>
+					<token name="SelectionBehaviorDown">0</token>
+					<token name="SelectionBehaviorLeft">0</token>
+					<token name="SelectionBehaviorRight">0</token>
+					<token name="SelectionBehaviorUp">0</token>
+					<bool name="SelectionGroup">false</bool>
 					<Ref name="SelectionImageObject">null</Ref>
+					<int name="SelectionOrder">0</int>
 					<UDim2 name="Size">
 						<XS>0.699999988</XS>
 						<XO>0</XO>
@@ -660,7 +708,13 @@
 						<token name="ScaleType">0</token>
 						<bool name="Selectable">false</bool>
 						<bool name="Selected">false</bool>
+						<token name="SelectionBehaviorDown">0</token>
+						<token name="SelectionBehaviorLeft">0</token>
+						<token name="SelectionBehaviorRight">0</token>
+						<token name="SelectionBehaviorUp">0</token>
+						<bool name="SelectionGroup">false</bool>
 						<Ref name="SelectionImageObject">null</Ref>
+						<int name="SelectionOrder">0</int>
 						<UDim2 name="Size">
 							<XS>0</XS>
 							<XO>20</XO>
@@ -718,7 +772,12 @@
 						<bool name="ClipsDescendants">false</bool>
 						<bool name="Draggable">false</bool>
 						<token name="Font">3</token>
-						<Font name="FontFace"></Font>
+						<Font name="FontFace">
+							<Family><url>rbxasset://fonts/families/SourceSansPro.json</url></Family>
+							<Weight>400</Weight>
+							<Style>Normal</Style>
+							<CachedFaceId><url>rbxasset://fonts/SourceSansPro-Regular.ttf</url></CachedFaceId>
+						</Font>
 						<int name="LayoutOrder">0</int>
 						<float name="LineHeight">1</float>
 						<int name="MaxVisibleGraphemes">-1</int>
@@ -737,7 +796,13 @@
 						<Ref name="RootLocalizationTable">null</Ref>
 						<float name="Rotation">0</float>
 						<bool name="Selectable">false</bool>
+						<token name="SelectionBehaviorDown">0</token>
+						<token name="SelectionBehaviorLeft">0</token>
+						<token name="SelectionBehaviorRight">0</token>
+						<token name="SelectionBehaviorUp">0</token>
+						<bool name="SelectionGroup">false</bool>
 						<Ref name="SelectionImageObject">null</Ref>
+						<int name="SelectionOrder">0</int>
 						<UDim2 name="Size">
 							<XS>1</XS>
 							<XO>0</XO>
@@ -796,7 +861,12 @@
 						<bool name="ClipsDescendants">false</bool>
 						<bool name="Draggable">false</bool>
 						<token name="Font">3</token>
-						<Font name="FontFace"></Font>
+						<Font name="FontFace">
+							<Family><url>rbxasset://fonts/families/SourceSansPro.json</url></Family>
+							<Weight>400</Weight>
+							<Style>Normal</Style>
+							<CachedFaceId><url>rbxasset://fonts/SourceSansPro-Regular.ttf</url></CachedFaceId>
+						</Font>
 						<int name="LayoutOrder">0</int>
 						<float name="LineHeight">1</float>
 						<int name="MaxVisibleGraphemes">-1</int>
@@ -815,7 +885,13 @@
 						<Ref name="RootLocalizationTable">null</Ref>
 						<float name="Rotation">0</float>
 						<bool name="Selectable">false</bool>
+						<token name="SelectionBehaviorDown">0</token>
+						<token name="SelectionBehaviorLeft">0</token>
+						<token name="SelectionBehaviorRight">0</token>
+						<token name="SelectionBehaviorUp">0</token>
+						<bool name="SelectionGroup">false</bool>
 						<Ref name="SelectionImageObject">null</Ref>
+						<int name="SelectionOrder">0</int>
 						<UDim2 name="Size">
 							<XS>1</XS>
 							<XO>0</XO>
@@ -874,7 +950,12 @@
 						<bool name="ClipsDescendants">false</bool>
 						<bool name="Draggable">false</bool>
 						<token name="Font">3</token>
-						<Font name="FontFace"></Font>
+						<Font name="FontFace">
+							<Family><url>rbxasset://fonts/families/SourceSansPro.json</url></Family>
+							<Weight>400</Weight>
+							<Style>Normal</Style>
+							<CachedFaceId><url>rbxasset://fonts/SourceSansPro-Regular.ttf</url></CachedFaceId>
+						</Font>
 						<int name="LayoutOrder">0</int>
 						<float name="LineHeight">1</float>
 						<int name="MaxVisibleGraphemes">-1</int>
@@ -893,7 +974,13 @@
 						<Ref name="RootLocalizationTable">null</Ref>
 						<float name="Rotation">0</float>
 						<bool name="Selectable">false</bool>
+						<token name="SelectionBehaviorDown">0</token>
+						<token name="SelectionBehaviorLeft">0</token>
+						<token name="SelectionBehaviorRight">0</token>
+						<token name="SelectionBehaviorUp">0</token>
+						<bool name="SelectionGroup">false</bool>
 						<Ref name="SelectionImageObject">null</Ref>
+						<int name="SelectionOrder">0</int>
 						<UDim2 name="Size">
 							<XS>1</XS>
 							<XO>0</XO>
@@ -934,6 +1021,7 @@
 				<bool name="Disabled">false</bool>
 				<Content name="LinkedSource"><null></null></Content>
 				<string name="Name">LocalScript</string>
+				<token name="RunContext">0</token>
 				<string name="ScriptGuid">{37038228-43A3-4023-862C-523D81ACFAAF}</string>
 				<ProtectedString name="Source"><![CDATA[-- Stonetr03
 
@@ -961,7 +1049,7 @@ end)
 
 local Api = require(game.ReplicatedStorage:WaitForChild("AdminCube"):WaitForChild("Api"))
 script.Parent.Explorer.Topbar.Close.MouseButton1Up:Connect(function()
-	Api:PushFunction("CubeExplorer",{"Exit"})
+	Api:Invoke("CubeExplorer",{"Exit"})
 	script.Parent:Destroy()
 end)
 ]]></ProtectedString>
@@ -1307,7 +1395,13 @@ return Module
 						<Ref name="RootLocalizationTable">null</Ref>
 						<float name="Rotation">0</float>
 						<bool name="Selectable">false</bool>
+						<token name="SelectionBehaviorDown">0</token>
+						<token name="SelectionBehaviorLeft">0</token>
+						<token name="SelectionBehaviorRight">0</token>
+						<token name="SelectionBehaviorUp">0</token>
+						<bool name="SelectionGroup">false</bool>
 						<Ref name="SelectionImageObject">null</Ref>
+						<int name="SelectionOrder">0</int>
 						<UDim2 name="Size">
 							<XS>1</XS>
 							<XO>0</XO>
@@ -1383,7 +1477,13 @@ return Module
 							<token name="ScaleType">3</token>
 							<bool name="Selectable">false</bool>
 							<bool name="Selected">false</bool>
+							<token name="SelectionBehaviorDown">0</token>
+							<token name="SelectionBehaviorLeft">0</token>
+							<token name="SelectionBehaviorRight">0</token>
+							<token name="SelectionBehaviorUp">0</token>
+							<bool name="SelectionGroup">false</bool>
 							<Ref name="SelectionImageObject">null</Ref>
+							<int name="SelectionOrder">0</int>
 							<UDim2 name="Size">
 								<XS>0</XS>
 								<XO>12</XO>
@@ -1472,7 +1572,13 @@ return Module
 							<float name="Rotation">0</float>
 							<token name="ScaleType">0</token>
 							<bool name="Selectable">false</bool>
+							<token name="SelectionBehaviorDown">0</token>
+							<token name="SelectionBehaviorLeft">0</token>
+							<token name="SelectionBehaviorRight">0</token>
+							<token name="SelectionBehaviorUp">0</token>
+							<bool name="SelectionGroup">false</bool>
 							<Ref name="SelectionImageObject">null</Ref>
+							<int name="SelectionOrder">0</int>
 							<UDim2 name="Size">
 								<XS>0</XS>
 								<XO>16</XO>
@@ -1529,7 +1635,12 @@ return Module
 							<bool name="ClipsDescendants">false</bool>
 							<bool name="Draggable">false</bool>
 							<token name="Font">3</token>
-							<Font name="FontFace"></Font>
+							<Font name="FontFace">
+								<Family><url>rbxasset://fonts/families/SourceSansPro.json</url></Family>
+								<Weight>400</Weight>
+								<Style>Normal</Style>
+								<CachedFaceId><url>rbxasset://fonts/SourceSansPro-Regular.ttf</url></CachedFaceId>
+							</Font>
 							<int name="LayoutOrder">0</int>
 							<float name="LineHeight">1</float>
 							<int name="MaxVisibleGraphemes">-1</int>
@@ -1548,7 +1659,13 @@ return Module
 							<Ref name="RootLocalizationTable">null</Ref>
 							<float name="Rotation">0</float>
 							<bool name="Selectable">false</bool>
+							<token name="SelectionBehaviorDown">0</token>
+							<token name="SelectionBehaviorLeft">0</token>
+							<token name="SelectionBehaviorRight">0</token>
+							<token name="SelectionBehaviorUp">0</token>
+							<bool name="SelectionGroup">false</bool>
 							<Ref name="SelectionImageObject">null</Ref>
+							<int name="SelectionOrder">0</int>
 							<UDim2 name="Size">
 								<XS>1</XS>
 								<XO>-42</XO>
@@ -1608,7 +1725,12 @@ return Module
 							<bool name="ClipsDescendants">false</bool>
 							<bool name="Draggable">false</bool>
 							<token name="Font">3</token>
-							<Font name="FontFace"></Font>
+							<Font name="FontFace">
+								<Family><url>rbxasset://fonts/families/SourceSansPro.json</url></Family>
+								<Weight>400</Weight>
+								<Style>Normal</Style>
+								<CachedFaceId><url>rbxasset://fonts/SourceSansPro-Regular.ttf</url></CachedFaceId>
+							</Font>
 							<int name="LayoutOrder">0</int>
 							<float name="LineHeight">1</float>
 							<int name="MaxVisibleGraphemes">-1</int>
@@ -1629,7 +1751,13 @@ return Module
 							<float name="Rotation">0</float>
 							<bool name="Selectable">true</bool>
 							<bool name="Selected">false</bool>
+							<token name="SelectionBehaviorDown">0</token>
+							<token name="SelectionBehaviorLeft">0</token>
+							<token name="SelectionBehaviorRight">0</token>
+							<token name="SelectionBehaviorUp">0</token>
+							<bool name="SelectionGroup">false</bool>
 							<Ref name="SelectionImageObject">null</Ref>
+							<int name="SelectionOrder">0</int>
 							<UDim2 name="Size">
 								<XS>1</XS>
 								<XO>-20</XO>
@@ -1703,7 +1831,13 @@ return Module
 							<Ref name="RootLocalizationTable">null</Ref>
 							<float name="Rotation">0</float>
 							<bool name="Selectable">false</bool>
+							<token name="SelectionBehaviorDown">0</token>
+							<token name="SelectionBehaviorLeft">0</token>
+							<token name="SelectionBehaviorRight">0</token>
+							<token name="SelectionBehaviorUp">0</token>
+							<bool name="SelectionGroup">false</bool>
 							<Ref name="SelectionImageObject">null</Ref>
+							<int name="SelectionOrder">0</int>
 							<UDim2 name="Size">
 								<XS>1</XS>
 								<XO>-20</XO>
@@ -1783,7 +1917,13 @@ return Module
 							<Ref name="RootLocalizationTable">null</Ref>
 							<float name="Rotation">0</float>
 							<bool name="Selectable">false</bool>
+							<token name="SelectionBehaviorDown">0</token>
+							<token name="SelectionBehaviorLeft">0</token>
+							<token name="SelectionBehaviorRight">0</token>
+							<token name="SelectionBehaviorUp">0</token>
+							<bool name="SelectionGroup">false</bool>
 							<Ref name="SelectionImageObject">null</Ref>
+							<int name="SelectionOrder">0</int>
 							<UDim2 name="Size">
 								<XS>1</XS>
 								<XO>0</XO>
@@ -2238,7 +2378,13 @@ return Module
 						<Ref name="RootLocalizationTable">null</Ref>
 						<float name="Rotation">0</float>
 						<bool name="Selectable">false</bool>
+						<token name="SelectionBehaviorDown">0</token>
+						<token name="SelectionBehaviorLeft">0</token>
+						<token name="SelectionBehaviorRight">0</token>
+						<token name="SelectionBehaviorUp">0</token>
+						<bool name="SelectionGroup">false</bool>
 						<Ref name="SelectionImageObject">null</Ref>
+						<int name="SelectionOrder">0</int>
 						<UDim2 name="Size">
 							<XS>1</XS>
 							<XO>0</XO>
@@ -2278,7 +2424,12 @@ return Module
 							<bool name="ClipsDescendants">false</bool>
 							<bool name="Draggable">false</bool>
 							<token name="Font">3</token>
-							<Font name="FontFace"></Font>
+							<Font name="FontFace">
+								<Family><url>rbxasset://fonts/families/SourceSansPro.json</url></Family>
+								<Weight>400</Weight>
+								<Style>Normal</Style>
+								<CachedFaceId><url>rbxasset://fonts/SourceSansPro-Regular.ttf</url></CachedFaceId>
+							</Font>
 							<int name="LayoutOrder">0</int>
 							<float name="LineHeight">1</float>
 							<int name="MaxVisibleGraphemes">-1</int>
@@ -2297,7 +2448,13 @@ return Module
 							<Ref name="RootLocalizationTable">null</Ref>
 							<float name="Rotation">0</float>
 							<bool name="Selectable">false</bool>
+							<token name="SelectionBehaviorDown">0</token>
+							<token name="SelectionBehaviorLeft">0</token>
+							<token name="SelectionBehaviorRight">0</token>
+							<token name="SelectionBehaviorUp">0</token>
+							<bool name="SelectionGroup">false</bool>
 							<Ref name="SelectionImageObject">null</Ref>
+							<int name="SelectionOrder">0</int>
 							<UDim2 name="Size">
 								<XS>0.5</XS>
 								<XO>-20</XO>
@@ -2370,7 +2527,13 @@ return Module
 							<Ref name="RootLocalizationTable">null</Ref>
 							<float name="Rotation">0</float>
 							<bool name="Selectable">false</bool>
+							<token name="SelectionBehaviorDown">0</token>
+							<token name="SelectionBehaviorLeft">0</token>
+							<token name="SelectionBehaviorRight">0</token>
+							<token name="SelectionBehaviorUp">0</token>
+							<bool name="SelectionGroup">false</bool>
 							<Ref name="SelectionImageObject">null</Ref>
+							<int name="SelectionOrder">0</int>
 							<UDim2 name="Size">
 								<XS>0</XS>
 								<XO>1</XO>
@@ -2447,7 +2610,13 @@ return Module
 							<token name="ScaleType">4</token>
 							<bool name="Selectable">true</bool>
 							<bool name="Selected">false</bool>
+							<token name="SelectionBehaviorDown">0</token>
+							<token name="SelectionBehaviorLeft">0</token>
+							<token name="SelectionBehaviorRight">0</token>
+							<token name="SelectionBehaviorUp">0</token>
+							<bool name="SelectionGroup">false</bool>
 							<Ref name="SelectionImageObject">null</Ref>
+							<int name="SelectionOrder">0</int>
 							<UDim2 name="Size">
 								<XS>0</XS>
 								<XO>14</XO>
@@ -2520,7 +2689,13 @@ return Module
 						<Ref name="RootLocalizationTable">null</Ref>
 						<float name="Rotation">0</float>
 						<bool name="Selectable">false</bool>
+						<token name="SelectionBehaviorDown">0</token>
+						<token name="SelectionBehaviorLeft">0</token>
+						<token name="SelectionBehaviorRight">0</token>
+						<token name="SelectionBehaviorUp">0</token>
+						<bool name="SelectionGroup">false</bool>
 						<Ref name="SelectionImageObject">null</Ref>
+						<int name="SelectionOrder">0</int>
 						<UDim2 name="Size">
 							<XS>1</XS>
 							<XO>0</XO>
@@ -2560,7 +2735,12 @@ return Module
 							<bool name="ClipsDescendants">false</bool>
 							<bool name="Draggable">false</bool>
 							<token name="Font">3</token>
-							<Font name="FontFace"></Font>
+							<Font name="FontFace">
+								<Family><url>rbxasset://fonts/families/SourceSansPro.json</url></Family>
+								<Weight>400</Weight>
+								<Style>Normal</Style>
+								<CachedFaceId><url>rbxasset://fonts/SourceSansPro-Regular.ttf</url></CachedFaceId>
+							</Font>
 							<int name="LayoutOrder">0</int>
 							<float name="LineHeight">1</float>
 							<int name="MaxVisibleGraphemes">-1</int>
@@ -2579,7 +2759,13 @@ return Module
 							<Ref name="RootLocalizationTable">null</Ref>
 							<float name="Rotation">0</float>
 							<bool name="Selectable">false</bool>
+							<token name="SelectionBehaviorDown">0</token>
+							<token name="SelectionBehaviorLeft">0</token>
+							<token name="SelectionBehaviorRight">0</token>
+							<token name="SelectionBehaviorUp">0</token>
+							<bool name="SelectionGroup">false</bool>
 							<Ref name="SelectionImageObject">null</Ref>
+							<int name="SelectionOrder">0</int>
 							<UDim2 name="Size">
 								<XS>0.5</XS>
 								<XO>-20</XO>
@@ -2652,7 +2838,13 @@ return Module
 							<Ref name="RootLocalizationTable">null</Ref>
 							<float name="Rotation">0</float>
 							<bool name="Selectable">false</bool>
+							<token name="SelectionBehaviorDown">0</token>
+							<token name="SelectionBehaviorLeft">0</token>
+							<token name="SelectionBehaviorRight">0</token>
+							<token name="SelectionBehaviorUp">0</token>
+							<bool name="SelectionGroup">false</bool>
 							<Ref name="SelectionImageObject">null</Ref>
+							<int name="SelectionOrder">0</int>
 							<UDim2 name="Size">
 								<XS>0</XS>
 								<XO>1</XO>
@@ -2694,7 +2886,12 @@ return Module
 							<bool name="ClipsDescendants">false</bool>
 							<bool name="Draggable">false</bool>
 							<token name="Font">3</token>
-							<Font name="FontFace"></Font>
+							<Font name="FontFace">
+								<Family><url>rbxasset://fonts/families/SourceSansPro.json</url></Family>
+								<Weight>400</Weight>
+								<Style>Normal</Style>
+								<CachedFaceId><url>rbxasset://fonts/SourceSansPro-Regular.ttf</url></CachedFaceId>
+							</Font>
 							<int name="LayoutOrder">0</int>
 							<float name="LineHeight">1</float>
 							<int name="MaxVisibleGraphemes">-1</int>
@@ -2720,7 +2917,13 @@ return Module
 							<Ref name="RootLocalizationTable">null</Ref>
 							<float name="Rotation">0</float>
 							<bool name="Selectable">true</bool>
+							<token name="SelectionBehaviorDown">0</token>
+							<token name="SelectionBehaviorLeft">0</token>
+							<token name="SelectionBehaviorRight">0</token>
+							<token name="SelectionBehaviorUp">0</token>
+							<bool name="SelectionGroup">false</bool>
 							<Ref name="SelectionImageObject">null</Ref>
+							<int name="SelectionOrder">0</int>
 							<bool name="ShowNativeInput">true</bool>
 							<UDim2 name="Size">
 								<XS>0.5</XS>
@@ -2815,7 +3018,13 @@ return json
 				<Ref name="RootLocalizationTable">null</Ref>
 				<float name="Rotation">0</float>
 				<bool name="Selectable">false</bool>
+				<token name="SelectionBehaviorDown">0</token>
+				<token name="SelectionBehaviorLeft">0</token>
+				<token name="SelectionBehaviorRight">0</token>
+				<token name="SelectionBehaviorUp">0</token>
+				<bool name="SelectionGroup">false</bool>
 				<Ref name="SelectionImageObject">null</Ref>
+				<int name="SelectionOrder">0</int>
 				<UDim2 name="Size">
 					<XS>0.200000003</XS>
 					<XO>0</XO>
@@ -2856,7 +3065,12 @@ return json
 					<bool name="ClipsDescendants">false</bool>
 					<bool name="Draggable">false</bool>
 					<token name="Font">3</token>
-					<Font name="FontFace"></Font>
+					<Font name="FontFace">
+						<Family><url>rbxasset://fonts/families/SourceSansPro.json</url></Family>
+						<Weight>400</Weight>
+						<Style>Normal</Style>
+						<CachedFaceId><url>rbxasset://fonts/SourceSansPro-Regular.ttf</url></CachedFaceId>
+					</Font>
 					<int name="LayoutOrder">0</int>
 					<float name="LineHeight">1</float>
 					<int name="MaxVisibleGraphemes">-1</int>
@@ -2882,7 +3096,13 @@ return json
 					<Ref name="RootLocalizationTable">null</Ref>
 					<float name="Rotation">0</float>
 					<bool name="Selectable">true</bool>
+					<token name="SelectionBehaviorDown">0</token>
+					<token name="SelectionBehaviorLeft">0</token>
+					<token name="SelectionBehaviorRight">0</token>
+					<token name="SelectionBehaviorUp">0</token>
+					<bool name="SelectionGroup">false</bool>
 					<Ref name="SelectionImageObject">null</Ref>
+					<int name="SelectionOrder">0</int>
 					<bool name="ShowNativeInput">true</bool>
 					<UDim2 name="Size">
 						<XS>1</XS>
@@ -2981,7 +3201,13 @@ return json
 					<token name="ScrollingDirection">2</token>
 					<bool name="ScrollingEnabled">true</bool>
 					<bool name="Selectable">true</bool>
+					<token name="SelectionBehaviorDown">0</token>
+					<token name="SelectionBehaviorLeft">0</token>
+					<token name="SelectionBehaviorRight">0</token>
+					<token name="SelectionBehaviorUp">0</token>
+					<bool name="SelectionGroup">true</bool>
 					<Ref name="SelectionImageObject">null</Ref>
+					<int name="SelectionOrder">0</int>
 					<UDim2 name="Size">
 						<XS>1</XS>
 						<XO>0</XO>

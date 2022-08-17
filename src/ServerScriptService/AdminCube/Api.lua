@@ -80,7 +80,7 @@ function Module:GetCommands()
     return Commands
 end
 
-function Module:PushRemote(p,Key,Args)
+function Module:Fire(p,Key,Args)
     if p == "all" then
         game.ReplicatedStorage:WaitForChild("AdminCube").ACEvent:FireAllClients(Key,Args)
     else
@@ -88,7 +88,7 @@ function Module:PushRemote(p,Key,Args)
     end
 end
 
-function Module:ListenRemote(Key,Callback)
+function Module:OnEvent(Key,Callback)
     game.ReplicatedStorage:WaitForChild("AdminCube").ACEvent.OnServerEvent:Connect(function(p,CallingKey,Args)
         if CallingKey == Key then
             Callback(p,Args)
@@ -96,12 +96,12 @@ function Module:ListenRemote(Key,Callback)
     end)
 end
 
-function Module:PushFunction(p,Key,Args)
+function Module:Invoke(p,Key,Args)
     game.ReplicatedStorage:WaitForChild("AdminCube").ACFunc:InvokeClient(p,Key,Args)
 end
 
 local RemoteFunctions = {}
-function Module:ListenFunction(Key,Callback)
+function Module:OnInvoke(Key,Callback)
     print("Listen " .. Key)
     table.insert(RemoteFunctions,{
         Key = Key;
@@ -151,7 +151,7 @@ function Module:CreateRSFolder(FolderName)
 end
 
 function Module:Notification(p,Image,Text) -- Image - True for Headshot, False for No-Image, Other for image
-    Module:PushRemote(p,"Notification",{Image = Image,Text = Text})
+    Module:Fire(p,"Notification",{Image = Image,Text = Text})
     return true
 end
 
@@ -170,15 +170,15 @@ function Module:ShowPrompt(p,Prompts)
     OpenPrompts[p] = Prompts
 
 end
-Module:ListenRemote("Prompts",function(p,Results)
+Module:OnEvent("Prompts",function(p,Results)
     if OpenPrompts[p] ~= nil then
         -- Prompt is open
         
     end
 end)
 
-Module:ListenFunction("GetCommands",function(p)
-    if Module:GetRank(p) > 2 then
+Module:OnInvoke("GetCommands",function(p)
+    if Module:GetRank(p) >= 2 then
         local Cmd = Module:GetCommands()
         return Cmd
     end
@@ -193,7 +193,7 @@ task.spawn(function()
         end
     end);
 
-    Module:ListenFunction("Response",function()
+    Module:OnInvoke("Response",function()
         return true
     end)
 end)

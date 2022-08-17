@@ -8,7 +8,7 @@ local Messages = {}
 
 Api:AddPanelMenu(script.AdminChatMenu)
 
-Api:ListenRemote("AdminChat-Send",function(p,Msg)
+Api:OnEvent("AdminChat-Send",function(p,Msg)
     if Api:GetRank(p) >= 2 then
         local FilterMsg = ""
         local s,e = pcall(function()
@@ -57,10 +57,10 @@ Api:SubscribeBroadcast("AdminChat",function(Encoded)
     if #Messages >= 30 then
         Messages[30] = nil
     end
-    Api:PushRemote("all","AdminChat-Update")
+    Api:Fire("all","AdminChat-Update")
 end)
 
-Api:ListenFunction("AdminChat-Get",function(p)
+Api:OnInvoke("AdminChat-Get",function(p)
     if Api:GetRank(p) >= 2 then
         return Messages
     end

@@ -46,7 +46,7 @@ function CmdBar:render()
             [Roact.Ref] = InputRef;
             [Roact.Event.FocusLost] = function(_,Enter)
                 if Enter then
-                    Api:PushRemote("CmdBar",InputRef.current.Text)
+                    Api:Fire("CmdBar",InputRef.current.Text)
                     SetVisiblity(false)
                 else
                     SetVisiblity(false)

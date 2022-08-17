@@ -83,3 +83,8 @@ end)
 icon.deselected:Connect(function()
     Window.SetVis(false)
 end)
+
+Api:OnEvent("RemovePanel",function()
+    Window.unmount()
+    icon:destroy()
+end)

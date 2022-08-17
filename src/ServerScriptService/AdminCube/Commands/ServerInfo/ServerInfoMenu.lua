@@ -58,7 +58,7 @@ function Menu:render()
                 print("Update")
                 Next = tick() + 5
                 local St = tick()
-                Api:PushFunction("Response")
+                Api:Invoke("Response")
                 local Re = tick()
                 local Pi = tostring(math.floor((Re - St)*1000))
                 SetPing("Ping : " .. Pi .. " ms")

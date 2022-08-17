@@ -12,7 +12,7 @@ local Tab = {
     Comp = Notifications;
 }
 
-Api:ListenRemote("Notification",function(Args)
+Api:OnEvent("Notification",function(Args)
     -- Reload Notifications
     table.insert(ToRender,{
         Image = Args.Image;

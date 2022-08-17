@@ -71,11 +71,11 @@ function Api:UpdateTheme(Theme)
     end
 end
 
-function Api:PushRemote(Key,Args)
+function Api:Fire(Key,Args)
     game.ReplicatedStorage:WaitForChild("AdminCube").ACEvent:FireServer(Key,Args)
 end
 
-function Api:ListenRemote(Key,Callback)
+function Api:OnEvent(Key,Callback)
     game.ReplicatedStorage:WaitForChild("AdminCube").ACEvent.OnClientEvent:Connect(function(CallingKey,Args)
         if CallingKey == Key and typeof(Callback) == "function" then
             Callback(Args)
@@ -83,11 +83,11 @@ function Api:ListenRemote(Key,Callback)
     end)
 end
 
-function Api:PushFunction(Key,Args)
+function Api:Invoke(Key,Args)
     return game.ReplicatedStorage:WaitForChild("AdminCube").ACFunc:InvokeServer(Key,Args)
 end
 
-function Api:ListenFunction(Key,Callback)
+function Api:OnInvoke(Key,Callback)
     game.ReplicatedStorage:WaitForChild("AdminCube").ACFunc.OnClientInvoke = function(CallingKey,Args)
         if CallingKey == Key then
             Callback(Args)
@@ -100,7 +100,7 @@ function Api:ThemeUpdateEvent(Func)
 end
 
 function Api:GetCommands()
-    local Cmds = Api:PushFunction("GetCommands")
+    local Cmds = Api:Invoke("GetCommands")
     print("GET CMDS")
     print(Cmds)
     return Cmds
@@ -150,7 +150,7 @@ end
 -- Prompts
 local PromptItems = require(script.Prompts)
 local PromptBoolean,PromptString,PromptDropdown = PromptItems[1],PromptItems[2],PromptItems[3]
-Api:ListenRemote("Prompts",function(Prompts)
+Api:OnEvent("Prompts",function(Prompts)
     -- Generate Uis
     local Window
     local CurrentValues = {}
@@ -242,7 +242,7 @@ Api:ListenRemote("Prompts",function(Prompts)
                     TextSize = 22;
 
                     [Roact.Event.MouseButton1Up] = function()
-                        Api:PushRemote("Prompts",{true,CurrentValues})
+                        Api:Fire("Prompts",{true,CurrentValues})
                         Window.unmount()
                     end;
                 });
@@ -258,7 +258,7 @@ Api:ListenRemote("Prompts",function(Prompts)
                     TextSize = 22;
 
                     [Roact.Event.MouseButton1Up] = function()
-                        Api:PushRemote("Prompts",{false})
+                        Api:Fire("Prompts",{false})
                         Window.unmount()
                     end;
                 })

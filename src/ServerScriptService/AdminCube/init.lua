@@ -156,7 +156,7 @@ script.Commands.ChildAdded:Connect(function(o)
 end)
 
 -- Cmd Bar
-Api:ListenRemote("CmdBar",function(p,c)
+Api:OnEvent("CmdBar",function(p,c)
     CommandRunner(p,c)
 end)
 

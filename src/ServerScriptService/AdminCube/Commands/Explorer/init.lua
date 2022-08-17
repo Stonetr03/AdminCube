@@ -39,7 +39,7 @@ Api:RegisterCommand("ex","Explorer / Properties Window",function(p,Args)
 
 end)
 
-Api:ListenFunction("CubeExplorer",function(p,Args)
+Api:OnInvoke("CubeExplorer",function(p,Args)
     if Allowed[p] then
         if Args[1] == "Exit" then
             Allowed[p] = nil

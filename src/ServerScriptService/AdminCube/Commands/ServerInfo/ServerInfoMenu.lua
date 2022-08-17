@@ -35,13 +35,15 @@ function BackCallBack()
     SetVisiblility(false)
 end
 
+local Stop
+
 function Menu:render()
     local Last, Start = 0,0
     local Updates = {}
     
     local Next = 0
     
-    RunService.Heartbeat:Connect(function()
+    Stop = RunService.Heartbeat:Connect(function()
         if VisRef:getValue().Visible == true then
             Last = tick()
             for Index = #Updates, 1, -1 do
@@ -117,6 +119,11 @@ function Menu:render()
         });
     })
 end
+
+Api:OnEvent("RemovePanel",function()
+    Stop:Disconnect()
+end)
+
 
 return {MenuBtn,Menu,BackCallBack}
 

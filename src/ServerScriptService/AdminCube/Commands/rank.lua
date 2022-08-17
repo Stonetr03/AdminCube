@@ -44,6 +44,9 @@ Api:RegisterCommand("unvip","Removes player's vip rank, makes them player rank."
                     Api:Notification(p,false,"You made " .. Target.Name .. " a player.")
                     Api:Notification(Target,true,"You are now a player.")
 
+                    -- Remove Panel
+                    Api:Fire(Target,"RemovePanel",true)
+                    task.wait(0.5)
                     local Checker = Target.PlayerGui:FindFirstChild("__AdminCube_Main"):FindFirstChild("AdminPanel")
                     if Checker then
                         Checker:Destroy()
@@ -113,7 +116,7 @@ Api:RegisterCommand("unmod","Removes player's mod rank, makes them player rank."
                     Api:Notification(Target,true,"You are now a player.")
 
                     -- Remove Panel
-                    Api:Fire(p,"RemovePanel",true)
+                    Api:Fire(Target,"RemovePanel",true)
                     task.wait(0.5)
                     local Checker = Target.PlayerGui:FindFirstChild("__AdminCube_Main"):FindFirstChild("AdminPanel")
                     if Checker then

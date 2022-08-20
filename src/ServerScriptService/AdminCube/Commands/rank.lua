@@ -36,21 +36,28 @@ Api:RegisterCommand("unvip","Removes player's vip rank, makes them player rank."
             if Target then
                 local TargetRank = Api:GetRank(Target)
                 if TargetRank < Api:GetRank(p) then
-                    -- Set rank to Vip
-                    DataStore:UpdateData(Target.UserId,"Rank",0)
+                    if TargetRank == 1 then
+                        -- Set rank to Vip
+                        DataStore:UpdateData(Target.UserId,"Rank",0)
 
-                    -- Notifications
+                        -- Notifications
 
-                    Api:Notification(p,false,"You made " .. Target.Name .. " a player.")
-                    Api:Notification(Target,true,"You are now a player.")
+                        Api:Notification(p,false,"You made " .. Target.Name .. " a player.")
+                        Api:Notification(Target,true,"You are now a player.")
 
-                    -- Remove Panel
-                    Api:Fire(Target,"RemovePanel",true)
-                    task.wait(0.5)
-                    local Checker = Target.PlayerGui:FindFirstChild("__AdminCube_Main"):FindFirstChild("AdminPanel")
-                    if Checker then
-                        Checker:Destroy()
+                        -- Remove Panel
+                        Api:Fire(Target,"RemovePanel",true)
+                        task.wait(0.5)
+                        local Checker = Target.PlayerGui:FindFirstChild("__AdminCube_Main"):FindFirstChild("AdminPanel")
+                        if Checker then
+                            Checker:Destroy()
+                        end
+
+                    else
+                        Api:Notification(p,false,Target.Name .. " Is not a Vip")
                     end
+                else
+                    Api:InvalidPermissionsNotification(p)
                 end
             end
         else
@@ -82,7 +89,6 @@ Api:RegisterCommand("mod","Makes a player Mod",function(p,Args)
                     local ScreenGui = Target.PlayerGui:FindFirstChild("__AdminCube_Main")
                     local Checker = Target.PlayerGui:FindFirstChild("__AdminCube_Main"):FindFirstChild("AdminPanel")
                     if not Checker then
-                        --TODO - Admin Panel Errors when given.
                         task.wait(3)
                         local Panel = script.Parent.Parent.Ui.AdminPanel:Clone()
                         Panel.Parent = ScreenGui
@@ -107,21 +113,103 @@ Api:RegisterCommand("unmod","Removes player's mod rank, makes them player rank."
             if Target then
                 local TargetRank = Api:GetRank(Target)
                 if TargetRank < Api:GetRank(p) then
-                    -- Set rank to Vip
-                    DataStore:UpdateData(Target.UserId,"Rank",0)
+                    if TargetRank == 2 then
+                        -- Set rank to Vip
+                        DataStore:UpdateData(Target.UserId,"Rank",0)
 
+                        -- Notifications
+
+                        Api:Notification(p,false,"You made " .. Target.Name .. " a player.")
+                        Api:Notification(Target,true,"You are now a player.")
+
+                        -- Remove Panel
+                        Api:Fire(Target,"RemovePanel",true)
+                        task.wait(0.5)
+                        local Checker = Target.PlayerGui:FindFirstChild("__AdminCube_Main"):FindFirstChild("AdminPanel")
+                        if Checker then
+                            Checker:Destroy()
+                        end
+                    else
+                        Api:Notification(p,false,Target.Name .. " Is not a Mod")
+                    end
+                else
+                    Api:InvalidPermissionsNotification(p)
+                end
+            end
+        else
+            -- Invalid Rank Notification
+            Api:InvalidPermissionsNotification(p)
+        end
+    end)
+    if not s then
+        warn(e)
+    end
+
+end)
+
+-- Admin
+Api:RegisterCommand("admin","Makes a player Admin",function(p,Args)
+    local s,e = pcall(function()
+        if Api:GetRank(p) >= 4 then
+            local Target = Api:GetPlayer(Args[1],p)
+            if Target then
+                local TargetRank = Api:GetRank(Target)
+                if TargetRank < Api:GetRank(p) then
+                    DataStore:UpdateData(Target.UserId,"Rank",3)
                     -- Notifications
 
-                    Api:Notification(p,false,"You made " .. Target.Name .. " a player.")
-                    Api:Notification(Target,true,"You are now a player.")
+                    Api:Notification(p,false,"You made " .. Target.Name .. " a Admin.")
+                    Api:Notification(Target,true,"You are now a Admin.")
 
-                    -- Remove Panel
-                    Api:Fire(Target,"RemovePanel",true)
-                    task.wait(0.5)
+                    -- Give Admin Panel
+                    local ScreenGui = Target.PlayerGui:FindFirstChild("__AdminCube_Main")
                     local Checker = Target.PlayerGui:FindFirstChild("__AdminCube_Main"):FindFirstChild("AdminPanel")
-                    if Checker then
-                        Checker:Destroy()
+                    if not Checker then
+                        task.wait(3)
+                        local Panel = script.Parent.Parent.Ui.AdminPanel:Clone()
+                        Panel.Parent = ScreenGui
                     end
+                end
+            end
+        else
+            -- Invalid Rank Notification
+            Api:InvalidPermissionsNotification(p)
+        end
+    end)
+    if not s then
+        warn(e)
+    end
+
+end)
+
+Api:RegisterCommand("unadmin","Removes player's admin rank, makes them player rank.",function(p,Args)
+    local s,e = pcall(function()
+        if Api:GetRank(p) >= 4 then
+            local Target = Api:GetPlayer(Args[1],p)
+            if Target then
+                local TargetRank = Api:GetRank(Target)
+                if TargetRank < Api:GetRank(p) then
+                    if TargetRank == 3 then
+                        -- Set rank to Vip
+                        DataStore:UpdateData(Target.UserId,"Rank",0)
+
+                        -- Notifications
+
+                        Api:Notification(p,false,"You made " .. Target.Name .. " a player.")
+                        Api:Notification(Target,true,"You are now a player.")
+
+                        -- Remove Panel
+                        Api:Fire(Target,"RemovePanel",true)
+                        task.wait(0.5)
+                        local Checker = Target.PlayerGui:FindFirstChild("__AdminCube_Main"):FindFirstChild("AdminPanel")
+                        if Checker then
+                            Checker:Destroy()
+                        end
+                    else
+                        Api:Notification(p,false,Target.Name .. " Is not a Admin")
+                    end
+                else
+                    Api:InvalidPermissionsNotification(p)
                 end
             end
         else

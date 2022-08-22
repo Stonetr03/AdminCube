@@ -162,18 +162,20 @@ end
 
 -- Prompts
 local OpenPrompts = {}
-function Module:ShowPrompt(p,Prompts)
+function Module:ShowPrompt(p,Prompts,Response)
     if OpenPrompts[p] ~= nil then
         -- Another prompt is open
         return false
     end
-    OpenPrompts[p] = Prompts
+    OpenPrompts[p] = {Prompts,Response}
 
+    Module:Fire(p,"Prompts",Prompts)
 end
 Module:OnEvent("Prompts",function(p,Results)
     if OpenPrompts[p] ~= nil then
         -- Prompt is open
-        
+        OpenPrompts[p][2](Results)
+        OpenPrompts[p] = nil
     end
 end)
 

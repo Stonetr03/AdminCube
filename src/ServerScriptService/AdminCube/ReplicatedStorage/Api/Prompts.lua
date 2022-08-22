@@ -17,7 +17,8 @@ function Boolean:init(props)
     end
 end
 
-function Boolean:render(props)
+function Boolean:render()
+    local props = self.props
     local Enabled = true
     return Roact.createElement("Frame",{
         BackgroundTransparency = 1;
@@ -80,7 +81,8 @@ local StringValue = Roact.Component:extend("PromptString")
 function StringValue:init()
     self.StringRef = Roact.createRef()
 end
-function StringValue:render(props)
+function StringValue:render()
+    local props = self.props
     local Text = ""
     if props.DefaultValue ~= nil and typeof(props.DefaultValue) == "string" then
         Text = props.DefaultValue
@@ -130,7 +132,8 @@ function DropdownMenu:init()
     self.DropdownVis,self.SetDropdownVis = Roact.createBinding(false)
 end
 
-function DropdownMenu:render(props)
+function DropdownMenu:render()
+    local props = self.props
     if props.DefaultValue == nil then
         table.insert(props.Value,1,"Select")
     end

@@ -136,4 +136,34 @@ function Module:UpdateData(Key,Name,Value)
     Module:SaveData()
 end
 
+function Module:GetRecord(Key)
+    local Data
+    local s,e = pcall(function()
+        Data = DataStore:GetAsync(Key)
+    end)
+    if not s then
+        warn(e)
+        -- No Data
+    end
+    return Data
+end
+
+function Module:UpdateRecord(Key,NewValue)
+    if Module.ServerData[Key] == nil then
+        
+        local s,e = pcall(function()
+            -- Save to DataStore
+            DataStore:SetAsync(Key,NewValue)
+        end)
+        if not s then
+            warn(e)
+            return false
+        end
+        return true
+    else
+        return false
+    end
+
+end
+
 return Module

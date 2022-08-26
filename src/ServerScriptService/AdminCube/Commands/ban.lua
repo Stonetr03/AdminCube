@@ -62,7 +62,27 @@ Api:RegisterCommand("ban","Opens ban prompt.",function(p,Args)
                             -- Is userid
 
                             -- New datastore functions GetRecord and UpdateRecord to change the datastore value of someone not in the server.
+                            local PermBan = Response[2][2]
+                            local BanTime = Response[2][3]
+                            local Reason = Response[2][4]
 
+                            if typeof(PermBan) ~= "boolean" then
+                                Api:Notification(p,false,"Invalid Response, perm ban not boolean")
+                                return false
+                            end
+                            if typeof(BanTime) ~= "number" then
+                                if PermBan == false then
+                                    Api:Notification(p,false,"Invalid Response, Ban time not given")
+                                    return false
+                                end
+                            end
+                            if typeof(Reason) ~= "string" then
+                                Reason = "The ban hammer has spoken!"
+                            end
+
+                            -- New Prompt
+
+                            -- Todo Add new value to prompt called Image Label, Includes Image, Main text box, and Sub Text box.
                         end
 
                     end

@@ -90,7 +90,7 @@ function Menu:render()
         Region = Roact.createElement("TextLabel",{
             Size = UDim2.new(1,0,0,20);
             Position = UDim2.new(0,0,0,20);
-            Text = "Server Region : " .. ServerStats.Region.Value .. ", " .. ServerStats.Country.Value;
+            Text = "Server Region : " .. ServerStats:WaitForChild("Region").Value .. ", " .. ServerStats:WaitForChild("Country").Value;
             Font = Enum.Font.SourceSans;
             TextColor3 = Api.Style.TextColor;
             BackgroundTransparency = 1;

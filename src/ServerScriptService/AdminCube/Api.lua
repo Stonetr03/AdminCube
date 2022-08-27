@@ -174,7 +174,9 @@ end
 Module:OnEvent("Prompts",function(p,Results)
     if OpenPrompts[p] ~= nil then
         -- Prompt is open
-        OpenPrompts[p][2](Results)
+        task.spawn(function()
+            OpenPrompts[p][2](Results)
+        end)
         OpenPrompts[p] = nil
     end
 end)

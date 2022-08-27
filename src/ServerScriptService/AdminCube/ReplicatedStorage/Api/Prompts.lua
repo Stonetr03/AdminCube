@@ -240,4 +240,107 @@ function DropdownMenu:render()
     })
 end
 
-return {Boolean,StringValue,DropdownMenu}
+
+local ImageLabel = Roact.Component:extend("PromptImage")
+
+function ImageLabel:init()
+    self.StringRef = Roact.createRef()
+end
+function ImageLabel:render()
+    local props = self.props
+
+    --[[
+        Props = {
+            Image = "",
+            Text1 = "",
+            Text2 = "",
+            Text3 = "",
+            Text4 = ""
+        }
+    ]]
+    local Image = ""
+    local Text1 = ""
+    local Text2 = ""
+    local Text3 = ""
+    local Text4 = ""
+    if props.Image ~= nil and typeof(props.Image) == "string" then
+        Image = props.Image
+    end
+    if props.Text1 ~= nil and typeof(props.Text1) == "string" then
+        Text1 = props.Text1
+    end
+    if props.Text2 ~= nil and typeof(props.Text2) == "string" then
+        Text2 = props.Text2
+    end
+    if props.Text3 ~= nil and typeof(props.Text3) == "string" then
+        Text3 = props.Text3
+    end
+    if props.Text4 ~= nil and typeof(props.Text4) == "string" then
+        Text4 = props.Text4
+    end
+
+
+    return Roact.createElement("Frame",{
+        BackgroundTransparency = 1;
+        Position = UDim2.new(0,0,0,props.Y);
+        Size = UDim2.new(1,0,0,100);
+        ZIndex = 2;
+    },{
+        Image = Roact.createElement("ImageLabel",{
+            AnchorPoint = Vector2.new(0,0.5);
+            BackgroundTransparency = 1;
+            ZIndex = 3;
+            Position = UDim2.new(0,3,0.5,0);
+            Size = UDim2.new(0,94,0,94);
+            Image = Image;
+            BorderSizePixel = 0;
+        });
+        Text1 = Roact.createElement("TextLabel",{
+            BackgroundTransparency = 1;
+            Size = UDim2.new(1,-100,0,25);
+            Position = UDim2.new(0,100,0,0);
+            Font = Enum.Font.SourceSans; 
+            Text = Text1;
+            TextColor3 = props.Style.TextColor;
+            TextSize = 20;
+            TextScaled = true;
+            ZIndex = 3;
+        });
+        Text2 = Roact.createElement("TextLabel",{
+            BackgroundTransparency = 1;
+            Size = UDim2.new(1,-100,0,25);
+            Position = UDim2.new(0,100,0,25);
+            Font = Enum.Font.SourceSans; 
+            Text = Text2;
+            TextColor3 = props.Style.TextColor;
+            TextSize = 20;
+            TextScaled = true;
+            ZIndex = 3;
+        });
+        Text3 = Roact.createElement("TextLabel",{
+            BackgroundTransparency = 1;
+            Size = UDim2.new(1,-100,0,25);
+            Position = UDim2.new(0,100,0,50);
+            Font = Enum.Font.SourceSans; 
+            Text = Text3;
+            TextColor3 = props.Style.TextColor;
+            TextSize = 20;
+            TextScaled = true;
+            ZIndex = 3;
+        });
+        Text4 = Roact.createElement("TextLabel",{
+            BackgroundTransparency = 1;
+            Size = UDim2.new(1,-100,0,25);
+            Position = UDim2.new(0,100,0,75);
+            Font = Enum.Font.SourceSans; 
+            Text = Text4;
+            TextColor3 = props.Style.TextColor;
+            TextSize = 20;
+            TextScaled = true;
+            ZIndex = 3;
+        });
+    })
+end
+
+
+return {Boolean,StringValue,DropdownMenu,ImageLabel}

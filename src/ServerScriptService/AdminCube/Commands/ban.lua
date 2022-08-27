@@ -1,3 +1,4 @@
+local Players = game:GetService("Players")
 -- Admin Cube
 
 local Api = require(script.Parent.Parent:WaitForChild("Api"))
@@ -81,8 +82,36 @@ Api:RegisterCommand("ban","Opens ban prompt.",function(p,Args)
                             end
 
                             -- New Prompt
+                            local Content = Players:GetUserThumbnailAsync(UserId,Enum.ThumbnailType.HeadShot,Enum.ThumbnailSize.Size100x100)
 
-                            -- Todo Add new value to prompt called Image Label, Includes Image, Main text box, and Sub Text box.
+                            local Length = ""
+                            if PermBan == true then
+                                Length = "Perm Ban"
+                            else
+                                Length = tostring(BanTime)
+                            end
+                            task.wait(0.5)
+                            print("Show Prompt")
+                            Api:ShowPrompt(p,{
+                                Title = "Confirm Ban";
+                                Prompt = {
+                                    [1] = {
+                                        Title = "Player";
+                                        Type = "Image";
+                                        Image = Content,
+                                        Text1 = Response[2][1],
+                                        Text2 = tostring(UserId),
+                                        Text3 = "Length : " .. Length,
+                                        Text4 = "Reason : " .. tostring(Reason)
+                                    };
+                                };
+                            },function(Response)
+                                if Response[1] == true then
+                                    
+                                    -- Ban Player
+
+                                end
+                            end)
                         end
 
                     end

@@ -149,7 +149,7 @@ end
 
 -- Prompts
 local PromptItems = require(script.Prompts)
-local PromptBoolean,PromptString,PromptDropdown = PromptItems[1],PromptItems[2],PromptItems[3]
+local PromptBoolean,PromptString,PromptDropdown,PromptImage = PromptItems[1],PromptItems[2],PromptItems[3],PromptItems[4]
 Api:OnEvent("Prompts",function(Prompts)
     -- Generate Uis
     local Window
@@ -157,6 +157,13 @@ Api:OnEvent("Prompts",function(Prompts)
     local Y = 27
     local ButtonFragments = {}
     local ButtonsComp = Roact.Component:extend("PromptButtonsComp")
+
+    local Added = 0
+    for i,o in pairs(Prompts.Prompt) do
+        if o.Type == "Image" then
+            Added += 75
+        end
+    end
     function ButtonsComp:render()
         for i,o in pairs(Prompts.Prompt) do
             if o.Type == "Boolean" then
@@ -193,6 +200,18 @@ Api:OnEvent("Prompts",function(Prompts)
                     end
                 })
                 CurrentValues[i] = o.DefaultValue
+
+            elseif o.Type == "Image" then
+                ButtonFragments[i] = Roact.createElement(PromptImage,{
+                    Style = Api.Style;
+                    Y = Y;
+                    Image = o.Image;
+                    Text1 = o.Text1;
+                    Text2 = o.Text2;
+                    Text3 = o.Text3;
+                    Text4 = o.Text4;
+                })
+                Y += 75
             end
             Y += 25
         end
@@ -226,7 +245,7 @@ Api:OnEvent("Prompts",function(Prompts)
             Buttons = Roact.createElement(ButtonsComp);
             Frame = Roact.createElement("Frame",{
                 BackgroundTransparency = 1;
-                Position = UDim2.new(0,0,0, (#Prompts.Prompt * 25) +27);
+                Position = UDim2.new(0,0,0, (#Prompts.Prompt * 25) +27 + Added);
                 Size = UDim2.new(1,0,0,25);
             },{
                 Confirm = Roact.createElement("TextButton",{
@@ -266,7 +285,7 @@ Api:OnEvent("Prompts",function(Prompts)
 
     Window = Api:CreateWindow({
         SizeX = 250;
-        SizeY = ((#Prompts.Prompt * 25) + 4 + 50);
+        SizeY = ((#Prompts.Prompt * 25) + 4 + 50 + Added);
         Title = "Prompt";
     },PromptComp)
 end)

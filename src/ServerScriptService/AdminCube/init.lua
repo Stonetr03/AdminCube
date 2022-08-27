@@ -45,7 +45,9 @@ local function PlayerJoined(p)
                 p:Kick("\nYou are Banned from this game.\n" .. DataStoreModule.ServerData[p.UserId].BanReason)
             elseif DataStoreModule.ServerData[p.UserId].BanTime > os.time() then
                 -- Ban > current time
-                p:Kick("\nYou are Banned from this game.\n" .. DataStoreModule.ServerData[p.UserId].BanReason)
+                local FormatTime = os.date("!*t",DataStoreModule.ServerData[p.UserId].BanTime)
+                local Reason = "\nYou are Banned from this game.\n" .. DataStoreModule.ServerData[p.UserId].BanReason .. "\nYou are banned until " .. FormatTime.month .. "/" .. FormatTime.day .. "/" .. FormatTime.year .. ", " .. FormatTime.hour .. ":" .. FormatTime.min .. " UTC."
+                p:Kick(Reason)
             else
                 -- Ban < Current Time, Unban
                 DataStoreModule.ServerData[p.UserId].Banned = false

@@ -22,6 +22,10 @@ local DefaultData = {
 }
 
 local function CheckData(Data)
+    if typeof(Data) ~= "table" then
+        Data = {}
+    end
+
     local NewData = {}
     for o,i in pairs(DefaultData) do
         if Data[o] then
@@ -145,7 +149,7 @@ function Module:GetRecord(Key)
         warn(e)
         -- No Data
     end
-    return Data
+    return CheckData(Data)
 end
 
 function Module:UpdateRecord(Key,NewValue)

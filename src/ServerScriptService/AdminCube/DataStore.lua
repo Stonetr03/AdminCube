@@ -6,6 +6,9 @@ local DataStore = DataStoreService:GetDataStore(Settings.DataStoreKey)
 local Create = require(script.Parent:WaitForChild("CreateModule"))
 local HttpService = game:GetService("HttpService")
 
+local MessagingService = game:GetService("MessagingService")
+local TeleportService = game:GetService("TeleportService")
+
 local Module = {
     ServerData = {};
 }
@@ -13,6 +16,7 @@ local Module = {
 local SavingFor = {}
 local NeedsSaving = {}
 local LastSave = {}
+local StopSaving = {}
 
 local DefaultData = {
     Rank = 0; -- Player
@@ -163,11 +167,33 @@ function Module:UpdateRecord(Key,NewValue)
             warn(e)
             return false
         end
+
+        -- Notify other server
+        MessagingService:PublishAsync("AdminCube-Data-Update",{Player = Key})
+
         return true
     else
-        return false
+        
+        Module.ServerData[Key] = NewValue
+        NeedsSaving[Key] = true
+        SaveDataStore(Key)
     end
 
 end
+
+MessagingService:SubscribeAsync("AdminCube-Data-Update",function(Data)
+    local Plr = Data.Data.Player
+    for _,p in pairs(game.Players:GetPlayers()) do
+        if p.UserId == Plr then
+            -- Kick Player
+            SavingFor[p.UserId] = true;
+            task.wait(1)
+            SavingFor[p.UserId] = true;
+
+            p:Kick("Data updated by another server.")
+        end
+    end
+end);
+
 
 return Module

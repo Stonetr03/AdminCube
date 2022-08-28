@@ -175,7 +175,6 @@ Api:RegisterCommand("ban","Opens ban prompt.",function(p,Args)
 
                                     Api:Notification(p,Content,Response[2][1] .. " has been banned from the game.")
 
-                                    -- Todo kick player if there ingame but in different server.
                                 end
                             end)
                         end

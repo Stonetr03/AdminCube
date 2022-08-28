@@ -7,7 +7,6 @@ local Create = require(script.Parent:WaitForChild("CreateModule"))
 local HttpService = game:GetService("HttpService")
 
 local MessagingService = game:GetService("MessagingService")
-local TeleportService = game:GetService("TeleportService")
 
 local Module = {
     ServerData = {};

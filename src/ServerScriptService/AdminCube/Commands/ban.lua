@@ -203,4 +203,98 @@ Api:RegisterCommand("ban","Opens ban prompt.",function(p,Args)
 
 end)
 
+Api:RegisterCommand("unban","Opens unban prompt.",function(p,Args)
+    local s,e = pcall(function()
+        if Api:GetRank(p) >= 3 then
+
+            local Target = Args[1]
+            local player = "roblox"
+            if Target and typeof(Target) == "string" then
+                player = Target
+            end
+
+             -- Show Prompt
+             Api:ShowPrompt(p,{
+                Title = "Unban";
+                Prompt = {
+                    [1] = {
+                        Title = "Player";
+                        Type = "String";
+                        DefaultValue = player;
+                    };
+                };
+            },function(Response)
+                -- Resonse
+                if typeof(Response) == "table" then
+                    
+                    if Response[1] == true then
+                        
+                        -- Todo
+                        -- Check player name or Userid, Does not have to be in server.
+
+                        local UserId = getUserIdFromUsername(Response[2][1])
+                        if typeof(UserId) == "number" then
+                            local PreRecord = DataStore:GetRecord(UserId)
+                            if PreRecord.Banned == true then
+                                -- New Prompt
+                                local Content = Players:GetUserThumbnailAsync(UserId,Enum.ThumbnailType.HeadShot,Enum.ThumbnailSize.Size100x100)
+                                task.wait(0.5)
+
+                                local len = "Perm Ban"
+                                if PreRecord.BanTime ~= -1 then
+                                    local FormatTime = os.date("!*t",PreRecord.BanTime)
+                                    len = "Until " .. FormatTime.month .. "/" .. FormatTime.day .. "/" .. FormatTime.year .. ", " .. FormatTime.hour .. ":" .. FormatTime.min .. " UTC."
+                                end
+
+                                Api:ShowPrompt(p,{
+                                    Title = "Confirm Unban";
+                                    Prompt = {
+                                        [1] = {
+                                            Title = "Player";
+                                            Type = "Image";
+                                            Image = Content,
+                                            Text1 = Response[2][1],
+                                            Text2 = tostring(UserId),
+                                            Text3 = "Reason : " .. PreRecord.BanReason,
+                                            Text4 = len
+                                        };
+                                    };
+                                },function(NewResponse)
+                                    if NewResponse[1] == true then
+
+                                        -- Ban Player
+                                        local Record = DataStore:GetRecord(UserId)
+                                        if Record.Banned == true then
+                                            
+                                            Record.Banned = false
+
+                                            DataStore:UpdateRecord(UserId,Record)
+
+                                            
+                                           Api:Notification(p,Content,Response[2][1] .. " has been unbanned from the game.")
+                                        end
+
+                                    end
+                                end)
+                            end
+                        else
+                            Api:Notification(p,false,"Player not found.")
+                        end
+
+                    end
+
+                end
+            end)
+
+        else
+            -- Invalid Rank Notification
+            Api:InvalidPermissionsNotification(p)
+        end
+    end)
+    if not s then
+        warn(e)
+    end
+
+end)
+
 return true

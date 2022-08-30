@@ -53,6 +53,12 @@ Api:RegisterCommand("ban","Opens ban prompt.",function(p,Args)
     local s,e = pcall(function()
         if Api:GetRank(p) >= 3 then
 
+            local Target = Args[1]
+            local player = "roblox"
+            if Target and typeof(Target) == "string" then
+                player = Target
+            end
+
              -- Show Prompt
              Api:ShowPrompt(p,{
                 Title = "Ban";
@@ -60,7 +66,7 @@ Api:RegisterCommand("ban","Opens ban prompt.",function(p,Args)
                     [1] = {
                         Title = "Player";
                         Type = "String";
-                        DefaultValue = "roblox";
+                        DefaultValue = player;
                     };
                     [2] = {
                         Title = "Permanent Ban";
@@ -177,6 +183,8 @@ Api:RegisterCommand("ban","Opens ban prompt.",function(p,Args)
 
                                 end
                             end)
+                        else
+                            Api:Notification(p,false,"Player not found.")
                         end
 
                     end

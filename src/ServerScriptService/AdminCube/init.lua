@@ -30,6 +30,11 @@ end
 
 local function PlayerJoined(p)
     if ConnectedPlrs[p] ~= true then
+        -- Server Ban
+        if DataStoreModule.ServerBans[p.UserId] then
+            p:Kick("You are banned from this server.")
+        end
+
         ConnectedPlrs[p] = true
         -- Get Data
         local TempData = DataStoreModule:GetDataStore(p.UserId)
@@ -134,8 +139,10 @@ end)
 
 Players.PlayerRemoving:Connect(function(p)
     -- Save Data and Remove Server Copy of Data
-    DataStoreModule:ExitDataStore(p.UserId)
-    ConnectedPlrs[p] = nil
+    if ConnectedPlrs[p] ~= nil then
+        ConnectedPlrs[p] = nil
+        DataStoreModule:ExitDataStore(p.UserId)
+    end
 end)
 
 game:BindToClose(function()

@@ -10,6 +10,7 @@ local MessagingService = game:GetService("MessagingService")
 
 local Module = {
     ServerData = {};
+    ServerBans = {};
 }
 
 local SavingFor = {}
@@ -178,6 +179,16 @@ function Module:UpdateRecord(Key,NewValue)
         SaveDataStore(Key)
     end
 
+end
+
+function Module:ServerBan(Key, Banned)
+    if Banned == true then
+        Module.ServerBans[Key] = true
+    else
+        if Module.ServerBans[Key] then
+            Module.ServerBans[Key] = nil
+        end
+    end
 end
 
 MessagingService:SubscribeAsync("AdminCube-Data-Update",function(Data)

@@ -8,6 +8,7 @@ local CreateModule = require(script.Parent.CreateModule)
 
 local Module = {}
 local Commands = {}
+local Aliases = {}
 
 local RS = script.Parent.ReplicatedStorage
 RS.Name = "AdminCube"
@@ -67,17 +68,21 @@ function Module:GetPlayer(Name,p) -- Name Requested to Find, Player who Sent
     end
 end
 
-function Module:RegisterCommand(Name,Desc,Run)
+function Module:RegisterCommand(Name,Desc,Run,Arg,Alias) -- Arg {[Player],[String],etc} -- Alias {"A","B", etc}
     print("Register Cmd " .. Name)
     Commands[Name] = {
         Name = Name;
         Desc = Desc;
         Run = Run;
+        Args = Arg;
     }
+    if Alias then
+        Aliases[Alias] = Name
+    end
 end
 
 function Module:GetCommands()
-    return Commands
+    return Commands,Aliases
 end
 
 function Module:Fire(p,Key,Args)

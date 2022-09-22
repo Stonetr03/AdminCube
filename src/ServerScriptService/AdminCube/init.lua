@@ -8,7 +8,7 @@ local Api = require(script:WaitForChild("Api"))
 local ConnectedPlrs = {}
 
 local function CommandRunner(p,str)
-    local Commands = Api:GetCommands()
+    local Commands,Aliases = Api:GetCommands()
     local s,e = pcall(function()
         str = string.lower(str)
         local Split = str:split(" ")
@@ -21,8 +21,14 @@ local function CommandRunner(p,str)
                 table.insert(args,Split[i])
             end
             Commands[Command].Run(p,args)
+        elseif Aliases[Command] then
+            local args = {}
+            for i = 2, #Split,1 do
+                table.insert(args,Split[i])
+            end
+            Commands[Aliases[Command]].Run(p,args)
         else
-            -- Invalid Notification
+            Api:Notification(p,false,"Invalid Command")
         end
     end)
     if not s then warn("Command Runner Error : " .. e) end

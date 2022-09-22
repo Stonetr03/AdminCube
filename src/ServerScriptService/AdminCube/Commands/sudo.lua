@@ -5,7 +5,7 @@ local Settings = require(script.Parent.Parent:WaitForChild("Settings"))
 local HttpService = game:GetService("HttpService")
 
 local function CommandRunner(p,str)
-    local Commands = Api:GetCommands()
+    local Commands,Aliases = Api:GetCommands()
     print(Commands)
     local s,e = pcall(function()
         str = string.lower(str)
@@ -18,8 +18,13 @@ local function CommandRunner(p,str)
                 table.insert(args,Split[i])
             end
             Commands[Command].Run("sudo",args)
+        elseif Aliases[Command] then
+            local args = {}
+            for i = 2, #Split,1 do
+                table.insert(args,Split[i])
+            end
+            Commands[Aliases[Command]].Run("sudo",args)
         else
-            -- Invalid Notification
             Api:Notification(p,false,"Invalid Command")
         end
     end)

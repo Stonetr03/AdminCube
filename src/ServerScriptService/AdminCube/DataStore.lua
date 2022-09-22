@@ -191,19 +191,21 @@ function Module:ServerBan(Key, Banned)
     end
 end
 
-MessagingService:SubscribeAsync("AdminCube-Data-Update",function(Data)
-    local Plr = Data.Data.Player
-    for _,p in pairs(game.Players:GetPlayers()) do
-        if p.UserId == Plr then
-            -- Kick Player
-            SavingFor[p.UserId] = true;
-            task.wait(1)
-            SavingFor[p.UserId] = true;
-
-            p:Kick("Data updated by another server.")
+pcall(function()
+    MessagingService:SubscribeAsync("AdminCube-Data-Update",function(Data)
+        local Plr = Data.Data.Player
+        for _,p in pairs(game.Players:GetPlayers()) do
+            if p.UserId == Plr then
+                -- Kick Player
+                SavingFor[p.UserId] = true;
+                task.wait(1)
+                SavingFor[p.UserId] = true;
+    
+                p:Kick("Data updated by another server.")
+            end
         end
-    end
-end);
+    end);
+end)
 
 
 return Module

@@ -13,6 +13,9 @@ local InputText, SetInputText = Roact.createBinding("")
 InputRef = Roact.createRef()
 ChatRef = Roact.createRef()
 
+local NotiVis, SetNotiVis = Roact.createBinding(false)
+local NotiText, SetNotiText = Roact.createBinding("0")
+
 function MenuBtn:render()
     return Roact.createElement("TextButton",{
         Name = "AdminChat";
@@ -26,7 +29,25 @@ function MenuBtn:render()
         [Roact.Event.MouseButton1Up] = function()
             SetVisiblility(true)
             self.props.SetVis(false)
+            -- Hide Notification
+            SetNotiVis(false)
+            SetNotiText("0")
         end
+    },{
+        TextLabel = Roact.createElement("TextLabel",{
+            BackgroundColor3 = Color3.fromRGB(210, 0, 0);
+            Size = UDim2.new(0,20,0,20);
+            Position = UDim2.new(1,5,0,-5);
+            AnchorPoint = Vector2.new(1,0);
+            TextColor3 = Api.Style.TextColor;
+            BorderSizePixel = 0;
+            Text = NotiText;
+            Visible  = NotiVis;
+        },{
+            UiCorner = Roact.createElement("UICorner",{
+                CornerRadius = UDim.new(1,0)
+            })
+        });
     })
 end
 
@@ -62,6 +83,15 @@ end
 
 Api:OnEvent("AdminChat-Update",function()
     ReloadText()
+
+    -- Add Notification
+    if Visible:getValue() == false then
+        -- Add
+        SetNotiVis(true)
+        SetNotiText(tostring(tonumber(NotiText:getValue()) + 1))
+
+        script.Parent.Parent.NotificationEvent:Fire()
+    end
 end)
 
 function Menu:render()

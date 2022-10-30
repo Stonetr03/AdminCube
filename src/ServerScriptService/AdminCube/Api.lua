@@ -16,6 +16,8 @@ RS.Parent = game:GetService("ReplicatedStorage")
 CreateModule("RemoteEvent",RS,{Name = "ACEvent"})
 CreateModule("RemoteFunction",RS,{Name = "ACFunc"})
 
+local LocalServer = false
+
 function Module:GetRank(p)
     if p == "sudo" then
         return 5
@@ -137,8 +139,13 @@ function Module:SubscribeBroadcast(Key,Callback)
 end
 
 function Module:BroadcastMessage(Key,Message)
-    print("BroadCast:" .. Key)
-    MessagingService:PublishAsync("AdminCube",{Key = Key; Msg = Message;})
+    if LocalServer == true then
+        for i = 1,#BroadcastCallbacks[Key],1 do
+            BroadcastCallbacks[Key][i](Message)
+        end
+    else
+        MessagingService:PublishAsync("AdminCube",{Key = Key; Msg = Message;})
+    end
 end
 
 function Module:CreateRSFolder(FolderName)
@@ -194,13 +201,19 @@ Module:OnInvoke("GetCommands",function(p)
 end)
 
 task.spawn(function()
-    MessagingService:SubscribeAsync("AdminCube",function(Data)
-        print("Broadcast")
-        print(Data)
-        for i = 1,#BroadcastCallbacks[Data.Data.Key],1 do
-            BroadcastCallbacks[Data.Data.Key][i](Data.Data.Msg)
-        end
-    end);
+    local s,e = pcall(function()
+        MessagingService:SubscribeAsync("AdminCube",function(Data)
+            print("Broadcast")
+            print(Data)
+            for i = 1,#BroadcastCallbacks[Data.Data.Key],1 do
+                BroadcastCallbacks[Data.Data.Key][i](Data.Data.Msg)
+            end
+        end);
+    end)
+
+    if s == false then
+        LocalServer = true
+    end
 
     Module:OnInvoke("Response",function()
         return true

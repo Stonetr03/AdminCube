@@ -16,6 +16,13 @@ icon:setImage("http://www.roblox.com/asset/?id=5010019455") -- 24x24
 icon:setName("AdminCubeMainAdminPanel")
 icon:setProperty("deselectWhenOtherIconSelected",false)
 
+local NotificationEvent = Instance.new("BindableEvent")
+NotificationEvent.Name = "NotificationEvent";
+NotificationEvent.Parent = script
+NotificationEvent.Event:Connect(function()
+    icon:notify()
+end)
+
 local MainMenus = require(script.MainMenus)
 local BackCallback = MainMenus[3]
 
@@ -78,6 +85,7 @@ end)
 
 icon.selected:Connect(function()
     Window.SetVis(true)
+    icon:clearNotices()
 end)
 
 icon.deselected:Connect(function()

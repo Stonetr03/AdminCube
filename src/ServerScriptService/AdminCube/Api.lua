@@ -197,8 +197,8 @@ end)
 
 Module:OnInvoke("GetCommands",function(p)
     if Module:GetRank(p) >= 2 then
-        local Cmd = Module:GetCommands()
-        return Cmd
+        local Cmd,Alias = Module:GetCommands()
+        return Cmd,Alias
     end
 end)
 

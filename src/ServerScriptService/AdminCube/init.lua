@@ -8,6 +8,10 @@ local Api = require(script:WaitForChild("Api"))
 local ConnectedPlrs = {}
 
 local function CommandRunner(p,str)
+    if not string.lower(string.sub(str,1,1)) == Settings.Prefix then
+        return
+    end
+
     local Commands,Aliases = Api:GetCommands()
     local s,e = pcall(function()
         str = string.lower(str)

@@ -78,8 +78,10 @@ function Module:RegisterCommand(Name,Desc,Run,Arg,Alias) -- Arg {[Player],[Strin
         Run = Run;
         Args = Arg;
     }
-    if Alias then
-        Aliases[Alias] = Name
+    if typeof(Alias) == "table" then
+        for _,o in pairs(Alias) do
+            Aliases[o] = Name
+        end
     end
 end
 

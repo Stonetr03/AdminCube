@@ -21,7 +21,7 @@ Api:RegisterCommand("teleport","Teleports a player.",function(p,Args)
         warn(e)
     end
 
-end,{"*[player],[player]"},{"tp"})
+end,"2;*[player];[player]",{"tp"})
 
 Api:RegisterCommand("bring","Teleports player to calling player.",function(p,Args)
     local s,e = pcall(function()
@@ -36,7 +36,7 @@ Api:RegisterCommand("bring","Teleports player to calling player.",function(p,Arg
     if not s then
         warn(e)
     end
-end)
+end,"2;*[player]")
 
 Api:RegisterCommand("goto","Teleports player to calling player.",function(p,Args)
     local s,e = pcall(function()
@@ -51,7 +51,7 @@ Api:RegisterCommand("goto","Teleports player to calling player.",function(p,Args
     if not s then
         warn(e)
     end
-end)
+end,"2;*[player]")
 
 Api:RegisterCommand("summon","Teleports all players to calling player.",function(p,Args)
     local s,e = pcall(function()
@@ -69,6 +69,6 @@ Api:RegisterCommand("summon","Teleports all players to calling player.",function
     if not s then
         warn(e)
     end
-end)
+end,"2")
 
 return true

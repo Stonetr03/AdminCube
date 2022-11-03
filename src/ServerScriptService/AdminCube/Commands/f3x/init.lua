@@ -21,6 +21,6 @@ Api:RegisterCommand("f3x","Building Tools.",function(p,Args)
         warn(e)
     end
 
-end)
+end,"4;*[player]")
 
 return true;

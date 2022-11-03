@@ -24,6 +24,4 @@ return {
     DataStoreKey = "AdminCube-DataStore-1"; -- If Changed All Data is Reset
     DisplayNames = true; -- Display Names Enabled / Disabled for Commands
     TempPerms = false;
-
-    sudo = true; -- Enabled the sudo Command
 }

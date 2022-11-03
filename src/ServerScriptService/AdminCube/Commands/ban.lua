@@ -201,7 +201,7 @@ Api:RegisterCommand("ban","Opens ban prompt.",function(p,Args)
         warn(e)
     end
 
-end)
+end,"3;[player]")
 
 Api:RegisterCommand("unban","Opens unban prompt.",function(p,Args)
     local s,e = pcall(function()
@@ -321,7 +321,7 @@ Api:RegisterCommand("unban","Opens unban prompt.",function(p,Args)
         warn(e)
     end
 
-end)
+end,"3;[player]")
 
 Api:RegisterCommand("serverban","Opens server ban prompt.",function(p,Args)
     local s,e = pcall(function()
@@ -402,6 +402,6 @@ Api:RegisterCommand("serverban","Opens server ban prompt.",function(p,Args)
         warn(e)
     end
 
-end)
+end,"3;[player]")
 
 return true

@@ -16,7 +16,7 @@ Api:RegisterCommand("freeze","Freezes the Player's Character",function(p,Args)
         warn(e)
     end
 
-end)
+end,"2;*[player]")
 
 Api:RegisterCommand("unfreeze","Unfreezes the Player's Character",function(p,Args)
     local s,e = pcall(function()
@@ -32,6 +32,6 @@ Api:RegisterCommand("unfreeze","Unfreezes the Player's Character",function(p,Arg
         warn(e)
     end
 
-end)
+end,"2;*[player]")
 
 return true

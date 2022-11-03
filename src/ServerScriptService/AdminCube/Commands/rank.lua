@@ -27,7 +27,7 @@ Api:RegisterCommand("vip","Makes a player Vip",function(p,Args)
         warn(e)
     end
 
-end)
+end,"3;*[player]")
 
 Api:RegisterCommand("unvip","Removes player's vip rank, makes them player rank.",function(p,Args)
     local s,e = pcall(function()
@@ -69,7 +69,7 @@ Api:RegisterCommand("unvip","Removes player's vip rank, makes them player rank."
         warn(e)
     end
 
-end)
+end,"3;*[player]")
 
 -- Mod
 Api:RegisterCommand("mod","Makes a player Mod",function(p,Args)
@@ -104,7 +104,7 @@ Api:RegisterCommand("mod","Makes a player Mod",function(p,Args)
         warn(e)
     end
 
-end)
+end,"3;*[player]")
 
 Api:RegisterCommand("unmod","Removes player's mod rank, makes them player rank.",function(p,Args)
     local s,e = pcall(function()
@@ -145,7 +145,7 @@ Api:RegisterCommand("unmod","Removes player's mod rank, makes them player rank."
         warn(e)
     end
 
-end)
+end,"3;*[player]")
 
 -- Admin
 Api:RegisterCommand("admin","Makes a player Admin",function(p,Args)
@@ -180,7 +180,7 @@ Api:RegisterCommand("admin","Makes a player Admin",function(p,Args)
         warn(e)
     end
 
-end)
+end,"4;*[player]")
 
 Api:RegisterCommand("unadmin","Removes player's admin rank, makes them player rank.",function(p,Args)
     local s,e = pcall(function()
@@ -221,7 +221,7 @@ Api:RegisterCommand("unadmin","Removes player's admin rank, makes them player ra
         warn(e)
     end
 
-end)
+end,"4;*[player]")
 
 return true
 

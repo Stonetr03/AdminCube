@@ -19,9 +19,6 @@ CreateModule("RemoteFunction",RS,{Name = "ACFunc"})
 local LocalServer = false
 
 function Module:GetRank(p)
-    if p == "sudo" then
-        return 5
-    end
     local Data = DataStore.ServerData[p.UserId]
     return Data.Rank
 end

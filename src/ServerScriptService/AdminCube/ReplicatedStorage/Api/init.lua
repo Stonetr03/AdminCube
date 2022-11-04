@@ -129,6 +129,12 @@ function Api:CreateWindow(Props,Component)
         Close = nil
     end
 
+    function ReturnTab.update(NewTree)
+        if NewTree then
+            Roact.update(Tree,NewTree)
+        end
+    end
+
     function ReturnTab.OnClose:Connect(f)
         if typeof(f) == "function" then
             Close[#Close+1] = f

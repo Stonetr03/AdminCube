@@ -1,8 +1,12 @@
 -- Admin Cube - Custom Settings
 
 return {
+    Groups = {
+        [4558094] = { -- Group Id
+            [255] = 4; -- Group Role = AdminCube Rank
+        };
+    };
     Owners = { -- 4
-        "Stonetr03";
         "Player1"
     };
     Admins = { -- 3

@@ -1,6 +1,9 @@
 -- Admin Cube - Default Settings
 
 return {
+    Groups = {
+
+    };
     Owners = { -- 4
     
     };

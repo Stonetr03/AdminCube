@@ -66,13 +66,9 @@ local function ReloadText()
     local Msgs = Api:Invoke("AdminChat-Get")
     local LastText = " "
     for i = 1,#Msgs,1 do
-        print(Api.Style.ButtonSubColor:getValue())
-        print(typeof(Api.Style.ButtonSubColor:getValue()))
         local NewText = LastText .. '<font color="rgb(' .. Slice(Api.Style.ButtonSubColor:getValue().R)  .. ',' .. Slice(Api.Style.ButtonSubColor:getValue().B ) .. ',' .. Slice(Api.Style.ButtonSubColor:getValue().B ) .. ')"> &lt;' .. Msgs[i].Name .. '&gt; </font><font color="rgb(' .. Slice(Api.Style.TextColor:getValue().R )  .. ',' .. Slice(Api.Style.TextColor:getValue().G ) .. ',' .. Slice(Api.Style.TextColor:getValue().B ) .. ')">' .. Msgs[i].Msg .. '</font>\n'
         SetChatText(NewText)
 
-        print("Text Fits :")
-        print(ChatRef.current.TextFits)
 
         if ChatRef.current.TextFits then
             LastText = NewText
@@ -137,7 +133,6 @@ function Menu:render()
             [Roact.Event.FocusLost] = function(_,Enter)
                 if Enter then
                     -- Send
-                    print("SEND")
                     Api:Fire("AdminChat-Send",InputRef.current.Text)
                     SetInputText("")
                 end

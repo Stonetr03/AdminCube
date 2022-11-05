@@ -79,11 +79,8 @@ function Module:CreateWindow()
                     
                 });
             end
-            print("BUTTONS :")
-            print(NewBtns)
             return Roact.createFragment(NewBtns)
         end
-        print(CustomBtnsList)
         return Roact.createElement("Frame",{
             -- Topbar Frame
             Visible = self.Visible;

@@ -48,7 +48,6 @@ local function PlayerJoined(p)
         ConnectedPlrs[p] = true
         -- Get Data
         local TempData = DataStoreModule:GetDataStore(p.UserId)
-        print(TempData)
         p.Chatted:Connect(function(c)
             CommandRunner(p,c)
         end)
@@ -155,7 +154,6 @@ local function PlayerJoined(p)
 
         -- Admin Panel
         if DataStoreModule.ServerData[p.UserId].Rank >= 2 then
-            print("Give Panel")
             local Panel = script.Ui.AdminPanel:Clone()
             Panel.Parent = ScreenGui
         end

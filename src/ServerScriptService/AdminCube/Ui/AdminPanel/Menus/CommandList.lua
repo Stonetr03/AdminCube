@@ -56,7 +56,6 @@ function Btns:render()
                             end)
                         end
                     end
-                    print(o.Args)
                     if Invalid == false then
                         -- Get Args
                         --[[
@@ -167,7 +166,6 @@ function Btns:render()
 
                                         if SubSplit[2] and typeof(SubSplit[2]) == "string" then
                                             Title = "" .. SubSplit[2]
-                                            print("SUBSPLIT2", SubSplit[2])
                                         end
 
                                     end

@@ -57,7 +57,6 @@ function Menu:render()
             
             
             if Next < tick() then
-                print("Update")
                 Next = tick() + 5
                 local St = tick()
                 Api:Invoke("Response")

@@ -67,7 +67,6 @@ local Window = Api:CreateWindow({
         [1] = {
             Text = "<";
             Callback = function()
-                print("Back Clicked")
                 for i = 1,#BackCallback,1 do
                     BackCallback[i]()
                     MainMenus[4](true)

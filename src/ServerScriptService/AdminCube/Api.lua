@@ -32,7 +32,6 @@ function Module:GetPlayer(Name,p) -- Name Requested to Find, Player who Sent
         -- Match UserNames
         for _,o in pairs(game.Players:GetPlayers()) do
             if string.lower(o.Name) == Name then
-                print("Player Found " .. o.Name)
                 return o
             end
         end
@@ -40,7 +39,6 @@ function Module:GetPlayer(Name,p) -- Name Requested to Find, Player who Sent
         if Settings.DisplayNames == true then
             for _,o in pairs(game.Players:GetPlayers()) do
                 if string.lower(o.DisplayName) == Name then
-                    print("Player Found " .. o.Name)
                     return o
                 end
             end
@@ -49,7 +47,6 @@ function Module:GetPlayer(Name,p) -- Name Requested to Find, Player who Sent
         -- Match Username again
         for _,o in pairs(game.Players:GetPlayers()) do
             if string.find(string.lower(o.Name),Name) ~= nil then
-                print("Player Found " .. o.Name)
                 return o
             end
         end
@@ -58,7 +55,6 @@ function Module:GetPlayer(Name,p) -- Name Requested to Find, Player who Sent
         if Settings.DisplayNames == true then
             for _,o in pairs(game.Players:GetPlayers()) do
                 if string.find(string.lower(o.Name),Name) ~= nil then
-                    print("Player Found " .. o.Name)
                     return o
                 end
             end
@@ -68,7 +64,6 @@ function Module:GetPlayer(Name,p) -- Name Requested to Find, Player who Sent
 end
 
 function Module:RegisterCommand(Name,Desc,Run,Arg,Alias) -- Arg {[Player],[String],etc} -- Alias {"A","B", etc}
-    print("Register Cmd " .. Name)
     Commands[Name] = {
         Name = Name;
         Desc = Desc;
@@ -108,7 +103,6 @@ end
 
 local RemoteFunctions = {}
 function Module:OnInvoke(Key,Callback)
-    print("Listen " .. Key)
     table.insert(RemoteFunctions,{
         Key = Key;
         Callback = Callback;
@@ -134,7 +128,6 @@ function Module:SubscribeBroadcast(Key,Callback)
     end
     BroadcastCallbacks[Key][#BroadcastCallbacks[Key] + 1] = Callback
 
-    print(BroadcastCallbacks)
 end
 
 function Module:BroadcastMessage(Key,Message)
@@ -196,8 +189,6 @@ Module:OnInvoke("GetCommands",function(p)
     if Module:GetRank(p) >= 2 then
         local Cmd,Alias = Module:GetCommands()
         local Rank = Module:GetRank(p)
-        warn("RANK")
-        print(Rank)
         return Cmd,Alias,Rank
     end
 end)
@@ -205,8 +196,6 @@ end)
 task.spawn(function()
     local s,e = pcall(function()
         MessagingService:SubscribeAsync("AdminCube",function(Data)
-            print("Broadcast")
-            print(Data)
             for i = 1,#BroadcastCallbacks[Data.Data.Key],1 do
                 BroadcastCallbacks[Data.Data.Key][i](Data.Data.Msg)
             end

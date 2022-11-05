@@ -101,8 +101,6 @@ end
 
 function Api:GetCommands()
     local Cmds,Alias,Rank = Api:Invoke("GetCommands")
-    print("GET CMDS")
-    print(Cmds)
     return Cmds,Alias,Rank
 end
 

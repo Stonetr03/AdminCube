@@ -15,8 +15,6 @@ local s,e = pcall(function()
 end)
 local Tab
 if s then
-    print("HTTP SUCCESS")
-    print(Response)
     Tab = HttpService:JSONDecode(Response)
     if Tab.status == "fail" then
         Tab = {
@@ -25,7 +23,7 @@ if s then
         }
     end
 else
-    print("HTTP ERROR")
+    warn("HTTP ERROR")
     print(e)
     print(Response)
     Tab = {

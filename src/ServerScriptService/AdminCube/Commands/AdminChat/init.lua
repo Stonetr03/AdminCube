@@ -44,7 +44,6 @@ Api:OnEvent("AdminChat-Send",function(p,Msg)
 				GreaterText = GreaterSplit[1]
 			end
 			local Text = HttpService:JSONEncode({Name = p.Name, Msg = GreaterText})
-            print(Text)
             Api:BroadcastMessage("AdminChat",Text)
         end
     end

@@ -76,10 +76,10 @@ local function PlayerJoined(p)
         end
 
         -- Ui
-        print("NewUi")
         local ScreenGui = Instance.new("ScreenGui")
         ScreenGui.Name = "__AdminCube_Main"
         ScreenGui.ResetOnSpawn = false
+        ScreenGui.DisplayOrder = 10;
         ScreenGui.Parent = p:WaitForChild("PlayerGui")
         local NewUi = script.Ui.Public:Clone()
         NewUi.Parent = ScreenGui

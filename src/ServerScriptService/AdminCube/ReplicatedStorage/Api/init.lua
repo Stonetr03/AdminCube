@@ -100,10 +100,10 @@ function Api:ThemeUpdateEvent(Func)
 end
 
 function Api:GetCommands()
-    local Cmds = Api:Invoke("GetCommands")
+    local Cmds,Alias,Rank = Api:Invoke("GetCommands")
     print("GET CMDS")
     print(Cmds)
-    return Cmds
+    return Cmds,Alias,Rank
 end
 
 function Api:CreateWindow(Props,Component)
@@ -116,6 +116,7 @@ function Api:CreateWindow(Props,Component)
         Main = Component;
         Title = Props.Title;
         Style = Api.Style;
+        Index = Props.ZIndex or 1;
     })
     local Tree = Roact.mount(WindowFrame,game.Players.LocalPlayer.PlayerGui:FindFirstChild("__AdminCube_Main"),"Window-" .. Props.Title)
     local ReturnTab = {
@@ -150,7 +151,13 @@ end
 -- Prompts
 local PromptItems = require(script.Prompts)
 local PromptBoolean,PromptString,PromptDropdown,PromptImage = PromptItems[1],PromptItems[2],PromptItems[3],PromptItems[4]
-Api:OnEvent("Prompts",function(Prompts)
+
+local PromptOpen = false
+local Promptlocal = false
+local localresponse
+
+function ShowPrompt(Prompts)
+    PromptOpen = true
     -- Generate Uis
     local Window
     local CurrentValues = {}
@@ -259,8 +266,17 @@ Api:OnEvent("Prompts",function(Prompts)
                     TextSize = 22;
 
                     [Roact.Event.MouseButton1Up] = function()
-                        Api:Fire("Prompts",{true,CurrentValues})
+
+                        if Promptlocal == true then
+                            if typeof(localresponse) == "function" then
+                                localresponse({true,CurrentValues})
+                            end
+                        else
+                            Api:Fire("Prompts",{true,CurrentValues})
+                        end
+
                         Window.unmount()
+                        PromptOpen = false
                     end;
                 });
                 Cancel = Roact.createElement("TextButton",{
@@ -275,8 +291,17 @@ Api:OnEvent("Prompts",function(Prompts)
                     TextSize = 22;
 
                     [Roact.Event.MouseButton1Up] = function()
-                        Api:Fire("Prompts",{false})
+                        
+                        if Promptlocal == true then
+                            if typeof(localresponse) == "function" then
+                                localresponse({false})
+                            end
+                        else
+                            Api:Fire("Prompts",{false})
+                        end
+
                         Window.unmount()
+                        PromptOpen = false
                     end;
                 })
 			})
@@ -288,6 +313,24 @@ Api:OnEvent("Prompts",function(Prompts)
         SizeY = ((#Prompts.Prompt * 25) + 4 + 50 + Added);
         Title = "Prompt";
     },PromptComp)
+end
+
+Api:OnEvent("Prompts",function(Prompts)
+    if PromptOpen == false then
+        Promptlocal = false
+        ShowPrompt(Prompts)
+    end
 end)
+
+function Api:Prompt(Prompts,Response)
+    if not typeof(Response) == "function" then
+        return false
+    end
+    if PromptOpen == false then
+        Promptlocal = true
+        ShowPrompt(Prompts)
+        localresponse = Response
+    end
+end
 
 return Api

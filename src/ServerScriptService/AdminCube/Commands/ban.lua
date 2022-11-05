@@ -3,7 +3,7 @@
 local Players = game:GetService("Players")
 local Api = require(script.Parent.Parent:WaitForChild("Api"))
 local DataStore = require(script.Parent.Parent:WaitForChild("DataStore"))
-local StrMod = require(script.Parent.Parent.StrMod)
+local StrMod = require(game.ReplicatedStorage:WaitForChild("AdminCube"):WaitForChild("StrMod"))
 
 local cache = {} -- https://developer.roblox.com/en-us/api-reference/function/Players/GetUserIdFromNameAsync
 function getUserIdFromUsername(name)

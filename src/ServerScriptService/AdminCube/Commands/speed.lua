@@ -16,6 +16,6 @@ Api:RegisterCommand("speed","Changes the WalkSpeed of a Player's Character",func
         warn(e)
     end
 
-end,"2;*[player]")
+end,"2;*[player];[number:Speed]")
 
 return true

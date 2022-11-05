@@ -20,6 +20,6 @@ Api:RegisterCommand("jumppower","Changes the JumpPower of a Player's Character",
         warn(e)
     end
 
-end,"2;*[player]")
+end,"2;*[player];[number:Jump Power]")
 
 return true

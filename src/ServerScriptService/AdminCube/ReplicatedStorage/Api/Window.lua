@@ -65,6 +65,7 @@ function Module:CreateWindow()
                     TextColor3 = Style.TextColor;
                     AutoButtonColor = false;
                     BorderSizePixel = 0;
+                    ZIndex = self.props.ZIndex;
         
                     [Roact.Event.MouseEnter] = function()
                         SetTransparency(0.85)
@@ -90,6 +91,7 @@ function Module:CreateWindow()
             BorderSizePixel = 0;
             Size = UDim2.new(0,self.props.SizeX,0,20);
             Position = self.Position;
+            ZIndex = self.props.ZIndex;
 
             -- Drag
             [Roact.Event.InputBegan] = function(_,input)
@@ -119,6 +121,7 @@ function Module:CreateWindow()
                 BorderSizePixel = 0;
                 BackgroundColor3 = self.props.Style.Background;
                 Size = UDim2.new(1,0,0,self.props.SizeY);
+                ZIndex = self.props.ZIndex;
             },{
                 Main = Roact.createElement(self.props.Main)
             });
@@ -128,6 +131,7 @@ function Module:CreateWindow()
                 Position = UDim2.new(0,2,0,2);
                 Size = UDim2.new(0,16,0,16);
                 Image = "rbxassetid://6064221669";
+                ZIndex = self.props.ZIndex;
             });
             -- 25
             Title = Roact.createElement("TextLabel",{
@@ -137,6 +141,7 @@ function Module:CreateWindow()
                 TextColor3 = self.props.Style.ButtonColor;
                 Text = self.props.Title;
                 TextXAlignment = Enum.TextXAlignment.Left;
+                ZIndex = self.props.ZIndex;
             });
 
             CloseBtn = Roact.createElement("TextButton",{
@@ -150,6 +155,7 @@ function Module:CreateWindow()
                 TextColor3 = self.props.Style.TextColor;
                 AutoButtonColor = false;
                 BorderSizePixel = 0;
+                ZIndex = self.props.ZIndex;
 
                 [Roact.Event.MouseEnter] = function()
                     self.SetCloseBtnTransparency(0.85)
@@ -177,6 +183,7 @@ function Module:CreateWindow()
                 TextColor3 = self.props.Style.TextColor;
                 AutoButtonColor = false;
                 BorderSizePixel = 0;
+                ZIndex = self.props.ZIndex;
 
                 [Roact.Event.MouseEnter] = function()
                     self.SetMinimizeBtnTransparency(0.85)

@@ -24,7 +24,7 @@ function Boolean:render()
         BackgroundTransparency = 1;
         Position = UDim2.new(0,0,0,props.Y);
         Size = UDim2.new(1,0,0,25);
-        ZIndex = 2;
+        ZIndex = 20;
     },{
         Title = Roact.createElement("TextLabel",{
             BackgroundTransparency = 1;
@@ -33,7 +33,7 @@ function Boolean:render()
             Text = props.Title;
             TextColor3 = props.Style.TextColor;
             TextSize = 20;
-            ZIndex = 3;
+            ZIndex = 21;
         });
         Tick = Roact.createElement("TextButton",{
             AnchorPoint = Vector2.new(0.5,0.5);
@@ -42,7 +42,7 @@ function Boolean:render()
             Position = UDim2.new(0.75,0,0.5,0);
             Size = UDim2.new(0.175,0,0.9,0);
             Text = "";
-            ZIndex = 3;
+            ZIndex = 21;
 
             [Roact.Event.MouseButton1Up] = function()
                 if Enabled == true then
@@ -66,7 +66,7 @@ function Boolean:render()
                 BackgroundColor3 = props.Style.ButtonColor;
                 Position = self.DotPos;
                 Size = UDim2.new(0.5,0,0.9,0);
-                ZIndex = 4;
+                ZIndex = 22;
             },{
                 UiCorner = Roact.createElement("UICorner",{
                     CornerRadius = UDim.new(0.5,0);
@@ -92,7 +92,7 @@ function StringValue:render()
         BackgroundTransparency = 1;
         Position = UDim2.new(0,0,0,props.Y);
         Size = UDim2.new(1,0,0,25);
-        ZIndex = 2;
+        ZIndex = 20;
     },{
         Title = Roact.createElement("TextLabel",{
             BackgroundTransparency = 1;
@@ -101,7 +101,7 @@ function StringValue:render()
             Text = props.Title;
             TextColor3 = props.Style.TextColor;
             TextSize = 20;
-            ZIndex = 3;
+            ZIndex = 21;
         });
         Input = Roact.createElement("TextBox",{
             BackgroundTransparency = 0.9;
@@ -115,7 +115,7 @@ function StringValue:render()
             Text = Text;
             PlaceholderText = "Input";
             TextScaled = true;
-            ZIndex = 3;
+            ZIndex = 21;
 
             [Roact.Ref] = self.StringRef;
             [Roact.Event.FocusLost] = function()
@@ -160,7 +160,7 @@ function DropdownMenu:render()
                 TextColor3 = props.Style.TextColor;
                 TextScaled = true;
                 LayoutOrder = Index;
-                ZIndex = 5;
+                ZIndex = 25;
 
                 [Roact.Event.MouseButton1Up] = function()
                     UpdateText("> " .. v)
@@ -184,7 +184,7 @@ function DropdownMenu:render()
         BackgroundTransparency = 1;
         Position = UDim2.new(0,0,0,props.Y);
         Size = UDim2.new(1,0,0,25);
-        ZIndex = 2;
+        ZIndex = 20;
     },{
         Title = Roact.createElement("TextLabel",{
             BackgroundTransparency = 1;
@@ -193,7 +193,7 @@ function DropdownMenu:render()
             Text = props.Title;
             TextColor3 = props.Style.TextColor;
             TextSize = 20;
-            ZIndex = 3;
+            ZIndex = 21;
         });
         TextBtn = Roact.createElement("TextButton",{
             BackgroundColor3 = props.Style.ButtonColor;
@@ -205,7 +205,7 @@ function DropdownMenu:render()
             Text = self.SelectedText;
             TextColor3 = props.Style.TextColor;
             TextScaled = true;
-            ZIndex = 3;
+            ZIndex = 21;
 
             [Roact.Event.MouseButton1Up] = function()
                 self.SetDropdownVis(not self.DropdownVis:getValue())
@@ -225,7 +225,7 @@ function DropdownMenu:render()
                 ScrollBarThickness = 5;
                 ScrollingDirection = Enum.ScrollingDirection.Y;
                 TopImage = "";
-                ZIndex = 4;
+                ZIndex = 22;
             },{
                 UIListLayout = Roact.createElement("UIListLayout",{
                     Padding = UDim.new(0,1);
@@ -284,12 +284,12 @@ function ImageLabel:render()
         BackgroundTransparency = 1;
         Position = UDim2.new(0,0,0,props.Y);
         Size = UDim2.new(1,0,0,100);
-        ZIndex = 2;
+        ZIndex = 20;
     },{
         Image = Roact.createElement("ImageLabel",{
             AnchorPoint = Vector2.new(0,0.5);
             BackgroundTransparency = 1;
-            ZIndex = 3;
+            ZIndex = 21;
             Position = UDim2.new(0,3,0.5,0);
             Size = UDim2.new(0,94,0,94);
             Image = Image;
@@ -304,7 +304,7 @@ function ImageLabel:render()
             TextColor3 = props.Style.TextColor;
             TextSize = 20;
             TextScaled = true;
-            ZIndex = 3;
+            ZIndex = 21;
         });
         Text2 = Roact.createElement("TextLabel",{
             BackgroundTransparency = 1;
@@ -315,7 +315,7 @@ function ImageLabel:render()
             TextColor3 = props.Style.TextColor;
             TextSize = 20;
             TextScaled = true;
-            ZIndex = 3;
+            ZIndex = 21;
         });
         Text3 = Roact.createElement("TextLabel",{
             BackgroundTransparency = 1;
@@ -326,7 +326,7 @@ function ImageLabel:render()
             TextColor3 = props.Style.TextColor;
             TextSize = 20;
             TextScaled = true;
-            ZIndex = 3;
+            ZIndex = 21;
         });
         Text4 = Roact.createElement("TextLabel",{
             BackgroundTransparency = 1;
@@ -337,7 +337,7 @@ function ImageLabel:render()
             TextColor3 = props.Style.TextColor;
             TextSize = 20;
             TextScaled = true;
-            ZIndex = 3;
+            ZIndex = 21;
         });
     })
 end

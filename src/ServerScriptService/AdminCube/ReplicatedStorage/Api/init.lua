@@ -107,6 +107,9 @@ function Api:GetCommands()
 end
 
 function Api:CreateWindow(Props,Component)
+    if Props.ZIndex == nil then
+        Props.ZIndex = 1
+    end
     local WindowModule = require(script.Window)
     local WindowComp,Functions = WindowModule:CreateWindow()
     local WindowFrame = Roact.createElement(WindowComp,{
@@ -116,7 +119,7 @@ function Api:CreateWindow(Props,Component)
         Main = Component;
         Title = Props.Title;
         Style = Api.Style;
-        Index = Props.ZIndex or 1;
+        ZIndex = Props.ZIndex;
     })
     local Tree = Roact.mount(WindowFrame,game.Players.LocalPlayer.PlayerGui:FindFirstChild("__AdminCube_Main"),"Window-" .. Props.Title)
     local ReturnTab = {
@@ -248,6 +251,7 @@ function ShowPrompt(Prompts)
                 TextColor3 = Api.Style.TextColor;
                 TextSize = 25;
                 LayoutOrder = 1;
+                ZIndex = 20;
             });
             Buttons = Roact.createElement(ButtonsComp);
             Frame = Roact.createElement("Frame",{
@@ -264,6 +268,7 @@ function ShowPrompt(Prompts)
                     Text = "Confirm";
                     TextColor3 = Api.Style.TextColor;
                     TextSize = 22;
+                    ZIndex = 20;
 
                     [Roact.Event.MouseButton1Up] = function()
 
@@ -289,6 +294,7 @@ function ShowPrompt(Prompts)
                     Text = "Cancel";
                     TextColor3 = Api.Style.TextColor;
                     TextSize = 22;
+                    ZIndex = 20;
 
                     [Roact.Event.MouseButton1Up] = function()
                         
@@ -312,6 +318,7 @@ function ShowPrompt(Prompts)
         SizeX = 250;
         SizeY = ((#Prompts.Prompt * 25) + 4 + 50 + Added);
         Title = "Prompt";
+        ZIndex = 19
     },PromptComp)
 end
 

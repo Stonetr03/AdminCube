@@ -116,6 +116,16 @@ function Menu:render()
             TextSize = 20;
             ZIndex = 10;
         });
+        Version = Roact.createElement("TextLabel",{
+            Size = UDim2.new(1,0,0,20);
+            Position = UDim2.new(0,0,0,80);
+            Text = "Admin Cube Version " .. ServerStats:WaitForChild("Version").Value;
+            Font = Enum.Font.SourceSans;
+            TextColor3 = Api.Style.TextColor;
+            BackgroundTransparency = 1;
+            TextSize = 20;
+            ZIndex = 10;
+        });
     })
 end
 

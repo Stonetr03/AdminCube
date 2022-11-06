@@ -4,6 +4,9 @@ local Settings = require(script:WaitForChild("Settings"))
 local DataStoreModule = require(script:WaitForChild("DataStore"))
 local Players = game:GetService("Players")
 local Api = require(script:WaitForChild("Api"))
+local Version = require(script:WaitForChild("Version"))
+
+print("\n==================================\nAdmin Cube - By Stonetr03 Studios\n" .. Version .. "\n==================================")
 
 local ConnectedPlrs = {}
 

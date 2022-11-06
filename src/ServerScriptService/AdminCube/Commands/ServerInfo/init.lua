@@ -3,6 +3,7 @@
 local Api = require(script.Parent.Parent:WaitForChild("Api"))
 local HttpService = game:GetService("HttpService")
 local CreateModule = require(script.Parent.Parent.CreateModule)
+local Version = require(script.Parent.Parent:WaitForChild("Version"))
 
 Api:AddPanelMenu(script.ServerInfoMenu)
 
@@ -34,5 +35,6 @@ end
 
 CreateModule("StringValue",RS,{Name = "Country", Value = Tab.country})
 CreateModule("StringValue",RS,{Name = "Region",Value = Tab.regionName})
+CreateModule("StringValue",RS,{Name = "Version", Value = Version})
 
 return true

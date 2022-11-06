@@ -8,7 +8,7 @@ local Api = require(script:WaitForChild("Api"))
 local ConnectedPlrs = {}
 
 local function CommandRunner(p,str)
-    if not string.lower(string.sub(str,1,1)) == Settings.Prefix then
+    if string.sub(str,1,1) == Settings.Prefix then else
         return
     end
 

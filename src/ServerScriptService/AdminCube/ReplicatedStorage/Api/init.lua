@@ -238,6 +238,7 @@ function ShowPrompt(Prompts)
             ScrollBarThickness = 5;
             ScrollingDirection = Enum.ScrollingDirection.Y;
             TopImage = "";
+            ClipsDescendants = false;
        },{
             Title = Roact.createElement("TextLabel",{
                 BackgroundColor3 = Api.Style.ButtonColor;

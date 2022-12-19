@@ -2,6 +2,7 @@
 
 local DataStore = require(script.Parent:WaitForChild("DataStore"))
 local Settings = require(script.Parent:WaitForChild("Settings"))
+local Log = require(script.Parent:WaitForChild("Log"))
 
 local MessagingService = game:GetService("MessagingService")
 local CreateModule = require(script.Parent.CreateModule)
@@ -153,6 +154,8 @@ function Module:CreateRSFolder(FolderName)
         return CreateModule("Folder",RS,{Name = FolderName})
     end
 end
+
+Log:init(Module:CreateRSFolder("Log"))
 
 function Module:Notification(p,Image,Text) -- Image - True for Headshot, False for No-Image, Other for image
     Module:Fire(p,"Notification",{Image = Image,Text = Text})

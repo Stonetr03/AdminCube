@@ -51,6 +51,7 @@ function WindowFrame:render()
             Grid = Roact.createElement("UIGridLayout",{
                 CellPadding = UDim2.new(0,5,0,5);
                 CellSize = UDim2.new(0.5,-3,0,25);
+                SortOrder = Enum.SortOrder.LayoutOrder;
             });
     
             Buttons = Roact.createElement(MainMenus[1]);

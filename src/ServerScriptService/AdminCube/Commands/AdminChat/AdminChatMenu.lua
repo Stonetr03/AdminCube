@@ -20,6 +20,7 @@ function MenuBtn:render()
     return Roact.createElement("TextButton",{
         Name = "AdminChat";
         Text = "Admin Chat";
+        LayoutOrder = 3;
         Visible = self.props.Vis;
         BackgroundTransparency = Api.Style.ButtonTransparency;
         Size = UDim2.new(0.5,-10,0,25);

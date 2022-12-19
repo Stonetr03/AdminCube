@@ -5,6 +5,7 @@ local DataStoreModule = require(script:WaitForChild("DataStore"))
 local Players = game:GetService("Players")
 local Api = require(script:WaitForChild("Api"))
 local Version = require(script:WaitForChild("Version"))
+local Log = require(script:WaitForChild("Log"))
 
 print("\n==================================\nAdmin Cube - By Stonetr03 Studios\n" .. Version .. "\n==================================")
 
@@ -28,12 +29,14 @@ local function CommandRunner(p,str)
                 table.insert(args,Split[i])
             end
             Commands[Command].Run(p,args)
+            Log:log("Command",p,str)
         elseif Aliases[Command] then
             local args = {}
             for i = 2, #Split,1 do
                 table.insert(args,Split[i])
             end
             Commands[Aliases[Command]].Run(p,args)
+            Log:log("Command",p,str)
         else
             Api:Notification(p,false,"Invalid Command")
         end

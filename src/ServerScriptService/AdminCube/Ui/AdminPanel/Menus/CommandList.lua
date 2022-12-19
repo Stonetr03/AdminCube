@@ -241,6 +241,7 @@ function MenuBtn:render()
     return Roact.createElement("TextButton",{
         Name = "Commands";
         Text = "Commands";
+        LayoutOrder = 1;
         Visible = self.props.Vis;
         BackgroundTransparency = Api.Style.ButtonTransparency;
         Size = UDim2.new(0.5,-10,0,25);

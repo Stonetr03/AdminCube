@@ -45,7 +45,7 @@ function List:render()
             Time = Roact.createElement("TextLabel",{
                 BackgroundTransparency = 1;
                 TextColor3 = Api.Style.TextColor;
-                Text = NewLog.Name;
+                Text = os.date("%X",tonumber(NewLog.Name));
                 TextSize = 8;
                 Size = UDim2.new(0,80,1,0)
             });

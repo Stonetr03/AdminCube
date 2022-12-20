@@ -4,6 +4,7 @@ local DataStore = require(script.Parent:WaitForChild("DataStore"))
 local Settings = require(script.Parent:WaitForChild("Settings"))
 local Log = require(script.Parent:WaitForChild("Log"))
 
+local HttpService = game:GetService("HttpService")
 local MessagingService = game:GetService("MessagingService")
 local CreateModule = require(script.Parent.CreateModule)
 
@@ -91,11 +92,16 @@ function Module:Fire(p,Key,Args)
 end
 
 function Module:OnEvent(Key,Callback)
-    game.ReplicatedStorage:WaitForChild("AdminCube").ACEvent.OnServerEvent:Connect(function(p,CallingKey,Args)
+    local con = game.ReplicatedStorage:WaitForChild("AdminCube").ACEvent.OnServerEvent:Connect(function(p,CallingKey,Args)
         if CallingKey == Key then
             Callback(p,Args)
         end
     end)
+    local ReturnTab = {}
+    function ReturnTab:Disconnect()
+        con:Disconnect()
+    end
+    return ReturnTab
 end
 
 function Module:Invoke(p,Key,Args)
@@ -104,10 +110,16 @@ end
 
 local RemoteFunctions = {}
 function Module:OnInvoke(Key,Callback)
-    table.insert(RemoteFunctions,{
+    local Tab = {
         Key = Key;
         Callback = Callback;
-    })
+    }
+    table.insert(RemoteFunctions,Tab)
+    local ReturnTab = {}
+    function ReturnTab:Disconnect()
+        table.remove(RemoteFunctions,table.find(RemoteFunctions,Tab))
+    end
+    return ReturnTab
 end
 game.ReplicatedStorage:WaitForChild("AdminCube").ACFunc.OnServerInvoke = function(p,CallingKey,Args)
     for _,o in pairs(RemoteFunctions) do
@@ -157,8 +169,25 @@ end
 
 Log:init(Module:CreateRSFolder("Log"))
 
-function Module:Notification(p,Image,Text) -- Image - True for Headshot, False for No-Image, Other for image
-    Module:Fire(p,"Notification",{Image = Image,Text = Text})
+function Module:Notification(p,Image,Text,ButtonText,ButtonFunc) -- Image - True for Headshot, False for No-Image, Other for image
+    local Button = {}
+    if typeof(ButtonText) == "string" and typeof(ButtonFunc) == "function" then
+        local UUID = HttpService:GenerateGUID(false)
+        Button = {ButtonText,UUID}
+        local con
+        con = Module:OnEvent("_NotificationCallback",function(plr,Id)
+            if typeof(Id) == "string" and UUID == Id and p == plr then
+                ButtonFunc(p)
+                con:Disconnect()
+            end
+        end)
+        task.delay(120,function()
+            if con then
+                con:Disconnect()
+            end
+        end)
+    end
+    Module:Fire(p,"Notification",{Image = Image,Text = Text,Button = Button})
     return true
 end
 

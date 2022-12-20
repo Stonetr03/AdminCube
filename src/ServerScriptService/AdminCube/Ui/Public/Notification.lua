@@ -1,4 +1,3 @@
-local TextService = game:GetService("TextService")
 -- Stonetr03
 
 local Roact = require(game.ReplicatedStorage:WaitForChild("AdminCube"):WaitForChild("Roact"))
@@ -14,11 +13,16 @@ local Tab = {
 
 Api:OnEvent("Notification",function(Args)
     -- Reload Notifications
+    local Button = {}
+    if Args.Button then
+        Button = Args.Button
+    end
     table.insert(ToRender,{
         Image = Args.Image;
         Text = Args.Text;
         TimePaused = false;
         Time = 10;
+        Button = Button;
     })
     Tab.ReloadFunc()
 end)
@@ -31,6 +35,16 @@ function NotificationList:render()
         if ToRender[i].Image == true then
             local content = game.Players:GetUserThumbnailAsync(game.Players.LocalPlayer.UserId, Enum.ThumbnailType.HeadShot, Enum.ThumbnailSize.Size100x100)
             ToRender[i].Image = content;
+        end
+        local ButtonVis = false;
+        local ButtonTxt = ""
+        local ButtonUUID = ""
+        if ToRender[i].Button then
+            if typeof(ToRender[i].Button[1]) == "string" and typeof(ToRender[i].Button[2]) == "string" then
+                ButtonTxt = ToRender[i].Button[1]
+                ButtonUUID = ToRender[i].Button[2]
+                ButtonVis = true
+            end
         end
         if ToRender[i].Image ~= false then
             List[i] = Roact.createElement("Frame",{
@@ -104,6 +118,22 @@ function NotificationList:render()
                         TextXAlignment = Enum.TextXAlignment.Left;
                         TextYAlignment = Enum.TextYAlignment.Center;
                     });
+                    Button = Roact.createElement("TextButton",{
+                        AnchorPoint = Vector2.new(1,1);
+                        Position = UDim2.new(1,-2,1,-2);
+                        BackgroundColor3 = Api.Style.BackgroundSubColor;
+                        BorderSizePixel = 0;
+                        Size = UDim2.new(0, 100,0, 30);
+                        TextColor3 = Api.Style.TextColor;
+                        TextSize = 12;
+                        ZIndex = 10;
+
+                        Text = ButtonTxt;
+                        Visible = ButtonVis;
+                        [Roact.Event.MouseButton1Up] = function()
+                            Api:Fire("_NotificationCallback",ButtonUUID)
+                        end;
+                    });
                 })
             })
         else
@@ -162,6 +192,22 @@ function NotificationList:render()
                         TextSize = 15;
                         TextXAlignment = Enum.TextXAlignment.Left;
                         TextYAlignment = Enum.TextYAlignment.Center;
+                    });
+                    Button = Roact.createElement("TextButton",{
+                        AnchorPoint = Vector2.new(1,1);
+                        Position = UDim2.new(1,-2,1,-2);
+                        BackgroundColor3 = Api.Style.BackgroundSubColor;
+                        BorderSizePixel = 0;
+                        Size = UDim2.new(0, 100,0, 30);
+                        TextColor3 = Api.Style.TextColor;
+                        TextSize = 12;
+                        ZIndex = 10;
+
+                        Text = ButtonTxt;
+                        Visible = ButtonVis;
+                        [Roact.Event.MouseButton1Up] = function()
+                            Api:Fire("_NotificationCallback",ButtonUUID)
+                        end;
                     });
                 })
             })

@@ -3,8 +3,8 @@
 local Roact = require(game.ReplicatedStorage:WaitForChild("AdminCube"):WaitForChild("Roact"))
 
 local Background, SetBackground = Roact.createBinding(Color3.new(0,0,0));
-local BackgroundSubColor, SetBackgroundSubColor = Roact.createBinding(Color3.new(0,0,0));
-local BackgroundSubSubColor, SetBackgroundSubSubColor = Roact.createBinding(Color3.new(0,0,0));
+local BackgroundSubColor, SetBackgroundSubColor = Roact.createBinding(Color3.fromRGB(49,49,49));
+local BackgroundSubSubColor, SetBackgroundSubSubColor = Roact.createBinding(Color3.fromRGB(22,22,22));
 local ButtonColor, SetButtonColor = Roact.createBinding(Color3.new(1,1,1));
 local TextColor, SetTextColor = Roact.createBinding(Color3.new(1,1,1));
 local ButtonTransparency, SetButtonTransparency = Roact.createBinding(0.85);
@@ -70,17 +70,23 @@ function Api:UpdateTheme(Theme)
         UpdateTheme()
     end
 end
+UpdateTheme()
 
 function Api:Fire(Key,Args)
     game.ReplicatedStorage:WaitForChild("AdminCube").ACEvent:FireServer(Key,Args)
 end
 
 function Api:OnEvent(Key,Callback)
-    game.ReplicatedStorage:WaitForChild("AdminCube").ACEvent.OnClientEvent:Connect(function(CallingKey,Args)
+    local con = game.ReplicatedStorage:WaitForChild("AdminCube").ACEvent.OnClientEvent:Connect(function(CallingKey,Args)
         if CallingKey == Key and typeof(Callback) == "function" then
             Callback(Args)
         end
     end)
+    local ReturnTab = {}
+    function ReturnTab:Disconnect()
+        con:Disconnect()
+    end
+    return ReturnTab
 end
 
 function Api:Invoke(Key,Args)

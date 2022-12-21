@@ -124,6 +124,7 @@ function Api:CreateWindow(Props,Component)
         Title = Props.Title;
         Style = Api.Style;
         ZIndex = Props.ZIndex;
+        Position = Props.Position;
     })
     local Tree = Roact.mount(WindowFrame,game.Players.LocalPlayer.PlayerGui:FindFirstChild("__AdminCube_Main"),"Window-" .. Props.Title)
     local ReturnTab = {

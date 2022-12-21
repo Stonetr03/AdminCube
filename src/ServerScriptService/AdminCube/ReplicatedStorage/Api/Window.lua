@@ -13,8 +13,9 @@ function Module:CreateWindow()
     }
 
     function Window:init()
+        local DefaultPos = UDim2.new(0.5,-(self.props.SizeX/2),0.5,-(self.props.SizeY/2))
         self.Visible, self.SetVisiblility = Roact.createBinding(true)
-        self.Position, self.SetPosition = Roact.createBinding(UDim2.new(0.5,-(self.props.SizeX/2),0.5,-(self.props.SizeY/2)))
+        self.Position, self.SetPosition = Roact.createBinding(self.props.Position or DefaultPos)
         self.CloseBtnTransparency, self.SetCloseBtnTransparency = Roact.createBinding(1)
         self.MinimizeBtnTransparency, self.SetMinimizeBtnTransparency = Roact.createBinding(1)
         self.BackBtnTransparency, self.SetBackBtnTransparency = Roact.createBinding(1)

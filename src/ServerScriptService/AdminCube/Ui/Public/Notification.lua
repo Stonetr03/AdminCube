@@ -127,6 +127,7 @@ function NotificationList:render()
                         TextColor3 = Api.Style.TextColor;
                         TextSize = 12;
                         ZIndex = 10;
+                        TextScaled = true;
 
                         Text = ButtonTxt;
                         Visible = ButtonVis;
@@ -202,6 +203,7 @@ function NotificationList:render()
                         TextColor3 = Api.Style.TextColor;
                         TextSize = 12;
                         ZIndex = 10;
+                        TextScaled = true;
 
                         Text = ButtonTxt;
                         Visible = ButtonVis;

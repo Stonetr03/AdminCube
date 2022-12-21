@@ -143,7 +143,6 @@ function DropdownMenu:render()
     local UpdateText = self.SetSelectedText -- Pass through function to Fragment
     local UpdateDropVis = self.SetDropdownVis
     local UpdateValue = props.UpdateValue
-    local ScrollingY = 0
     function DropdownList:render()
         local Frag = {}
         local Bindings = {}
@@ -172,13 +171,11 @@ function DropdownMenu:render()
                     UpdateValue(v)
                 end
             })
-            ScrollingY += 25
             Index += 1
             Frag[i] = Button
         end
         return Roact.createFragment(Frag)
     end
-    
 
     return Roact.createElement("Frame",{
         BackgroundTransparency = 1;
@@ -219,7 +216,7 @@ function DropdownMenu:render()
                 Size = UDim2.new(1,0,3,2);
                 Visible = self.DropdownVis;
                 BottomImage = "";
-                CanvasSize = UDim2.new(0,0,0,ScrollingY);
+                CanvasSize = UDim2.new(0,0,0,0+(#List * 26));
                 MidImage = "rbxasset://textures/ui/Scroll/scroll-middle.png";
                 ScrollBarImageColor3 = props.Style.ButtonColor;
                 ScrollBarThickness = 5;

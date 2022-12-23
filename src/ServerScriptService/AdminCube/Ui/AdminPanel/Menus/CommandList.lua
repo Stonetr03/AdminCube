@@ -194,7 +194,7 @@ function Btns:render()
                                 for index, v in PromptNames do
                                     if v == "player" then
                                         local ToAdd = game.Players.LocalPlayer.Name
-                                        if Results[2][index] ~= "Select" then
+                                        if Results[2][index] and Results[2][index] ~= "Select" then
                                             local Target = game.Players:FindFirstChild(Results[2][index])
                                             if Target then
                                                 ToAdd = Target.Name

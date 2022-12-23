@@ -71,7 +71,7 @@ function Btns:render()
                             return false
                         end
                         for i = 2,#Split,1 do
-                            if string.sub(Split[i],1,1) == "*" and string.sub(Split[i],2,2) == "[" and string.sub(Split[i],string.len(Split[i])) == "]" then
+                            if string.sub(Split[i],1,2) == "*[" and string.sub(Split[i],string.len(Split[i])) == "]" then
                                 -- Required
                                 local Ident = string.sub(Split[i],3,string.len(Split[i]) - 1)
                                 local SubSplit = string.split(Ident,":")

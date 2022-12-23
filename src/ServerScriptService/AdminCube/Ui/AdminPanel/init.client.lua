@@ -79,6 +79,10 @@ local Window = Api:CreateWindow({
 },WindowFrame)
 Window.SetVis(false)
 
+Api:OnEvent("OpenPanel",function()
+    Window.SetVis(true)
+end)
+
 Window.OnClose:Connect(function()
     icon:deselect()
 end)

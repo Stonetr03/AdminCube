@@ -5,8 +5,23 @@
 
     "ServerScriptService": {
       "$className": "ServerScriptService",
-      "$path": "src/ServerScriptService"
       
+      "AdminCube": {
+        "$path": "src/ServerScriptService/AdminCube",
+
+        "ReplicatedStorage": {
+          "$path":"src/ReplicatedStorage",
+
+          "Packages": {
+            "$path":"Packages"
+          }
+        }
+      },
+
+      "Loader": {
+        "$path": "src/ServerScriptService/Loader"
+      }
+
     }
   }
 }

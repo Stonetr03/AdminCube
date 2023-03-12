@@ -1,0 +1,9 @@
+[package]
+name = "stonetr03/admincube"
+version = "2.0.0-pre"
+registry = "https://github.com/UpliftGames/wally-index"
+realm = "shared"
+private = true
+
+[dependencies]
+roact = "roblox/roact@1.4.4"

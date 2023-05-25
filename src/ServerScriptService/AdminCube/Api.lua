@@ -17,6 +17,7 @@ RS.Name = "AdminCube"
 RS.Parent = game:GetService("ReplicatedStorage")
 CreateModule("RemoteEvent",RS,{Name = "ACEvent"})
 CreateModule("RemoteFunction",RS,{Name = "ACFunc"})
+CreateModule("StringValue",RS,{Name = "ClientSettings",Value = HttpService:JSONEncode(Settings.Client)})
 
 local LocalServer = false
 

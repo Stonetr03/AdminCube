@@ -5,7 +5,7 @@ local Api = require(game.ReplicatedStorage:WaitForChild("AdminCube"):WaitForChil
 local LogFolder = game.ReplicatedStorage.AdminCube:WaitForChild("Log")
 
 local List = Roact.Component:extend("LogList")
-local ScrollBinding = Roact.createBinding(0)
+local ScrollBinding,UpdateScrollBinding = Roact.createBinding(0)
 
 local Log = LogFolder:GetChildren()
 
@@ -37,7 +37,9 @@ end
 
 function List:render()
 	local labels = {}
+    local y = 0
 	for i,NewLog in pairs(Log) do
+        y += 20
 		labels[i] = Roact.createElement("Frame",{
 			Size = UDim2.new(1,0,0,20);
             BackgroundTransparency = 1;
@@ -75,6 +77,7 @@ function List:render()
             })
         })
 	end
+    UpdateScrollBinding(y)
 	return Roact.createFragment(labels)
 end
 

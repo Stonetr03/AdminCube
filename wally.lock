@@ -3,6 +3,11 @@
 registry = "test"
 
 [[package]]
+name = "elttob/fusion"
+version = "0.2.0"
+dependencies = []
+
+[[package]]
 name = "roblox/roact"
 version = "1.4.4"
 dependencies = []
@@ -10,4 +15,4 @@ dependencies = []
 [[package]]
 name = "stonetr03/admincube"
 version = "2.0.0-pre"
-dependencies = [["roact", "roblox/roact@1.4.4"]]
+dependencies = [["Fusion", "elttob/fusion@0.2.0"], ["roact", "roblox/roact@1.4.4"]]

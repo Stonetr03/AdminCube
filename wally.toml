@@ -7,3 +7,4 @@ private = true
 
 [dependencies]
 roact = "roblox/roact@1.4.4"
+Fusion = "elttob/fusion@0.2.0"

@@ -1,16 +1,23 @@
 -- Admin Cube
 
-local Roact = require(game.ReplicatedStorage:WaitForChild("AdminCube"):WaitForChild("Roact"))
+local Fusion = require(game.ReplicatedStorage:WaitForChild("AdminCube"):WaitForChild("Fusion"))
 local UserInputService = game:GetService("UserInputService")
 local HttpService = game:GetService("HttpService")
 local GuiService = game:GetService("GuiService")
 local Api = require(game.ReplicatedStorage:WaitForChild("AdminCube"):WaitForChild("Api"))
 
-local CmdBar = Roact.Component:extend("Window")
+local New = Fusion.New
+local Computed = Fusion.Computed
+local Children = Fusion.Children
+local Value = Fusion.Value
+local Event = Fusion.OnEvent
 
-local Visible, SetVisiblity = Roact.createBinding(false)
-local InputRef = Roact.createRef()
-local Text, SetText = Roact.createBinding("!")
+local Module = {}
+
+-- Values
+local Visible = Value(false)
+local Text = Value("!")
+local InputRef = Value()
 
 local ClientSettings = HttpService:JSONDecode(game.ReplicatedStorage:WaitForChild("AdminCube"):WaitForChild("ClientSettings").Value)
 
@@ -28,11 +35,12 @@ UserInputService.InputBegan:Connect(function(Input)
 
             if Input.KeyCode == Enum.KeyCode.BackSlash then
                 if GuiService.SelectedObject == nil then
-                    SetVisiblity(true)
-                    SetText("!")
+                    Visible:set(true)
+                    Text:set("!")
+                    InputRef:get().Text = "!"
                     EnableNav = true
                     task.wait()
-                    InputRef.current:CaptureFocus()
+                    InputRef:get():CaptureFocus()
                 else
                     if ClientSettings.KeyboardNavEnabled and ClientSettings.KeyboardNavEnabled == true then
                         GuiService.SelectedObject = nil
@@ -42,14 +50,14 @@ UserInputService.InputBegan:Connect(function(Input)
                 if ClientSettings.KeyboardNavEnabled and ClientSettings.KeyboardNavEnabled == true then
                     if GuiService.SelectedObject ~= nil then
                         GuiService.SelectedObject = nil
-                    end	
+                    end
                 end
             end
-        elseif UserInputService:GetFocusedTextBox() == InputRef.current then
+        elseif UserInputService:GetFocusedTextBox() == InputRef:get() then
             if Input.KeyCode == Enum.KeyCode.BackSlash and EnableNav == true then
-                InputRef.current:ReleaseFocus();
+                InputRef:get():ReleaseFocus();
                 EnableNav = false;
-                SetVisiblity(false);
+                Visible:set(false);
                 if ClientSettings.KeyboardNavEnabled and ClientSettings.KeyboardNavEnabled == true then
                     if GuiService.SelectedObject == nil then
                         GuiService:Select(game.Players.LocalPlayer:WaitForChild("PlayerGui"))
@@ -74,47 +82,54 @@ UserInputService.InputBegan:Connect(function(Input)
 
     else
         if Input.KeyCode == Enum.KeyCode.BackSlash then
-            SetVisiblity(true)
-            SetText("!")
+            Visible:set(true)
+            Text:set("!")
+            InputRef:get().Text = "!"
             task.wait()
-            InputRef.current:CaptureFocus()
+            InputRef:get():CaptureFocus()
         end
     end
 end)
 
-function CmdBar:render()
-    return Roact.createElement("Frame",{
+function Module.Ui(props)
+    return New "Frame" {
+        Parent = props.Parent;
         Size = UDim2.new(1,0,0,40);
         Position = UDim2.new(0,0,0.9,0);
         BackgroundColor3 = Color3.new(0,0,0);
         BackgroundTransparency = 0.5;
         BorderSizePixel = 0;
-        Visible = Visible;
-    },{
-        TextBox = Roact.createElement("TextBox",{
-            AnchorPoint = Vector2.new(0,0.5);
-            Size = UDim2.new(1,0,0,30);
-            Position = UDim2.new(0,0,0.5,0);
-            BackgroundColor3 = Color3.new(0,0,0);
-            BackgroundTransparency = 0.5;
-            BorderSizePixel = 0;
-            ClearTextOnFocus = false;
-            TextSize = 20;
-            Text = Text;
-            TextColor3 = Color3.new(1,1,1);
-            Font = Enum.Font.SourceSans;
+        Visible = Computed(function()
+            return Visible:get()
+        end);
+        [Children] = {
+            TextBox = New "TextBox" {
+                AnchorPoint = Vector2.new(0,0.5);
+                Size = UDim2.new(1,0,0,30);
+                Position = UDim2.new(0,0,0.5,0);
+                BackgroundColor3 = Color3.new(0,0,0);
+                BackgroundTransparency = 0.5;
+                BorderSizePixel = 0;
+                ClearTextOnFocus = false;
+                TextSize = 20;
+                Text = Computed(function()
+                    return Text:get()
+                end);
+                TextColor3 = Color3.new(1,1,1);
+                Font = Enum.Font.SourceSans;
 
-            [Roact.Ref] = InputRef;
-            [Roact.Event.FocusLost] = function(_,Enter)
-                if Enter then
-                    Api:Fire("CmdBar",InputRef.current.Text)
-                    SetVisiblity(false)
-                else
-                    SetVisiblity(false)
+                [Fusion.Ref] = InputRef;
+                [Event "FocusLost"] = function(_,Enter)
+                    if Enter then
+                        Api:Fire("CmdBar",InputRef:get().Text)
+                        Visible:set(false)
+                    else
+                        Visible:set(false)
+                    end
                 end
-            end;
-        })
-    })
+            }
+        }
+    }
 end
 
-return CmdBar
+return Module

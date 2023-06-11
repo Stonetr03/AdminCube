@@ -38,6 +38,7 @@ function Module.Ui(props)
         AnchorPoint = Vector2.new(1,0);
         BackgroundTransparency = 1;
         Parent = props.Parent;
+        Name = "NotificationFrame";
         [Children] = {
             UIListLayout = New "UIListLayout" {
                 Padding = UDim.new(0,5);
@@ -62,14 +63,14 @@ function Module.Ui(props)
                     end
                     if v.Image ~= false then
                         return i, New "Frame" {
-                            BackgroundColor3 = Color3.new(1,1,1);--TODO:Api.Style.BackgroundSubColor;
+                            BackgroundColor3 = Api.Style.BackgroundSubColor;
                             BorderSizePixel = 0;
                             Size = UDim2.new(0,250,0,110);
                             ZIndex = 1;
 
                             [Children] = {
                                 Frame = New "Frame" {
-                                    BackgroundColor3 = Color3.new(1,1,1);--TODO:Api.Style.Background;
+                                    BackgroundColor3 = Api.Style.Background;
                                     BorderSizePixel = 0;
                                     AnchorPoint = Vector2.new(0.5,0.5);
                                     Position = UDim2.new(0.5,0,0.5,0);
@@ -92,7 +93,7 @@ function Module.Ui(props)
 
                                     [Children] = {
                                         CloseBtn = New "TextButton" {
-                                            BackgroundColor3 = Color3.new(1,1,1);--TODO:Api.Style.BackgroundSubColor;
+                                            BackgroundColor3 = Api.Style.BackgroundSubColor;
                                             BorderSizePixel = 0;
                                             AnchorPoint = Vector2.new(1,0);
                                             Position = UDim2.new(1,0,0,0);
@@ -100,7 +101,7 @@ function Module.Ui(props)
                                             ZIndex = 5;
                                             Font = Enum.Font.SourceSansBold;
                                             Text = "X";
-                                            TextColor3 = Color3.new(1,1,1);--TODO:Api.Style.TextColor;
+                                            TextColor3 = Api.Style.TextColor;
                                             TextSize = 16;
                                             [Event "MouseButton1Up"] = function()
                                                 local tab = ToRender:get()
@@ -122,7 +123,7 @@ function Module.Ui(props)
                                             ZIndex = 5;
                                             Font = Enum.Font.SourceSans;
                                             Text = v.Text;
-                                            TextColor3 = Color3.new(1,1,1);--TODO:Api.Style.TextColor;
+                                            TextColor3 = Api.Style.TextColor;
                                             TextSize = 16;
                                             TextWrapped = true;
                                             TextXAlignment = Enum.TextXAlignment.Left;
@@ -135,7 +136,7 @@ function Module.Ui(props)
                                             ZIndex = 5;
                                             Font = Enum.Font.SourceSans;
                                             Text = "Admin Cube";
-                                            TextColor3 = Color3.new(1,1,1);--TODO:Api.Style.TextColor;
+                                            TextColor3 = Api.Style.TextColor;
                                             TextSize = 15;
                                             TextXAlignment = Enum.TextXAlignment.Left;
                                             TextYAlignment = Enum.TextYAlignment.Center;
@@ -143,10 +144,10 @@ function Module.Ui(props)
                                         Button = New "TextButton" {
                                             AnchorPoint = Vector2.new(1,1);
                                             Position = UDim2.new(1,-2,1,-2);
-                                            BackgroundColor3 = Color3.new(1,1,1);--TODO:Api.Style.BackgroundSubColor;
+                                            BackgroundColor3 = Api.Style.BackgroundSubColor;
                                             BorderSizePixel = 0;
                                             Size = UDim2.new(0, 100,0, 30);
-                                            TextColor3 = Color3.new(1,1,1);--TODO:Api.Style.TextColor;
+                                            TextColor3 = Api.Style.TextColor;
                                             TextSize = 12;
                                             ZIndex = 10;
                                             TextScaled = true;
@@ -163,13 +164,13 @@ function Module.Ui(props)
                         }
                     else
                         return i, New "Frame" {
-                            BackgroundColor3 = Color3.new(1,1,1);--TODO:Api.Style.BackgroundSubColor;
+                            BackgroundColor3 = Api.Style.BackgroundSubColor;
                             BorderSizePixel = 0;
                             Size = UDim2.new(0,250,0,110);
                             ZIndex = 1;
                             [Children] = {
                                 Frame = New "Frame" {
-                                    BackgroundColor3 = Color3.new(1,1,1);--TODO:Api.Style.Background;
+                                    BackgroundColor3 = Api.Style.Background;
                                     BorderSizePixel = 0;
                                     AnchorPoint = Vector2.new(0.5,0.5);
                                     Position = UDim2.new(0.5,0,0.5,0);
@@ -192,7 +193,7 @@ function Module.Ui(props)
 
                                     [Children] = {
                                         CloseBtn = New "TextButton" {
-                                            BackgroundColor3 = Color3.new(1,1,1);--TODO:Api.Style.BackgroundSubColor;
+                                            BackgroundColor3 = Api.Style.BackgroundSubColor;
                                             BorderSizePixel = 0;
                                             AnchorPoint = Vector2.new(1,0);
                                             Position = UDim2.new(1,0,0,0);
@@ -200,7 +201,7 @@ function Module.Ui(props)
                                             ZIndex = 5;
                                             Font = Enum.Font.SourceSansBold;
                                             Text = "X";
-                                            TextColor3 = Color3.new(1,1,1);--TODO:Api.Style.TextColor;
+                                            TextColor3 = Api.Style.TextColor;
                                             TextSize = 16;
                                             [Event "MouseButton1Up"] = function()
                                                 local tab = ToRender:get()
@@ -215,7 +216,7 @@ function Module.Ui(props)
                                             ZIndex = 5;
                                             Font = Enum.Font.SourceSans;
                                             Text = v.Text;
-                                            TextColor3 = Color3.new(1,1,1);--TODO:Api.Style.TextColor;
+                                            TextColor3 = Api.Style.TextColor;
                                             TextSize = 16;
                                             TextWrapped = true;
                                             TextXAlignment = Enum.TextXAlignment.Left;
@@ -228,7 +229,7 @@ function Module.Ui(props)
                                             ZIndex = 5;
                                             Font = Enum.Font.SourceSans;
                                             Text = "Admin Cube";
-                                            TextColor3 = Color3.new(1,1,1);--TODO:Api.Style.TextColor;
+                                            TextColor3 = Api.Style.TextColor;
                                             TextSize = 15;
                                             TextXAlignment = Enum.TextXAlignment.Left;
                                             TextYAlignment = Enum.TextYAlignment.Center;
@@ -236,10 +237,10 @@ function Module.Ui(props)
                                         Button = New "TextButton" {
                                             AnchorPoint = Vector2.new(1,1);
                                             Position = UDim2.new(1,-2,1,-2);
-                                            BackgroundColor3 = Color3.new(1,1,1);--TODO:Api.Style.BackgroundSubColor;
+                                            BackgroundColor3 = Api.Style.BackgroundSubColor;
                                             BorderSizePixel = 0;
                                             Size = UDim2.new(0, 100,0, 30);
-                                            TextColor3 = Color3.new(1,1,1);--TODO:Api.Style.TextColor;
+                                            TextColor3 = Api.Style.TextColor;
                                             TextSize = 12;
                                             ZIndex = 10;
                                             TextScaled = true;

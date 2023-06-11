@@ -99,6 +99,7 @@ function Module.Ui(props)
         BackgroundColor3 = Color3.new(0,0,0);
         BackgroundTransparency = 0.5;
         BorderSizePixel = 0;
+        Name = "CmdBar";
         Visible = Computed(function()
             return Visible:get()
         end);

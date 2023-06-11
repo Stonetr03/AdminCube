@@ -1,14 +1,16 @@
 -- Admin Cube - Client Api
 
-local Roact = require(game.ReplicatedStorage:WaitForChild("AdminCube"):WaitForChild("Roact"))
+local Fusion = require(game.ReplicatedStorage:WaitForChild("AdminCube"):WaitForChild("Fusion"))
 
-local Background, SetBackground = Roact.createBinding(Color3.new(0,0,0));
-local BackgroundSubColor, SetBackgroundSubColor = Roact.createBinding(Color3.fromRGB(49,49,49));
-local BackgroundSubSubColor, SetBackgroundSubSubColor = Roact.createBinding(Color3.fromRGB(22,22,22));
-local ButtonColor, SetButtonColor = Roact.createBinding(Color3.new(1,1,1));
-local TextColor, SetTextColor = Roact.createBinding(Color3.new(1,1,1));
-local ButtonTransparency, SetButtonTransparency = Roact.createBinding(0.85);
-local ButtonSubColor, SetButtonSubColor = Roact.createBinding(Color3.fromRGB(200,200,200))
+local Value = Fusion.Value
+
+local Background = Value(Color3.new(0,0,0));
+local BackgroundSubColor = Value(Color3.fromRGB(49,49,49));
+local BackgroundSubSubColor = Value(Color3.fromRGB(22,22,22));
+local ButtonColor = Value(Color3.new(1,1,1));
+local TextColor = Value(Color3.new(1,1,1));
+local ButtonTransparency = Value(0.85);
+local ButtonSubColor = Value(Color3.fromRGB(200,200,200))
 
 local ThemeUpdateEvents = {}
 
@@ -41,13 +43,13 @@ end
 local function UpdateTheme()
     local Style = require(script:FindFirstChild("Stylesheet." .. Api.Settings.CurrentTheme))
     if Style then
-        SetBackground(Style.Background)
-        SetButtonColor(Style.ButtonColor)
-        SetTextColor(Style.TextColor)
-        SetButtonTransparency(Style.ButtonTransparency)
-        SetButtonSubColor(Style.ButtonSubColor)
-        SetBackgroundSubColor(Style.BackgroundSubColor)
-        SetBackgroundSubSubColor(Style.BackgroundSubSubColor)
+        Background:set(Style.Background)
+        ButtonColor:set(Style.ButtonColor)
+        TextColor:set(Style.TextColor)
+        ButtonTransparency:set(Style.ButtonTransparency)
+        ButtonSubColor:set(Style.ButtonSubColor)
+        BackgroundSubColor:set(Style.BackgroundSubColor)
+        BackgroundSubSubColor:set(Style.BackgroundSubSubColor)
 
         for i = 1,#ThemeUpdateEvents,1 do
             ThemeUpdateEvents[i]()
@@ -110,13 +112,12 @@ function Api:GetCommands()
     return Cmds,Alias,Rank
 end
 
-function Api:CreateWindow(Props,Component)
+function Api:CreateWindow(Props: table,Component: GuiBase)
     if Props.ZIndex == nil then
         Props.ZIndex = 1
     end
     local WindowModule = require(script.Window)
-    local WindowComp,Functions = WindowModule:CreateWindow()
-    local WindowFrame = Roact.createElement(WindowComp,{
+    local Window,Functions = WindowModule:CreateWindow({
         Btns = Props.Buttons;
         SizeX = Props.SizeX;
         SizeY = Props.SizeY;
@@ -125,15 +126,16 @@ function Api:CreateWindow(Props,Component)
         Style = Api.Style;
         ZIndex = Props.ZIndex;
         Position = Props.Position;
+        Parent = game.Players.LocalPlayer.PlayerGui:FindFirstChild("__AdminCube_Main");
+        Name = "Window-" .. Props.Title
     })
-    local Tree = Roact.mount(WindowFrame,game.Players.LocalPlayer.PlayerGui:FindFirstChild("__AdminCube_Main"),"Window-" .. Props.Title)
     local ReturnTab = {
         OnClose = {}
     }
 
     local Close = {}
     function ReturnTab.unmount()
-        Roact.unmount(Tree)
+        Window:Destroy()
 
         Close = nil
     end
@@ -151,7 +153,9 @@ function Api:CreateWindow(Props,Component)
         end
     end
     
-    ReturnTab.SetVis = Functions.SetVis
+    ReturnTab.SetVis = function(Value: boolean)
+        Functions.SetVis:set(Value)
+    end
 
     return ReturnTab
 end

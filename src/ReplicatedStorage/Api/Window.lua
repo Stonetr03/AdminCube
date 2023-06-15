@@ -195,7 +195,7 @@ function Module:CreateWindow(props)
                         o.Callback()
                     end;
                 };
-            end,function() end)
+            end,Fusion.cleanup)
         }
     };
 

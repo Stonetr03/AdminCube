@@ -33,9 +33,9 @@ local Themes = {}
 local CurrentTheme = 0
 for i,o in pairs(script:GetChildren()) do
     if string.sub(o.Name,1,11) == "Stylesheet." then
-        Themes[i] = string.sub(o.Name,12)
+        table.insert(Themes,string.sub(o.Name,12))
         if string.sub(o.Name,12) == Api.Settings.CurrentTheme then
-            CurrentTheme = i
+            CurrentTheme = table.find(Themes,string.sub(o.Name,12))
         end
     end
 end

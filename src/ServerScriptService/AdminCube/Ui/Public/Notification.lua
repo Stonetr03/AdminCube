@@ -258,7 +258,7 @@ function Module.Ui(props)
                     end
                 end
                 return i,v
-            end,function() end)
+            end,Fusion.cleanup)
         }
     }
 end

@@ -1,83 +1,91 @@
 -- Admin Cube - Settings Menu
 
-local Roact = require(game.ReplicatedStorage:WaitForChild("AdminCube"):WaitForChild("Roact"))
+local Fusion = require(game.ReplicatedStorage:WaitForChild("AdminCube"):WaitForChild("Fusion"))
 
-local MenuBtn = Roact.Component:extend("SettingsBtn")
-local Menu = Roact.Component:extend("SettingsMenu")
+local New = Fusion.New
+local Value = Fusion.Value
+local Event = Fusion.OnEvent
+local Children = Fusion.Children
+local Computed = Fusion.Computed
 
 local Api = require(game.ReplicatedStorage:WaitForChild("AdminCube"):WaitForChild("Api"))
 
 local SetVis
 
-function MenuBtn:render()
-    return Roact.createElement("TextButton",{
+function MenuBtn(props)
+    return New "TextButton" {
         Name = "Settings";
         Text = "Settings";
         LayoutOrder = 2;
-        Visible = self.props.Vis;
+        Visible = props.Vis;
         BackgroundTransparency = Api.Style.ButtonTransparency;
         Size = UDim2.new(0.5,-10,0,25);
         BorderSizePixel = 0;
         BackgroundColor3 = Api.Style.ButtonColor;
         TextColor3 = Api.Style.TextColor;
-        [Roact.Event.MouseButton1Up] = function()
+		TextSize = 8;
+        Font = Enum.Font.Legacy;
+        [Event "MouseButton1Up"] = function()
             SetVis(true)
-            self.props.SetVis(false)
+            props.SetVis(false)
         end
-    })
+    }
 end
 
 function BackCallBack()
     SetVis(false)
 end
 
-function Menu:init()
-    self.Visible, self.SetVisiblility = Roact.createBinding(false)
-    self.ThemeBtnText, self.SetThemeBtnText = Roact.createBinding("Theme : " .. Api.Settings.CurrentTheme);
+local Visible = Value(false)
+local ThemeBtnText = Value(Api.Settings.CurrentTheme);
 
-    Api:ThemeUpdateEvent(function()
-        self.SetThemeBtnText("Theme : " .. Api.Settings.CurrentTheme)
-    end)
+Api:ThemeUpdateEvent(function()
+    ThemeBtnText:set(Api.Settings.CurrentTheme)
+end)
 
-    SetVis = function(Vis)
-        self.SetVisiblility(Vis)
-    end
+SetVis = function(Vis)
+    Visible:set(Vis)
 end
 
-function Menu:render()
-    return Roact.createElement("Frame",{
-        Name = "Settings";
-        BackgroundColor3 = Api.Style.Background;
-        BorderSizePixel = 0;
-        Size = UDim2.new(1,0,1,0);
-        Visible = self.Visible;
-        ZIndex = 5;
-    },{
-        UiListLayout = Roact.createElement("UIListLayout",{
-            Padding = UDim.new(0,5);
-        });
+function Menu()
+	return New "Frame" {
+		Name = "Settings";
+		BackgroundColor3 = Api.Style.Background;
+		BorderSizePixel = 0;
+		Size = UDim2.new(1,0,1,0);
+		Visible = Visible;
+		ZIndex = 5;
+		[Children] = {
+			UiListLayout = New "UIListLayout" {
+				Padding = UDim.new(0,5);
+			};
 
-        UiPadding = Roact.createElement("UIPadding",{
-            PaddingTop = UDim.new(0,5);
-            PaddingBottom = UDim.new(0,5);
-            PaddingLeft = UDim.new(0,5);
-            PaddingRight = UDim.new(0,5);
-        });
+			UiPadding = New "UIPadding" {
+				PaddingTop = UDim.new(0,5);
+				PaddingBottom = UDim.new(0,5);
+				PaddingLeft = UDim.new(0,5);
+				PaddingRight = UDim.new(0,5);
+			};
 
-        -- Theme button
-        ThemeButton = Roact.createElement("TextButton",{
-            ZIndex = 10;
-            BackgroundColor3 = Api.Style.ButtonColor;
-            BackgroundTransparency = Api.Style.ButtonTransparency;
-            TextColor3 = Api.Style.TextColor;
-            Size = UDim2.new(1,0,0,25);
-            Text = self.ThemeBtnText;
+			-- Theme button
+			ThemeButton = New "TextButton" {
+				ZIndex = 10;
+				BackgroundColor3 = Api.Style.ButtonColor;
+				BackgroundTransparency = Api.Style.ButtonTransparency;
+				TextColor3 = Api.Style.TextColor;
+				Size = UDim2.new(1,0,0,25);
+				Text = Computed(function()
+					return "Theme : " .. tostring(ThemeBtnText:get())
+				end);
+				TextSize = 8;
+        		Font = Enum.Font.Legacy;
 
-            [Roact.Event.MouseButton1Up] = function()
-                Api:UpdateTheme()
-            end
-        })
-    })
+				[Event "MouseButton1Up"] = function()
+					Api:UpdateTheme()
+				end
+			};
+		}
+	}
 end
 
 return {MenuBtn,Menu,BackCallBack}

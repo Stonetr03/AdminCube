@@ -72,7 +72,7 @@ function Menu()
     end)
 
     return New "Frame" {
-        Name = "AdminChat";
+        Name = "ServerInfo";
         BackgroundColor3 = Api.Style.Background;
         BorderSizePixel = 0;
         Size = UDim2.new(1,0,1,0);

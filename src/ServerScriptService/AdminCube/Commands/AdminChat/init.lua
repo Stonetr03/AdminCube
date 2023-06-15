@@ -53,8 +53,8 @@ Api:SubscribeBroadcast("AdminChat",function(Encoded)
     local Data = HttpService:JSONDecode(Encoded)
     table.insert(Messages,1,{Name = Data.Name,Msg = Data.Msg})
     -- Clear last message so we dont have 800 messages stored in memory
-    if #Messages >= 30 then
-        Messages[30] = nil
+    if #Messages >= 18 then
+        Messages[18] = nil
     end
     Api:Fire("all","AdminChat-Update")
 end)

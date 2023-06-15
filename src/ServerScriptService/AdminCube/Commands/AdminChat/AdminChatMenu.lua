@@ -77,10 +77,7 @@ local function ReloadText()
         local NewText = LastText .. '<font color="rgb(' .. Slice(Api.Style.ButtonSubColor:get().R)  .. ',' .. Slice(Api.Style.ButtonSubColor:get().B ) .. ',' .. Slice(Api.Style.ButtonSubColor:get().B ) .. ')"> &lt;' .. Msgs[i].Name .. '&gt; </font><font color="rgb(' .. Slice(Api.Style.TextColor:get().R )  .. ',' .. Slice(Api.Style.TextColor:get().G ) .. ',' .. Slice(Api.Style.TextColor:get().B ) .. ')">' .. Msgs[i].Msg .. '</font>\n'
         ChatText:set(NewText)
 
-
-        if ChatRef:get().TextFits then
-            LastText = NewText
-        end
+        LastText = NewText
     end
     ChatText:set(LastText)
 end
@@ -120,7 +117,8 @@ function Menu()
                 Text = ChatText;
                 ZIndex = 10;
                 Font = Enum.Font.SourceSans;
-    
+                ClipsDescendants = true;
+
                 [Fusion.Ref] = ChatRef;
             };
             InputBox = New "TextBox" {
@@ -136,7 +134,7 @@ function Menu()
                 TextColor3 = Api.Style.TextColor;
                 TextSize = 16;
                 Font = Enum.Font.SourceSans;
-    
+
                 [Fusion.Ref] = InputRef;
                 [Event "FocusLost"] = function(Enter)
                     if Enter then

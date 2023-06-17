@@ -6,7 +6,6 @@ local New = Fusion.New
 local Value = Fusion.Value
 local Event = Fusion.OnEvent
 local Children = Fusion.Children
-local Computed = Fusion.Computed
 
 local Background = Value(Color3.new(0,0,0));
 local BackgroundSubColor = Value(Color3.fromRGB(49,49,49));

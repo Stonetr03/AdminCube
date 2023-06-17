@@ -2,7 +2,11 @@
 
 local Fusion = require(game.ReplicatedStorage:WaitForChild("AdminCube"):WaitForChild("Fusion"))
 
+local New = Fusion.New
 local Value = Fusion.Value
+local Event = Fusion.OnEvent
+local Children = Fusion.Children
+local Computed = Fusion.Computed
 
 local Background = Value(Color3.new(0,0,0));
 local BackgroundSubColor = Value(Color3.fromRGB(49,49,49));
@@ -175,7 +179,6 @@ function ShowPrompt(Prompts)
     local CurrentValues = {}
     local Y = 27
     local ButtonFragments = {}
-    local ButtonsComp = Roact.Component:extend("PromptButtonsComp")
 
     local Added = 0
     for i,o in pairs(Prompts.Prompt) do
@@ -183,75 +186,70 @@ function ShowPrompt(Prompts)
             Added += 75
         end
     end
-    function ButtonsComp:render()
-        for i,o in pairs(Prompts.Prompt) do
-            if o.Type == "Boolean" then
-                ButtonFragments[i] = Roact.createElement(PromptBoolean,{
-                    Style = Api.Style;
-                    Y = Y;
-                    Title = o.Title;
-                    DefaultValue = o.DefaultValue;
-                    UpdateValue = function(NewValue)
-                        CurrentValues[i] = NewValue
-                    end
-                })
-                CurrentValues[i] = o.DefaultValue
-            elseif o.Type == "String" then
-                ButtonFragments[i] = Roact.createElement(PromptString,{
-                    Style = Api.Style;
-                    Y = Y;
-                    Title = o.Title;
-                    DefaultValue = o.DefaultValue;
-                    UpdateValue = function(NewValue)
-                        CurrentValues[i] = NewValue
-                    end
-                })
-                CurrentValues[i] = o.DefaultValue
-            elseif o.Type == "Dropdown" then
-                ButtonFragments[i] = Roact.createElement(PromptDropdown,{
-                    Style = Api.Style;
-                    Y = Y;
-                    Title = o.Title;
-                    Value = o.Value;
-                    DefaultValue = o.DefaultValue;
-                    UpdateValue = function(NewValue)
-                        CurrentValues[i] = NewValue
-                    end
-                })
-                CurrentValues[i] = o.DefaultValue
+    for i,o in pairs(Prompts.Prompt) do
+        if o.Type == "Boolean" then
+            ButtonFragments[i] = PromptBoolean({
+                Style = Api.Style;
+                Y = Y;
+                Title = o.Title;
+                DefaultValue = o.DefaultValue;
+                UpdateValue = function(NewValue)
+                    CurrentValues[i] = NewValue
+                end
+            })
+            CurrentValues[i] = o.DefaultValue
+        elseif o.Type == "String" then
+            ButtonFragments[i] = PromptString({
+                Style = Api.Style;
+                Y = Y;
+                Title = o.Title;
+                DefaultValue = o.DefaultValue;
+                UpdateValue = function(NewValue)
+                    CurrentValues[i] = NewValue
+                end
+            })
+            CurrentValues[i] = o.DefaultValue
+        elseif o.Type == "Dropdown" then
+            ButtonFragments[i] = PromptDropdown({
+                Style = Api.Style;
+                Y = Y;
+                Title = o.Title;
+                Value = o.Value;
+                DefaultValue = o.DefaultValue;
+                UpdateValue = function(NewValue)
+                    CurrentValues[i] = NewValue
+                end
+            })
+            CurrentValues[i] = o.DefaultValue
 
-            elseif o.Type == "Image" then
-                ButtonFragments[i] = Roact.createElement(PromptImage,{
-                    Style = Api.Style;
-                    Y = Y;
-                    Image = o.Image;
-                    Text1 = o.Text1;
-                    Text2 = o.Text2;
-                    Text3 = o.Text3;
-                    Text4 = o.Text4;
-                })
-                Y += 75
-            end
-            Y += 25
+        elseif o.Type == "Image" then
+            ButtonFragments[i] = PromptImage({
+                Style = Api.Style;
+                Y = Y;
+                Image = o.Image;
+                Text1 = o.Text1;
+                Text2 = o.Text2;
+                Text3 = o.Text3;
+                Text4 = o.Text4;
+            })
+            Y += 75
         end
-        return Roact.createFragment(ButtonFragments)
+        Y += 25
     end
-    
-    local PromptComp = Roact.Component:extend("PromptComp")
-    function PromptComp:render()
-        return Roact.createElement("ScrollingFrame",{
-            BackgroundTransparency = 1;
-            Size = UDim2.new(1,0,1,0);
-            BottomImage = "";
-            CanvasSize = UDim2.new(0,0,0,Y+50);
-            MidImage = "rbxasset://textures/ui/Scroll/scroll-middle.png";
-            ScrollBarImageColor3 = Api.Style.ButtonColor;
-            ScrollBarThickness = 5;
-            ScrollingDirection = Enum.ScrollingDirection.Y;
-            TopImage = "";
-            ClipsDescendants = false;
-       },{
-            Title = Roact.createElement("TextLabel",{
+
+    local PromptComp = New "ScrollingFrame" {
+        BackgroundTransparency = 1;
+        Size = UDim2.new(1,0,1,0);
+        BottomImage = "";
+        CanvasSize = UDim2.new(0,0,0,Y+50);
+        MidImage = "rbxasset://textures/ui/Scroll/scroll-middle.png";
+        ScrollBarImageColor3 = Api.Style.ButtonColor;
+        ScrollBarThickness = 5;
+        ScrollingDirection = Enum.ScrollingDirection.Y;
+        TopImage = "";
+        ClipsDescendants = false;
+        [Children] = {
+            Title = New "TextLabel" {
                 BackgroundColor3 = Api.Style.ButtonColor;
                 BackgroundTransparency = 0.9;
                 BorderSizePixel = 0;
@@ -262,67 +260,68 @@ function ShowPrompt(Prompts)
                 TextSize = 25;
                 LayoutOrder = 1;
                 ZIndex = 20;
-            });
-            Buttons = Roact.createElement(ButtonsComp);
-            Frame = Roact.createElement("Frame",{
+            };
+            Buttons = ButtonFragments;
+            Frame = New "Frame" {
                 BackgroundTransparency = 1;
                 Position = UDim2.new(0,0,0, (#Prompts.Prompt * 25) +27 + Added);
                 Size = UDim2.new(1,0,0,25);
-            },{
-                Confirm = Roact.createElement("TextButton",{
-                    BackgroundColor3 = Api.Style.ButtonColor;
-                    BackgroundTransparency = Api.Style.ButtonTransparency;
-                    BorderSizePixel = 0;
-                    Size = UDim2.new(0.5,-1,1,0);
-                    Font = Enum.Font.SourceSans;
-                    Text = "Confirm";
-                    TextColor3 = Api.Style.TextColor;
-                    TextSize = 22;
-                    ZIndex = 20;
-
-                    [Roact.Event.MouseButton1Up] = function()
-
-                        if Promptlocal == true then
-                            if typeof(localresponse) == "function" then
-                                localresponse({true,CurrentValues})
+                [Children] = {
+                    Confirm = New "TextButton" {
+                        BackgroundColor3 = Api.Style.ButtonColor;
+                        BackgroundTransparency = Api.Style.ButtonTransparency;
+                        BorderSizePixel = 0;
+                        Size = UDim2.new(0.5,-1,1,0);
+                        Font = Enum.Font.SourceSans;
+                        Text = "Confirm";
+                        TextColor3 = Api.Style.TextColor;
+                        TextSize = 22;
+                        ZIndex = 20;
+        
+                        [Event "MouseButton1Up"] = function()
+        
+                            if Promptlocal == true then
+                                if typeof(localresponse) == "function" then
+                                    localresponse({true,CurrentValues})
+                                end
+                            else
+                                Api:Fire("Prompts",{true,CurrentValues})
                             end
-                        else
-                            Api:Fire("Prompts",{true,CurrentValues})
-                        end
-
-                        Window.unmount()
-                        PromptOpen = false
-                    end;
-                });
-                Cancel = Roact.createElement("TextButton",{
-                    BackgroundColor3 = Api.Style.ButtonColor;
-                    BackgroundTransparency = Api.Style.ButtonTransparency;
-                    BorderSizePixel = 0;
-                    Size = UDim2.new(0.5,-1,1,0);
-                    Position = UDim2.new(0.5,1,0,0);
-                    Font = Enum.Font.SourceSans;
-                    Text = "Cancel";
-                    TextColor3 = Api.Style.TextColor;
-                    TextSize = 22;
-                    ZIndex = 20;
-
-                    [Roact.Event.MouseButton1Up] = function()
-                        
-                        if Promptlocal == true then
-                            if typeof(localresponse) == "function" then
-                                localresponse({false})
+        
+                            Window.unmount()
+                            PromptOpen = false
+                        end;
+                    };
+                    Cancel = New "TextButton" {
+                        BackgroundColor3 = Api.Style.ButtonColor;
+                        BackgroundTransparency = Api.Style.ButtonTransparency;
+                        BorderSizePixel = 0;
+                        Size = UDim2.new(0.5,-1,1,0);
+                        Position = UDim2.new(0.5,1,0,0);
+                        Font = Enum.Font.SourceSans;
+                        Text = "Cancel";
+                        TextColor3 = Api.Style.TextColor;
+                        TextSize = 22;
+                        ZIndex = 20;
+        
+                        [Event "MouseButton1Up"] = function()
+                            
+                            if Promptlocal == true then
+                                if typeof(localresponse) == "function" then
+                                    localresponse({false})
+                                end
+                            else
+                                Api:Fire("Prompts",{false})
                             end
-                        else
-                            Api:Fire("Prompts",{false})
-                        end
-
-                        Window.unmount()
-                        PromptOpen = false
-                    end;
-                })
-			})
-        })
-    end
+        
+                            Window.unmount()
+                            PromptOpen = false
+                        end;
+                    }
+                }
+            }
+        }
+    }
 
     Window = Api:CreateWindow({
         SizeX = 250;

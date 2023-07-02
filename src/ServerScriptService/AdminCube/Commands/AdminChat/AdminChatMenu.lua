@@ -1,6 +1,7 @@
 -- Admin Cube - Admin Chat Menu
 
 local Fusion = require(game.ReplicatedStorage:WaitForChild("AdminCube"):WaitForChild("Fusion"))
+local GuiService = game:GetService("GuiService")
 
 local New = Fusion.New
 local Value = Fusion.Value
@@ -96,6 +97,20 @@ Api:OnEvent("AdminChat-Update",function()
 end)
 
 function Menu()
+    if GuiService:IsTenFootInterface() == true then
+        return New "TextLabel" {
+            BackgroundColor3 = Api.Style.Background;
+            Size = UDim2.new(1,0,1,0);
+            TextSize = 15;
+            TextWrapped = true;
+            TextColor3 = Color3.new(1,1,1);
+            Text = "Admin Chat is disabled on consoles.";
+            ZIndex = 10;
+            Font = Enum.Font.SourceSans;
+            ClipsDescendants = true;
+            Visible = Visible;
+        }
+    end
     return New "Frame" {
         Name = "AdminChat";
         BackgroundColor3 = Api.Style.Background;

@@ -240,7 +240,7 @@ function ShowPrompt(Prompts)
         BackgroundTransparency = 1;
         Size = UDim2.new(1,0,1,0);
         BottomImage = "";
-        CanvasSize = UDim2.new(0,0,0,Y+50);
+        CanvasSize = UDim2.new(0,0,0,Y+25);
         MidImage = "rbxasset://textures/ui/Scroll/scroll-middle.png";
         ScrollBarImageColor3 = Api.Style.ButtonColor;
         ScrollBarThickness = 5;

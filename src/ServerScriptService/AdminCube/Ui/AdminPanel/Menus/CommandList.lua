@@ -277,6 +277,7 @@ function Menu()
         BackgroundTransparency = 1;
         Size = UDim2.new(1,0,1,0);
         Visible = Visible;
+        Name = "Commands";
         [Children] = {
             List = New "ScrollingFrame" {
                 Name = "Settings";

@@ -7,12 +7,7 @@ local New = Fusion.New
 local Children = Fusion.Children
 
 -- Topbar
-local TopbarPath = game.ReplicatedStorage:WaitForChild("AdminCube"):WaitForChild("Topbar")
-local TBCheck = game.ReplicatedStorage:FindFirstChild("TopbarPlusReference")
-if TBCheck then
-    TopbarPath = TBCheck.Value
-end
-local Topbar = require(TopbarPath)
+local Topbar = require(game.ReplicatedStorage:WaitForChild("AdminCube"):WaitForChild("Topbar"))
 
 local icon = Topbar.new()
 icon:setImage("http://www.roblox.com/asset/?id=5010019455") -- 24x24

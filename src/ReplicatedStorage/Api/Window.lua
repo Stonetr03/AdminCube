@@ -67,9 +67,11 @@ function Module:CreateWindow(props)
                 dragStart = input.Position
                 startPos = Position:get()
 
-                input.Changed:Connect(function()
+                local con
+                con = input.Changed:Connect(function()
                     if input.UserInputState == Enum.UserInputState.End then
                         dragging = false
+                        con:Disconnect()
                     end
                 end)
             end

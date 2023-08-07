@@ -26,44 +26,63 @@ function Module:GetRank(p)
     return Data.Rank
 end
 
-function Module:GetPlayer(Name,p) -- Name Requested to Find, Player who Sent 
-    if Name == "me" then
-        return p
-    elseif Name == nil then
-        return p
-    else
-        -- Match UserNames
-        for _,o in pairs(game.Players:GetPlayers()) do
-            if string.lower(o.Name) == Name then
-                return o
+function Module:GetPlayer(Text: string,p: Player): table -- Name Requested to Find, Player who Sent 
+    -- Parse Players
+    local SplitTexts = ".,;:-/"
+    local Parse = {Text}
+    for i = 1,string.len(SplitTexts),1 do
+        local SplitSep = string.sub(SplitTexts,i,i)
+        local New = {}
+        for _,o in pairs(Parse) do
+            local split = string.split(o,SplitSep)
+            for _,a in pairs(split) do
+                table.insert(New,a)
             end
         end
-        -- Match Display Names
-        if Settings.DisplayNames == true then
+        Parse = New
+    end
+    -- Table
+    local Plrs = {}
+    for _,Name in pairs(Parse) do
+        if Name == "me" then
+            table.insert(Plrs,p)
+        elseif Name == nil then
+            table.insert(Plrs,p)
+        else
+            -- Match UserNames
             for _,o in pairs(game.Players:GetPlayers()) do
-                if string.lower(o.DisplayName) == Name then
-                    return o
+                if string.lower(o.Name) == Name then
+                    table.insert(Plrs,o)
                 end
             end
-        end
-
-        -- Match Username again
-        for _,o in pairs(game.Players:GetPlayers()) do
-            if string.find(string.lower(o.Name),Name) ~= nil then
-                return o
+            -- Match Display Names
+            if Settings.DisplayNames == true then
+                for _,o in pairs(game.Players:GetPlayers()) do
+                    if string.lower(o.DisplayName) == Name then
+                        table.insert(Plrs,o)
+                    end
+                end
             end
-        end
-        
-        -- Match Display name again
-        if Settings.DisplayNames == true then
+
+            -- Match Username again
             for _,o in pairs(game.Players:GetPlayers()) do
                 if string.find(string.lower(o.Name),Name) ~= nil then
-                    return o
+                    table.insert(Plrs,o)
                 end
             end
+
+            -- Match Display name again
+            if Settings.DisplayNames == true then
+                for _,o in pairs(game.Players:GetPlayers()) do
+                    if string.find(string.lower(o.Name),Name) ~= nil then
+                        table.insert(Plrs,o)
+                    end
+                end
+            end
+
         end
-        
     end
+    return Plrs
 end
 
 function Module:RegisterCommand(Name,Desc,Run,Arg,Alias) -- Arg {[Player],[String],etc} -- Alias {"A","B", etc}

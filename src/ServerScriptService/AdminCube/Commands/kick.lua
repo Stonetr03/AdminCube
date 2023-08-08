@@ -5,13 +5,12 @@ local Api = require(script.Parent.Parent:WaitForChild("Api"))
 Api:RegisterCommand("kick","Kicks a player.",function(p,Args)
     local s,e = pcall(function()
         if Api:GetRank(p) >= 2 then
-            local Target = Api:GetPlayer(Args[1],p)
-            if Target then
-                local msg = ""
-                table.remove(Args,1)
-                for i,v in pairs(Args) do
-                    msg = msg .. tostring(v)
-                end
+            local msg = ""
+            table.remove(Args,1)
+            for _,v in pairs(Args) do
+                msg = msg .. tostring(v)
+            end
+            for _,Target in pairs(Api:GetPlayer(Args[1],p)) do
                 Target:Kick(msg)
             end
         else

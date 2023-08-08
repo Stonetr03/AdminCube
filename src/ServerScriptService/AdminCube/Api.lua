@@ -26,7 +26,10 @@ function Module:GetRank(p)
     return Data.Rank
 end
 
-function Module:GetPlayer(Text: string,p: Player): table -- Name Requested to Find, Player who Sent 
+function Module:GetPlayer(Text: string,p: Player): table -- Name Requested to Find, Player who Sent
+    if Text == "" or Text == nil then
+        Text = string.lower(p.Name)
+    end
     -- Parse Players
     local SplitTexts = ".,;:-/"
     local Parse = {Text}
@@ -46,8 +49,10 @@ function Module:GetPlayer(Text: string,p: Player): table -- Name Requested to Fi
     for _,Name in pairs(Parse) do
         if Name == "me" then
             table.insert(Plrs,p)
-        elseif Name == nil then
-            table.insert(Plrs,p)
+        elseif Name == "all" or Name == "everyone" then
+            for _,Player in pairs(game.Players:GetPlayers()) do
+                table.insert(Plrs,Player)
+            end
         else
             -- Match UserNames
             for _,o in pairs(game.Players:GetPlayers()) do
@@ -144,7 +149,7 @@ end
 game.ReplicatedStorage:WaitForChild("AdminCube").ACFunc.OnServerInvoke = function(p,CallingKey,Args)
     for _,o in pairs(RemoteFunctions) do
         if o.Key == CallingKey then
-            return o.Callback(p,Args)            
+            return o.Callback(p,Args)
         end
     end
 end

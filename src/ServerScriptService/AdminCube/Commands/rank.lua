@@ -7,7 +7,7 @@ local DataStore = require(script.Parent.Parent:WaitForChild("DataStore"))
 Api:RegisterCommand("vip","Makes a player Vip",function(p,Args)
     local s,e = pcall(function()
         if Api:GetRank(p) >= 3 then
-            local Target = Api:GetPlayer(Args[1],p)
+            local Target = Api:GetPlayer(Args[1],p)[1]
             if Target then
                 local TargetRank = Api:GetRank(Target)
                 if TargetRank < Api:GetRank(p) then
@@ -32,7 +32,7 @@ end,"3;*[player]")
 Api:RegisterCommand("unvip","Removes player's vip rank, makes them player rank.",function(p,Args)
     local s,e = pcall(function()
         if Api:GetRank(p) >= 3 then
-            local Target = Api:GetPlayer(Args[1],p)
+            local Target = Api:GetPlayer(Args[1],p)[1]
             if Target then
                 local TargetRank = Api:GetRank(Target)
                 if TargetRank < Api:GetRank(p) then
@@ -75,7 +75,7 @@ end,"3;*[player]")
 Api:RegisterCommand("mod","Makes a player Mod",function(p,Args)
     local s,e = pcall(function()
         if Api:GetRank(p) >= 3 then
-            local Target = Api:GetPlayer(Args[1],p)
+            local Target = Api:GetPlayer(Args[1],p)[1]
             if Target then
                 local TargetRank = Api:GetRank(Target)
                 if TargetRank < Api:GetRank(p) then
@@ -109,7 +109,7 @@ end,"3;*[player]")
 Api:RegisterCommand("unmod","Removes player's mod rank, makes them player rank.",function(p,Args)
     local s,e = pcall(function()
         if Api:GetRank(p) >= 3 then
-            local Target = Api:GetPlayer(Args[1],p)
+            local Target = Api:GetPlayer(Args[1],p)[1]
             if Target then
                 local TargetRank = Api:GetRank(Target)
                 if TargetRank < Api:GetRank(p) then
@@ -151,7 +151,7 @@ end,"3;*[player]")
 Api:RegisterCommand("admin","Makes a player Admin",function(p,Args)
     local s,e = pcall(function()
         if Api:GetRank(p) >= 4 then
-            local Target = Api:GetPlayer(Args[1],p)
+            local Target = Api:GetPlayer(Args[1],p)[1]
             if Target then
                 local TargetRank = Api:GetRank(Target)
                 if TargetRank < Api:GetRank(p) then
@@ -185,7 +185,7 @@ end,"4;*[player]")
 Api:RegisterCommand("unadmin","Removes player's admin rank, makes them player rank.",function(p,Args)
     local s,e = pcall(function()
         if Api:GetRank(p) >= 4 then
-            local Target = Api:GetPlayer(Args[1],p)
+            local Target = Api:GetPlayer(Args[1],p)[1]
             if Target then
                 local TargetRank = Api:GetRank(Target)
                 if TargetRank < Api:GetRank(p) then

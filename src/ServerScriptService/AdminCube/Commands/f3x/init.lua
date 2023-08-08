@@ -7,10 +7,11 @@ local Api = require(script.Parent.Parent:WaitForChild("Api"))
 Api:RegisterCommand("f3x","Building Tools.",function(p,Args)
     local s,e = pcall(function()
         if Api:GetRank(p) >= 4 then
-            local Target = Api:GetPlayer(Args[1],p)
-            local Tool = script:FindFirstChild("Tools"):Clone()
-            if Tool then
-                Tool.Parent = Target.Backpack
+            for _,Target in pairs(Api:GetPlayer(Args[1],p)) do
+                local Tool = script:FindFirstChild("Tools"):Clone()
+                if Tool then
+                    Tool.Parent = Target.Backpack
+                end
             end
         else
             -- Invalid Rank Notification

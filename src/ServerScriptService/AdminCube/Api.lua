@@ -48,23 +48,33 @@ function Module:GetPlayer(Text: string,p: Player): table -- Name Requested to Fi
     local Plrs = {}
     for _,Name in pairs(Parse) do
         if Name == "me" then
-            table.insert(Plrs,p)
+            if table.find(Plrs,p) == nil then
+                table.insert(Plrs,p)
+            end
         elseif Name == "all" or Name == "everyone" then
             for _,Player in pairs(game.Players:GetPlayers()) do
-                table.insert(Plrs,Player)
+                if table.find(Plrs,Player) == nil then
+                    table.insert(Plrs,Player)
+                end
             end
         else
             -- Match UserNames
             for _,o in pairs(game.Players:GetPlayers()) do
                 if string.lower(o.Name) == Name then
-                    table.insert(Plrs,o)
+                    if table.find(Plrs,o) == nil then
+                        table.insert(Plrs,o)
+                        break
+                    end
                 end
             end
             -- Match Display Names
             if Settings.DisplayNames == true then
                 for _,o in pairs(game.Players:GetPlayers()) do
                     if string.lower(o.DisplayName) == Name then
-                        table.insert(Plrs,o)
+                        if table.find(Plrs,o) == nil then
+                            table.insert(Plrs,o)
+                            break
+                        end
                     end
                 end
             end
@@ -72,7 +82,10 @@ function Module:GetPlayer(Text: string,p: Player): table -- Name Requested to Fi
             -- Match Username again
             for _,o in pairs(game.Players:GetPlayers()) do
                 if string.find(string.lower(o.Name),Name) ~= nil then
-                    table.insert(Plrs,o)
+                    if table.find(Plrs,o) == nil then
+                        table.insert(Plrs,o)
+                        break
+                    end
                 end
             end
 
@@ -80,13 +93,17 @@ function Module:GetPlayer(Text: string,p: Player): table -- Name Requested to Fi
             if Settings.DisplayNames == true then
                 for _,o in pairs(game.Players:GetPlayers()) do
                     if string.find(string.lower(o.Name),Name) ~= nil then
-                        table.insert(Plrs,o)
+                        if table.find(Plrs,o) == nil then
+                            table.insert(Plrs,o)
+                            break
+                        end
                     end
                 end
             end
 
         end
     end
+    print("CommandRunner,\nSend:",Text,"\nPlrs:",Plrs)
     return Plrs
 end
 

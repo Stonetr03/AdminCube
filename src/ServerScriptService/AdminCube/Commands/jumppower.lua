@@ -5,12 +5,14 @@ local Api = require(script.Parent.Parent:WaitForChild("Api"))
 Api:RegisterCommand("jumppower","Changes the JumpPower of a Player's Character",function(p,Args)
     local s,e = pcall(function()
         if Api:GetRank(p) >= 2 then
-            local Target = Api:GetPlayer(Args[1],p)
-            if Target.Character.Humanoid.UseJumpPower == true then
-                Target.Character.Humanoid.JumpPower = tonumber(Args[2])
-            else
-                Target.Character.Humanoid.JumpHeight = tonumber(Args[2])
+            for _,Target in pairs(Api:GetPlayer(Args[1],p)) do
+                if Target.Character.Humanoid.UseJumpPower == true then
+                    Target.Character.Humanoid.JumpPower = tonumber(Args[2])
+                else
+                    Target.Character.Humanoid.JumpHeight = tonumber(Args[2])
+                end
             end
+           
         else
             -- Invalid Rank Notification
             Api:InvalidPermissionsNotification(p)

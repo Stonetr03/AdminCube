@@ -1,26 +1,22 @@
 -- Admin Cube
 
-local Roact = require(game.ReplicatedStorage:WaitForChild("AdminCube"):WaitForChild("Roact"))
+local Fusion = require(game.ReplicatedStorage:WaitForChild("AdminCube"):WaitForChild("Fusion"))
 
-local MainMenus = Roact.Component:extend("MainMenus")
-local Menus = Roact.Component:extend("Menus")
+local Value = Fusion.Value
 
-local Vis,SetVis = Roact.createBinding(true)
-
-function MainMenus:init()
-    self.partRef = Roact.createRef()
+local Vis = Value(true)
+local SetVis = function(v)
+    Vis:set(v)
 end
 
-function MainMenus:render()
-    local Buttons = {}
-    for i,o in pairs(script.Parent.Menus:GetChildren()) do
+function MainMenus()
+    return Fusion.ForPairs(script.Parent.Menus:GetChildren(),function(i,o)
         local Menu = require(o)
-        Buttons[i] = Roact.createElement(Menu[1],{
+        return i, Menu[1]({
             Vis = Vis;
             SetVis = SetVis;
         })
-    end
-    return Roact.createFragment(Buttons)
+    end,Fusion.cleanup)
 end
 
 local BackCallBacks = {}
@@ -30,17 +26,11 @@ for i,o in pairs(script.Parent.Menus:GetChildren()) do
 
 end
 
-function Menus:init()
-    self.partRef = Roact.createRef()
-end
-
-function Menus:render()
-    local Frames = {}
-    for i,o in pairs(script.Parent.Menus:GetChildren()) do
+function Menus()
+    return Fusion.ForPairs(script.Parent.Menus:GetChildren(),function(i,o)
         local Menu = require(o)
-        Frames[i] = Roact.createElement(Menu[2])
-    end
-    return Roact.createFragment(Frames)
+        return i, Menu[2]()
+    end,Fusion.cleanup)
 end
 
 return {MainMenus,Menus,BackCallBacks,SetVis}

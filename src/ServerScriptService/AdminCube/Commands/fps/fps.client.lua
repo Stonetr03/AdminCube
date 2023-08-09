@@ -1,26 +1,28 @@
 -- Admin Cube
 
-local Roact = require(game.ReplicatedStorage:WaitForChild("AdminCube"):WaitForChild("Roact"))
+local Fusion = require(game.ReplicatedStorage:WaitForChild("AdminCube"):WaitForChild("Fusion"))
 local Api = require(game.ReplicatedStorage:WaitForChild("AdminCube"):WaitForChild("Api"))
 local RunService = game:GetService("RunService")
 
-local Text,SetText = Roact.createBinding(1000)
+local New = Fusion.New
+local Value = Fusion.Value
+local Computed = Fusion.Computed
 
-local WindowFrame = Roact.Component:extend("AdminPanelWindow")
-function WindowFrame:render()
-    return Roact.createElement("TextLabel",{
-        Visible = true;
-        Position = UDim2.new(0,0,0,0);
-        BorderSizePixel = 0;
-        BackgroundTransparency = 1;
-        Size = UDim2.new(1,0,1,0);
-        TextColor3 = Api.Style.TextColor;
-        Text = Text:map(function(fps)
-            return "Fps: " .. tostring(fps)
-        end),
-        TextSize = 12;
-    });
-end
+local Text = Value(1000)
+
+local WindowFrame = New "TextLabel" {
+    Visible = true;
+    Position = UDim2.new(0,0,0,0);
+    BorderSizePixel = 0;
+    BackgroundTransparency = 1;
+    Size = UDim2.new(1,0,1,0);
+    TextColor3 = Api.Style.TextColor;
+    Text = Computed(function()
+        return "Fps: " .. tostring(Text:get())
+    end);
+    TextSize = 12;
+    Font = Enum.Font.Legacy;
+};
 
 local Window = Api:CreateWindow({
     SizeX = 100;
@@ -35,7 +37,7 @@ Window.OnClose:Connect(function()
     script:Destroy()
 end)
 
-local Heartbeat = game:GetService("RunService").Heartbeat
+local Heartbeat = RunService.Heartbeat
 
 local LastIteration, Start
 local FrameUpdateTable = {}
@@ -49,7 +51,7 @@ local function HeartbeatUpdate()
     FrameUpdateTable[1] = LastIteration
     local CurrentFPS = (tick() - Start >= 1 and #FrameUpdateTable) or (#FrameUpdateTable / (tick() - Start))
     CurrentFPS = math.floor(CurrentFPS)
-    SetText(CurrentFPS)
+    Text:set(CurrentFPS)
 end
 
 Start = tick()

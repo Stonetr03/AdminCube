@@ -26,44 +26,84 @@ function Module:GetRank(p)
     return Data.Rank
 end
 
-function Module:GetPlayer(Name,p) -- Name Requested to Find, Player who Sent 
-    if Name == "me" then
-        return p
-    elseif Name == nil then
-        return p
-    else
-        -- Match UserNames
-        for _,o in pairs(game.Players:GetPlayers()) do
-            if string.lower(o.Name) == Name then
-                return o
+function Module:GetPlayer(Text: string,p: Player): table -- Name Requested to Find, Player who Sent
+    if Text == "" or Text == nil then
+        Text = string.lower(p.Name)
+    end
+    -- Parse Players
+    local SplitTexts = ".,;:-/"
+    local Parse = {Text}
+    for i = 1,string.len(SplitTexts),1 do
+        local SplitSep = string.sub(SplitTexts,i,i)
+        local New = {}
+        for _,o in pairs(Parse) do
+            local split = string.split(o,SplitSep)
+            for _,a in pairs(split) do
+                table.insert(New,a)
             end
         end
-        -- Match Display Names
-        if Settings.DisplayNames == true then
-            for _,o in pairs(game.Players:GetPlayers()) do
-                if string.lower(o.DisplayName) == Name then
-                    return o
+        Parse = New
+    end
+    -- Table
+    local Plrs = {}
+    for _,Name in pairs(Parse) do
+        if Name == "me" then
+            if table.find(Plrs,p) == nil then
+                table.insert(Plrs,p)
+            end
+        elseif Name == "all" or Name == "everyone" then
+            for _,Player in pairs(game.Players:GetPlayers()) do
+                if table.find(Plrs,Player) == nil then
+                    table.insert(Plrs,Player)
                 end
             end
-        end
-
-        -- Match Username again
-        for _,o in pairs(game.Players:GetPlayers()) do
-            if string.find(string.lower(o.Name),Name) ~= nil then
-                return o
+        else
+            -- Match UserNames
+            for _,o in pairs(game.Players:GetPlayers()) do
+                if string.lower(o.Name) == Name then
+                    if table.find(Plrs,o) == nil then
+                        table.insert(Plrs,o)
+                        break
+                    end
+                end
             end
-        end
-        
-        -- Match Display name again
-        if Settings.DisplayNames == true then
+            -- Match Display Names
+            if Settings.DisplayNames == true then
+                for _,o in pairs(game.Players:GetPlayers()) do
+                    if string.lower(o.DisplayName) == Name then
+                        if table.find(Plrs,o) == nil then
+                            table.insert(Plrs,o)
+                            break
+                        end
+                    end
+                end
+            end
+
+            -- Match Username again
             for _,o in pairs(game.Players:GetPlayers()) do
                 if string.find(string.lower(o.Name),Name) ~= nil then
-                    return o
+                    if table.find(Plrs,o) == nil then
+                        table.insert(Plrs,o)
+                        break
+                    end
                 end
             end
+
+            -- Match Display name again
+            if Settings.DisplayNames == true then
+                for _,o in pairs(game.Players:GetPlayers()) do
+                    if string.find(string.lower(o.Name),Name) ~= nil then
+                        if table.find(Plrs,o) == nil then
+                            table.insert(Plrs,o)
+                            break
+                        end
+                    end
+                end
+            end
+
         end
-        
     end
+    return Plrs
 end
 
 function Module:RegisterCommand(Name,Desc,Run,Arg,Alias) -- Arg {[Player],[String],etc} -- Alias {"A","B", etc}
@@ -125,7 +165,7 @@ end
 game.ReplicatedStorage:WaitForChild("AdminCube").ACFunc.OnServerInvoke = function(p,CallingKey,Args)
     for _,o in pairs(RemoteFunctions) do
         if o.Key == CallingKey then
-            return o.Callback(p,Args)            
+            return o.Callback(p,Args)
         end
     end
 end

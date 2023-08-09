@@ -5,8 +5,9 @@ local Api = require(script.Parent.Parent:WaitForChild("Api"))
 Api:RegisterCommand("freeze","Freezes the Player's Character",function(p,Args)
     local s,e = pcall(function()
         if Api:GetRank(p) >= 2 then
-            local Target = Api:GetPlayer(Args[1],p)
-            Target.Character.HumanoidRootPart.Anchored = true
+            for _,Target in pairs(Api:GetPlayer(Args[1],p)) do
+                Target.Character.HumanoidRootPart.Anchored = true
+            end
         else
             -- Invalid Rank Notification
             Api:InvalidPermissionsNotification(p)
@@ -21,8 +22,9 @@ end,"2;*[player]")
 Api:RegisterCommand("unfreeze","Unfreezes the Player's Character",function(p,Args)
     local s,e = pcall(function()
         if Api:GetRank(p) >= 2 then
-            local Target = Api:GetPlayer(Args[1],p)
-            Target.Character.HumanoidRootPart.Anchored = false
+            for _,Target in pairs(Api:GetPlayer(Args[1],p)) do
+                Target.Character.HumanoidRootPart.Anchored = false
+            end            
         else
             -- Invalid Rank Notification
             Api:InvalidPermissionsNotification(p)

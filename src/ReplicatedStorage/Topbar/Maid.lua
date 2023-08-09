@@ -1,3 +1,4 @@
+---@diagnostic disable: undefined-global
 -- Maid
 -- Author: Quenty
 -- Source: https://github.com/Quenty/NevermoreEngine/blob/8ef4242a880c645b2f82a706e8074e74f23aab06/Modules/Shared/Events/Maid.lua
@@ -109,7 +110,6 @@ end--]]
 function Maid:give(taskOrPromise)
 	local taskId
 	if type(taskOrPromise) == "table" and taskOrPromise.isAPromise then
----@diagnostic disable-next-line: undefined-global
 		_, taskId = self:givePromise(taskOrPromise)
 	else
 		taskId = self:giveTask(taskOrPromise)

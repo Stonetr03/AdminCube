@@ -1,15 +1,13 @@
 -- Admin Cube
 
-local Roact = require(game.ReplicatedStorage:WaitForChild("AdminCube"):WaitForChild("Roact"))
+local Fusion = require(game.ReplicatedStorage:WaitForChild("AdminCube"):WaitForChild("Fusion"))
 local Api = require(game.ReplicatedStorage:WaitForChild("AdminCube"):WaitForChild("Api"))
 
+local New = Fusion.New
+local Children = Fusion.Children
+
 -- Topbar
-local TopbarPath = game.ReplicatedStorage:WaitForChild("AdminCube"):WaitForChild("Topbar")
-local TBCheck = game.ReplicatedStorage:FindFirstChild("TopbarPlusReference")
-if TBCheck then
-    TopbarPath = TBCheck.Value
-end
-local Topbar = require(TopbarPath)
+local Topbar = require(game.ReplicatedStorage:WaitForChild("AdminCube"):WaitForChild("Topbar"))
 
 local icon = Topbar.new()
 icon:setImage("http://www.roblox.com/asset/?id=5010019455") -- 24x24
@@ -26,39 +24,38 @@ end)
 local MainMenus = require(script.MainMenus)
 local BackCallback = MainMenus[3]
 
-local WindowFrame = Roact.Component:extend("AdminPanelWindow")
-function WindowFrame:render()
-    return Roact.createElement("Frame",{
-        Visible = true;
-        Position = UDim2.new(0,0,0,0);
-        BorderSizePixel = 0;
-        BackgroundTransparency = 1;
-        Size = UDim2.new(1,0,1,0);
-    },{
+local WindowFrame = New "Frame" {
+    Visible = true;
+    Position = UDim2.new(0,0,0,0);
+    BorderSizePixel = 0;
+    BackgroundTransparency = 1;
+    Size = UDim2.new(1,0,1,0);
+    [Children] = {
         -- Main Menus Frame
-        MainMenu = Roact.createElement("Frame",{
+        MainMenu = New "Frame" {
             Size = UDim2.new(1,0,1,0);
             Name = "MainMenu";
             BackgroundTransparency = 1;
-        },{
-            Padding = Roact.createElement("UIPadding",{
-                PaddingBottom = UDim.new(0,5);
-                PaddingLeft = UDim.new(0,5);
-                PaddingRight = UDim.new(0,5);
-                PaddingTop = UDim.new(0,5);
-            });
-    
-            Grid = Roact.createElement("UIGridLayout",{
-                CellPadding = UDim2.new(0,5,0,5);
-                CellSize = UDim2.new(0.5,-3,0,25);
-                SortOrder = Enum.SortOrder.LayoutOrder;
-            });
-    
-            Buttons = Roact.createElement(MainMenus[1]);
-        });
-        OtherMenus = Roact.createElement(MainMenus[2]);
-    });
-end
+            [Children] = {
+                Padding = New "UIPadding" {
+                    PaddingBottom = UDim.new(0,5);
+                    PaddingLeft = UDim.new(0,5);
+                    PaddingRight = UDim.new(0,5);
+                    PaddingTop = UDim.new(0,5);
+                };
+        
+                Grid = New "UIGridLayout" {
+                    CellPadding = UDim2.new(0,5,0,5);
+                    CellSize = UDim2.new(0.5,-3,0,25);
+                    SortOrder = Enum.SortOrder.LayoutOrder;
+                };
+        
+                Buttons = MainMenus[1]();
+            }
+        };
+        OtherMenus = MainMenus[2]();
+    }
+};
 
 local Window = Api:CreateWindow({
     SizeX = 350;

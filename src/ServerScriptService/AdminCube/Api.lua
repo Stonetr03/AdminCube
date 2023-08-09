@@ -103,7 +103,6 @@ function Module:GetPlayer(Text: string,p: Player): table -- Name Requested to Fi
 
         end
     end
-    print("CommandRunner,\nSend:",Text,"\nPlrs:",Plrs)
     return Plrs
 end
 

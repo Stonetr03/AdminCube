@@ -1,6 +1,7 @@
 -- Admin Cube - Client Api
 
 local Fusion = require(game.ReplicatedStorage:WaitForChild("AdminCube"):WaitForChild("Fusion"))
+local WindowModule = require(script.Window)
 
 local New = Fusion.New
 local Value = Fusion.Value
@@ -116,10 +117,7 @@ function Api:GetCommands()
 end
 
 function Api:CreateWindow(Props: table,Component: GuiBase)
-    if Props.ZIndex == nil then
-        Props.ZIndex = 1
-    end
-    local WindowModule = require(script.Window)
+    Props = WindowModule:CheckTable(Props)
     local Window,Functions = WindowModule:CreateWindow({
         Btns = Props.Buttons;
         SizeX = Props.SizeX;
@@ -130,7 +128,10 @@ function Api:CreateWindow(Props: table,Component: GuiBase)
         ZIndex = Props.ZIndex;
         Position = Props.Position;
         Parent = game.Players.LocalPlayer.PlayerGui:FindFirstChild("__AdminCube_Main");
-        Name = "Window-" .. Props.Title
+        Name = "Window-" .. Props.Title;
+        Resizeable = Props.Resizeable;
+        Draggable = Props.Draggable;
+        HideTopbar = Props.HideTopbar;
     })
     local ReturnTab = {
         OnClose = {}
@@ -147,7 +148,7 @@ function Api:CreateWindow(Props: table,Component: GuiBase)
         if typeof(f) == "function" then
             Close[#Close+1] = f
         end
-        
+
     end
 
     Functions.OnClose = function()
@@ -155,7 +156,7 @@ function Api:CreateWindow(Props: table,Component: GuiBase)
             f()
         end
     end
-    
+
     ReturnTab.SetVis = function(Value: boolean)
         Functions.SetVis:set(Value)
     end

@@ -12,7 +12,7 @@ if typeof(CustomSettings) == "table" then
             if typeof(CustomSettings.Client) == "table" then
                 Settings.Client = {}
                 for ind,v in pairs(DefaultSettings.Client) do
-                    if CustomSettings.Client[ind] then
+                    if CustomSettings.Client[ind] ~= nil then
                         Settings.Client[ind] = CustomSettings.Client[ind]
                     else
                         Settings.Client[ind] = v
@@ -22,7 +22,7 @@ if typeof(CustomSettings) == "table" then
                 Settings.Client = DefaultSettings.Client
             end
         else
-            if CustomSettings[o] then
+            if CustomSettings[o] ~= nil then
                 Settings[o] = CustomSettings[o]
             else
                 Settings[o] = i

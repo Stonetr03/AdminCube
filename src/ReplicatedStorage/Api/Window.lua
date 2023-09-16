@@ -24,6 +24,11 @@ function Module:CreateWindow(props)
     local BackBtnTransparency = Value(1)
     local Minimize = Value(true)
     local MiniText = Value("-")
+    local TopbarVis = not props.HideTopbar
+    local TopbarBG = 0
+    if TopbarVis == false then
+        TopbarBG = 1;
+    end
 
     ReturnTab.SetVis = Visible
 
@@ -54,6 +59,7 @@ function Module:CreateWindow(props)
         Parent = props.Parent;
         Visible = Visible;
         BackgroundColor3 = props.Style.Background;
+        BackgroundTransparency = TopbarBG;
         BorderSizePixel = 0;
         Size = UDim2.new(0,props.SizeX,0,20);
         Position = Position;
@@ -62,7 +68,7 @@ function Module:CreateWindow(props)
 
         -- Drag
         [Event "InputBegan"] = function(input)
-            if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+            if (input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch) and props.Draggable == true then
                 dragging = true
                 dragStart = input.Position
                 startPos = Position:get()
@@ -102,6 +108,7 @@ function Module:CreateWindow(props)
                 Size = UDim2.new(0,16,0,16);
                 Image = "rbxassetid://6064221669";
                 ZIndex = props.ZIndex;
+                Visible = TopbarVis;
             };
             -- 25
             Title = New "TextLabel" {
@@ -112,6 +119,7 @@ function Module:CreateWindow(props)
                 Text = props.Title;
                 TextXAlignment = Enum.TextXAlignment.Left;
                 ZIndex = props.ZIndex;
+                Visible = TopbarVis;
             };
 
             CloseBtn = New "TextButton" {
@@ -126,6 +134,7 @@ function Module:CreateWindow(props)
                 AutoButtonColor = false;
                 BorderSizePixel = 0;
                 ZIndex = props.ZIndex;
+                Visible = TopbarVis;
 
                 [Event "MouseEnter"] = function()
                     CloseBtnTransparency:set(0.85)
@@ -153,6 +162,7 @@ function Module:CreateWindow(props)
                 AutoButtonColor = false;
                 BorderSizePixel = 0;
                 ZIndex = props.ZIndex;
+                Visible = TopbarVis;
 
                 [Event "MouseEnter"] = function()
                     MinimizeBtnTransparency:set(0.85)
@@ -186,6 +196,7 @@ function Module:CreateWindow(props)
                     AutoButtonColor = false;
                     BorderSizePixel = 0;
                     ZIndex = props.ZIndex;
+                    Visible = TopbarVis;
 
                     [Event "MouseEnter"] = function()
                         Transparency:set(0.85)
@@ -202,6 +213,35 @@ function Module:CreateWindow(props)
     };
 
     return Window,ReturnTab
+end
+
+local defaultProps = {
+    Buttons = {};
+    SizeX = 125;
+    SizeY = 125;
+    Title = "Window";
+    ZIndex = 1;
+    Position = UDim2.new(0.25,0,0.25,0);
+    Resizeable = false;
+    Draggable = true;
+    HideTopbar = false;
+}
+function Module:CheckTable(t: table): table
+    if typeof(t) ~= "table" then
+        t = {}
+    end
+    local newTab = {}
+    for o,i in pairs(defaultProps) do
+        if t[o] ~= nil then
+            newTab[o] = t[o]
+        else
+            newTab[o] = i
+        end
+    end
+    if newTab.HideTopbar == true then
+        newTab.Draggable = false
+    end
+    return newTab
 end
 
 return Module

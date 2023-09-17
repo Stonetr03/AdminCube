@@ -31,7 +31,10 @@ function Module:CreateWindow(props)
         OnClose = nil;
         SetSize = function(NewSize: Vector2)
             Size:set(NewSize)
-        end
+        end;
+        SetPosition = function(NewPos: UDim2)
+            Position:set(NewPos)
+        end;
     }
 
     -- Dragging

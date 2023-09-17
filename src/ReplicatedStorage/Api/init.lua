@@ -160,6 +160,7 @@ function Api:CreateWindow(Props: table,Component: GuiBase)
         Functions.SetVis:set(Vis)
     end
     ReturnTab.SetSize = Functions.SetSize
+    ReturnTab.SetPosition = Functions.SetPosition
 
     return ReturnTab
 end

@@ -58,8 +58,7 @@ local WindowFrame = New "Frame" {
 };
 
 local Window = Api:CreateWindow({
-    SizeX = 350;
-    SizeY = 250;
+    Size = Vector2.new(350,250);
     Title = "Admin Panel";
     Buttons = {
         [1] = {

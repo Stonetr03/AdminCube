@@ -120,8 +120,7 @@ function Api:CreateWindow(Props: table,Component: GuiBase)
     Props = WindowModule:CheckTable(Props)
     local Window,Functions = WindowModule:CreateWindow({
         Btns = Props.Buttons;
-        SizeX = Props.SizeX;
-        SizeY = Props.SizeY;
+        Size = Props.Size;
         Main = Component;
         Title = Props.Title;
         Style = Api.Style;
@@ -157,9 +156,10 @@ function Api:CreateWindow(Props: table,Component: GuiBase)
         end
     end
 
-    ReturnTab.SetVis = function(Value: boolean)
-        Functions.SetVis:set(Value)
+    ReturnTab.SetVis = function(Vis: boolean)
+        Functions.SetVis:set(Vis)
     end
+    ReturnTab.SetSize = Functions.SetSize
 
     return ReturnTab
 end
@@ -277,9 +277,9 @@ function ShowPrompt(Prompts)
                         TextColor3 = Api.Style.TextColor;
                         TextSize = 22;
                         ZIndex = 20;
-        
+
                         [Event "MouseButton1Up"] = function()
-        
+
                             if Promptlocal == true then
                                 if typeof(localresponse) == "function" then
                                     localresponse({true,CurrentValues})
@@ -287,7 +287,7 @@ function ShowPrompt(Prompts)
                             else
                                 Api:Fire("Prompts",{true,CurrentValues})
                             end
-        
+
                             Window.unmount()
                             PromptOpen = false
                         end;
@@ -303,9 +303,9 @@ function ShowPrompt(Prompts)
                         TextColor3 = Api.Style.TextColor;
                         TextSize = 22;
                         ZIndex = 20;
-        
+
                         [Event "MouseButton1Up"] = function()
-                            
+
                             if Promptlocal == true then
                                 if typeof(localresponse) == "function" then
                                     localresponse({false})
@@ -313,7 +313,7 @@ function ShowPrompt(Prompts)
                             else
                                 Api:Fire("Prompts",{false})
                             end
-        
+
                             Window.unmount()
                             PromptOpen = false
                         end;
@@ -324,8 +324,7 @@ function ShowPrompt(Prompts)
     }
 
     Window = Api:CreateWindow({
-        SizeX = 250;
-        SizeY = ((#Prompts.Prompt * 25) + 4 + 50 + Added);
+        Size = Vector2.new(250,((#Prompts.Prompt * 25) + 4 + 50 + Added));
         Title = "Prompt";
         ZIndex = 19
     },PromptComp)

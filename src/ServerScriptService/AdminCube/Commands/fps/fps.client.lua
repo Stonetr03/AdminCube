@@ -25,8 +25,7 @@ local WindowFrame = New "TextLabel" {
 };
 
 local Window = Api:CreateWindow({
-    SizeX = 100;
-    SizeY = 25;
+    Size = Vector2.new(100,25);
     Title = "Fps";
     Position = UDim2.new(0.5,-50,0,0);
 },WindowFrame)

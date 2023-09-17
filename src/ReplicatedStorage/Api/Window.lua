@@ -9,28 +9,30 @@ local New = Fusion.New
 local Value = Fusion.Value
 local Event = Fusion.OnEvent
 local Children = Fusion.Children
+local Computed = Fusion.Computed
 
 function Module:CreateWindow(props)
-    local ReturnTab = {
-        SetVis = nil;
-        OnClose = nil;
-    }
 
-    local DefaultPos = UDim2.new(0.5,-(props.SizeX/2),0.5,-(props.SizeY/2))
     local Visible = Value(true)
-    local Position = Value(props.Position or DefaultPos)
+    local Position = Value(props.Position)
     local CloseBtnTransparency = Value(1)
     local MinimizeBtnTransparency = Value(1)
-    local BackBtnTransparency = Value(1)
     local Minimize = Value(true)
     local MiniText = Value("-")
+    local Size = Value(props.Size)
     local TopbarVis = not props.HideTopbar
     local TopbarBG = 0
     if TopbarVis == false then
         TopbarBG = 1;
     end
 
-    ReturnTab.SetVis = Visible
+    local ReturnTab = {
+        SetVis = Visible;
+        OnClose = nil;
+        SetSize = function(NewSize: Vector2)
+            Size:set(NewSize)
+        end
+    }
 
     -- Dragging
     local dragging
@@ -61,7 +63,9 @@ function Module:CreateWindow(props)
         BackgroundColor3 = props.Style.Background;
         BackgroundTransparency = TopbarBG;
         BorderSizePixel = 0;
-        Size = UDim2.new(0,props.SizeX,0,20);
+        Size = Computed(function()
+            return UDim2.new(0,Size:get().X,0,20);
+        end);
         Position = Position;
         ZIndex = props.ZIndex;
         Name = props.Name;
@@ -95,7 +99,9 @@ function Module:CreateWindow(props)
                 Position = UDim2.new(0,0,0,21);
                 BorderSizePixel = 0;
                 BackgroundColor3 = props.Style.Background;
-                Size = UDim2.new(1,0,0,props.SizeY);
+                Size = Computed(function()
+                    return UDim2.new(1,0,0,Size:get().Y);
+                end);
                 ZIndex = props.ZIndex;
                 [Children] = {
                     Main = props.Main
@@ -217,11 +223,10 @@ end
 
 local defaultProps = {
     Buttons = {};
-    SizeX = 125;
-    SizeY = 125;
+    Size = Vector2.new(125,125);
     Title = "Window";
     ZIndex = 1;
-    Position = UDim2.new(0.25,0,0.25,0);
+    --Position = UDim2.new(0.5,-(props.Size.X/2),0.5,-(props.Size.Y/2))
     Resizeable = false;
     Draggable = true;
     HideTopbar = false;
@@ -240,6 +245,11 @@ function Module:CheckTable(t: table): table
     end
     if newTab.HideTopbar == true then
         newTab.Draggable = false
+    end
+    if t.Position ~= nil then
+        newTab.Position = t.Position;
+    else
+        newTab.Position = UDim2.new(0.5,-(newTab.Size.X/2),0.5,-(newTab.Size.Y/2))
     end
     return newTab
 end

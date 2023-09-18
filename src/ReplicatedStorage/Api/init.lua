@@ -129,6 +129,7 @@ function Api:CreateWindow(Props: table,Component: GuiBase)
         Parent = game.Players.LocalPlayer.PlayerGui:FindFirstChild("__AdminCube_Main");
         Name = "Window-" .. Props.Title;
         Resizeable = Props.Resizeable;
+        ResizeableMinimum = Props.ResizeableMinimum;
         Draggable = Props.Draggable;
         HideTopbar = Props.HideTopbar;
     })

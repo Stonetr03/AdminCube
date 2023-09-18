@@ -37,6 +37,64 @@ function Module:CreateWindow(props)
         end;
     }
 
+    -- Window Resize
+    local ResizeWindow = nil
+    if props.Resizeable == true then
+        -- Resizeing
+        local resizeing
+        local resizeInput
+        local resizeStart
+        local startPos
+        local function update(input)
+            -- Update Size
+            local delta = input.Position - resizeStart
+            local newSize = Vector2.new(startPos.X + delta.X, startPos.Y + delta.Y)
+
+            if newSize.X < props.ResizeableMinimum.X then
+                newSize = Vector2.new(props.ResizeableMinimum.X,newSize.Y)
+            end
+            if newSize.Y < props.ResizeableMinimum.Y then
+                newSize = Vector2.new(newSize.X,props.ResizeableMinimum.Y)
+            end
+            Size:set(newSize)
+        end
+        UserInputService.InputChanged:Connect(function(input)
+            if input == resizeInput and resizeing then
+                update(input)
+            end
+        end)
+        ResizeWindow = New "ImageButton" {
+            AnchorPoint = Vector2.new(1,1);
+            Size = UDim2.new(0,20,0,20);
+            Position = UDim2.new(1,-1,1,-1);
+            BackgroundTransparency = 1;
+            Image = "rbxassetid://14811373126"; -- images/Triangle.png;
+            ImageColor3 = props.Style.BackgroundSubColor;
+            ResampleMode = Enum.ResamplerMode.Pixelated;
+            ZIndex = 101;
+            [Event "InputBegan"] = function(input)
+                if (input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch) and props.Draggable == true then
+                    resizeing = true
+                    resizeStart = input.Position
+                    startPos = Size:get()
+
+                    local con
+                    con = input.Changed:Connect(function()
+                        if input.UserInputState == Enum.UserInputState.End then
+                            resizeing = false
+                            con:Disconnect()
+                        end
+                    end)
+                end
+            end;
+            [Event "InputChanged"] = function(input)
+                if input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then
+                    resizeInput = input
+                end
+            end;
+        }
+    end
+
     -- Dragging
     local dragging
     local dragInput
@@ -107,7 +165,8 @@ function Module:CreateWindow(props)
                 end);
                 ZIndex = props.ZIndex;
                 [Children] = {
-                    Main = props.Main
+                    Main = props.Main;
+                    ResizeWindow;
                 }
             };
             -- Bar
@@ -224,13 +283,14 @@ function Module:CreateWindow(props)
     return Window,ReturnTab
 end
 
-local defaultProps = {
+local defaultProps = { -- These also need to be added to src/ReplicatedStorage/Api/init.lua
     Buttons = {};
     Size = Vector2.new(125,125);
     Title = "Window";
     ZIndex = 1;
     --Position = UDim2.new(0.5,-(props.Size.X/2),0.5,-(props.Size.Y/2))
     Resizeable = false;
+    ResizeableMinimum = Vector2.new(25,25);
     Draggable = true;
     HideTopbar = false;
 }

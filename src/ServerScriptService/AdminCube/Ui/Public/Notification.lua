@@ -20,12 +20,15 @@ Api:OnEvent("Notification",function(Args)
     if Args.Button then
         Button = Args.Button
     end
+    if not Args.Time then
+        Args.Time = 10
+    end
     local Tab = ToRender:get()
     table.insert(Tab,{
         Image = Args.Image;
         Text = Args.Text;
         TimePaused = false;
-        Time = 10;
+        Time = Args.Time;
         Button = Button;
     })
     ToRender:set(Tab)

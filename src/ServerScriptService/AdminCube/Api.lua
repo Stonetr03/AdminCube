@@ -210,8 +210,16 @@ end
 
 Log:init(Module:CreateRSFolder("Log"))
 
-function Module:Notification(p,Image,Text,ButtonText,ButtonFunc) -- Image - True for Headshot, False for No-Image, Other for image
+function Module:Notification(p: Player,Image: string|boolean,Text: string,ButtonText: string?,ButtonFunc,Time: number?) -- Image - True for Headshot, False for No-Image, Other for image
     local Button = {}
+    if typeof(Time) == "number" then
+        if Time > 119 then
+            Time = 119
+        end
+        if Time < 0 then
+            Time = 119
+        end
+    end
     if typeof(ButtonText) == "string" and typeof(ButtonFunc) == "function" then
         local UUID = HttpService:GenerateGUID(false)
         Button = {ButtonText,UUID}
@@ -228,7 +236,7 @@ function Module:Notification(p,Image,Text,ButtonText,ButtonFunc) -- Image - True
             end
         end)
     end
-    Module:Fire(p,"Notification",{Image = Image,Text = Text,Button = Button})
+    Module:Fire(p,"Notification",{Image = Image,Text = Text,Button = Button,Time = Time})
     return true
 end
 

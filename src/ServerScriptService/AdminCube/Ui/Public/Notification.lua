@@ -159,6 +159,9 @@ function Module.Ui(props)
                                             Visible = ButtonVis;
                                             [Event "MouseButton1Up"] = function()
                                                 Api:Fire("_NotificationCallback",ButtonUUID)
+                                                local tab = ToRender:get()
+                                                tab[i] = nil
+                                                ToRender:set(tab)
                                             end;
                                         }
                                     };
@@ -252,6 +255,9 @@ function Module.Ui(props)
                                             Visible = ButtonVis;
                                             [Event "MouseButton1Up"] = function()
                                                 Api:Fire("_NotificationCallback",ButtonUUID)
+                                                local tab = ToRender:get()
+                                                tab[i] = nil
+                                                ToRender:set(tab)
                                             end;
                                         }
                                     }

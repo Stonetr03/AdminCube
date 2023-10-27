@@ -78,14 +78,14 @@ function Api:UpdateTheme(Theme)
 end
 UpdateTheme()
 
-function Api:Fire(Key,Args)
-    game.ReplicatedStorage:WaitForChild("AdminCube").ACEvent:FireServer(Key,Args)
+function Api:Fire(Key,...)
+    game.ReplicatedStorage:WaitForChild("AdminCube").ACEvent:FireServer(Key,...)
 end
 
 function Api:OnEvent(Key,Callback)
-    local con = game.ReplicatedStorage:WaitForChild("AdminCube").ACEvent.OnClientEvent:Connect(function(CallingKey,Args)
+    local con = game.ReplicatedStorage:WaitForChild("AdminCube").ACEvent.OnClientEvent:Connect(function(CallingKey,...)
         if CallingKey == Key and typeof(Callback) == "function" then
-            Callback(Args)
+            Callback(...)
         end
     end)
     local ReturnTab = {}
@@ -95,14 +95,14 @@ function Api:OnEvent(Key,Callback)
     return ReturnTab
 end
 
-function Api:Invoke(Key,Args)
-    return game.ReplicatedStorage:WaitForChild("AdminCube").ACFunc:InvokeServer(Key,Args)
+function Api:Invoke(Key,...)
+    return game.ReplicatedStorage:WaitForChild("AdminCube").ACFunc:InvokeServer(Key,...)
 end
 
 function Api:OnInvoke(Key,Callback)
-    game.ReplicatedStorage:WaitForChild("AdminCube").ACFunc.OnClientInvoke = function(CallingKey,Args)
+    game.ReplicatedStorage:WaitForChild("AdminCube").ACFunc.OnClientInvoke = function(CallingKey,...)
         if CallingKey == Key then
-            Callback(Args)
+            Callback(...)
         end
     end
 end

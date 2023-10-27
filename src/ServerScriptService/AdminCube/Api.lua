@@ -124,18 +124,18 @@ function Module:GetCommands()
     return Commands,Aliases
 end
 
-function Module:Fire(p,Key,Args)
+function Module:Fire(p,Key,...)
     if p == "all" then
-        game.ReplicatedStorage:WaitForChild("AdminCube").ACEvent:FireAllClients(Key,Args)
+        game.ReplicatedStorage:WaitForChild("AdminCube").ACEvent:FireAllClients(Key,...)
     else
-        game.ReplicatedStorage:WaitForChild("AdminCube").ACEvent:FireClient(p,Key,Args)
+        game.ReplicatedStorage:WaitForChild("AdminCube").ACEvent:FireClient(p,Key,...)
     end
 end
 
 function Module:OnEvent(Key,Callback)
-    local con = game.ReplicatedStorage:WaitForChild("AdminCube").ACEvent.OnServerEvent:Connect(function(p,CallingKey,Args)
+    local con = game.ReplicatedStorage:WaitForChild("AdminCube").ACEvent.OnServerEvent:Connect(function(p,CallingKey,...)
         if CallingKey == Key then
-            Callback(p,Args)
+            Callback(p,...)
         end
     end)
     local ReturnTab = {}
@@ -145,8 +145,8 @@ function Module:OnEvent(Key,Callback)
     return ReturnTab
 end
 
-function Module:Invoke(p,Key,Args)
-    game.ReplicatedStorage:WaitForChild("AdminCube").ACFunc:InvokeClient(p,Key,Args)
+function Module:Invoke(p,Key,...)
+    game.ReplicatedStorage:WaitForChild("AdminCube").ACFunc:InvokeClient(p,Key,...)
 end
 
 local RemoteFunctions = {}
@@ -162,10 +162,10 @@ function Module:OnInvoke(Key,Callback)
     end
     return ReturnTab
 end
-game.ReplicatedStorage:WaitForChild("AdminCube").ACFunc.OnServerInvoke = function(p,CallingKey,Args)
+game.ReplicatedStorage:WaitForChild("AdminCube").ACFunc.OnServerInvoke = function(p,CallingKey,...)
     for _,o in pairs(RemoteFunctions) do
         if o.Key == CallingKey then
-            return o.Callback(p,Args)
+            return o.Callback(p,...)
         end
     end
 end

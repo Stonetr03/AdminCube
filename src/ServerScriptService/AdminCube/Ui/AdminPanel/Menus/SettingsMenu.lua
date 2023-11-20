@@ -23,7 +23,7 @@ function MenuBtn(props)
         BorderSizePixel = 0;
         BackgroundColor3 = Api.Style.ButtonColor;
         TextColor3 = Api.Style.TextColor;
-		TextSize = 8;
+        TextSize = 8;
         Font = Enum.Font.Legacy;
         [Event "MouseButton1Up"] = function()
             SetVis(true)
@@ -48,44 +48,44 @@ SetVis = function(Vis)
 end
 
 function Menu()
-	return New "Frame" {
-		Name = "Settings";
-		BackgroundColor3 = Api.Style.Background;
-		BorderSizePixel = 0;
-		Size = UDim2.new(1,0,1,0);
-		Visible = Visible;
-		ZIndex = 5;
-		[Children] = {
-			UiListLayout = New "UIListLayout" {
-				Padding = UDim.new(0,5);
-			};
+    return New "Frame" {
+        Name = "Settings";
+        BackgroundColor3 = Api.Style.Background;
+        BorderSizePixel = 0;
+        Size = UDim2.new(1,0,1,0);
+        Visible = Visible;
+        ZIndex = 5;
+        [Children] = {
+            UiListLayout = New "UIListLayout" {
+                Padding = UDim.new(0,5);
+            };
 
-			UiPadding = New "UIPadding" {
-				PaddingTop = UDim.new(0,5);
-				PaddingBottom = UDim.new(0,5);
-				PaddingLeft = UDim.new(0,5);
-				PaddingRight = UDim.new(0,5);
-			};
+            UiPadding = New "UIPadding" {
+                PaddingTop = UDim.new(0,5);
+                PaddingBottom = UDim.new(0,5);
+                PaddingLeft = UDim.new(0,5);
+                PaddingRight = UDim.new(0,5);
+            };
 
-			-- Theme button
-			ThemeButton = New "TextButton" {
-				ZIndex = 10;
-				BackgroundColor3 = Api.Style.ButtonColor;
-				BackgroundTransparency = Api.Style.ButtonTransparency;
-				TextColor3 = Api.Style.TextColor;
-				Size = UDim2.new(1,0,0,25);
-				Text = Computed(function()
-					return "Theme : " .. tostring(ThemeBtnText:get())
-				end);
-				TextSize = 8;
-        		Font = Enum.Font.Legacy;
+            -- Theme button
+            ThemeButton = New "TextButton" {
+                ZIndex = 10;
+                BackgroundColor3 = Api.Style.ButtonColor;
+                BackgroundTransparency = Api.Style.ButtonTransparency;
+                TextColor3 = Api.Style.TextColor;
+                Size = UDim2.new(1,0,0,25);
+                Text = Computed(function()
+                    return "Theme : " .. tostring(ThemeBtnText:get())
+                end);
+                TextSize = 8;
+                Font = Enum.Font.Legacy;
 
-				[Event "MouseButton1Up"] = function()
-					Api:UpdateTheme()
-				end
-			};
-		}
-	}
+                [Event "MouseButton1Up"] = function()
+                    Api:UpdateTheme()
+                end
+            };
+        }
+    }
 end
 
 return {MenuBtn,Menu,BackCallBack}

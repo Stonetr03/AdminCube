@@ -1,6 +1,7 @@
 -- Admin Cube - Client Api
 
 local Fusion = require(game.ReplicatedStorage:WaitForChild("AdminCube"):WaitForChild("Fusion"))
+local Signal = require(game.ReplicatedStorage:WaitForChild("AdminCube"):WaitForChild("Packages"):WaitForChild("Signal"))
 local WindowModule = require(script.Window)
 
 local New = Fusion.New
@@ -16,11 +17,10 @@ local TextColor = Value(Color3.new(1,1,1));
 local ButtonTransparency = Value(0.85);
 local ButtonSubColor = Value(Color3.fromRGB(200,200,200))
 
-local ThemeUpdateEvents = {}
-
 local Api = {
     Settings = {
-        CurrentTheme = "Dark"
+        Changed = Signal.new(); -- "Category", "SettingName", Value
+        _modifiers = {};
     };
     Style = {
         Background = Background;
@@ -33,9 +33,74 @@ local Api = {
     }
 }
 
+-- Global Settings
+local defaultSettings = require(script:WaitForChild("DefaultSettings"))
+Api.Settings._modifiers = {["global"] = defaultSettings[2]}
+for i,o in pairs(defaultSettings[1]) do
+    if i ~= "Changed" then
+        Api.Settings[i] = o;
+    end
+end
+
+function Api:SetSetting(Setting: string, NewValue: string | number | any, Cat: string?)
+    if typeof(Cat) ~= "string" then
+        Cat = "global"
+    end
+    if Cat == "global" then
+        if Setting == "Changed" then return end if Setting == "_modifiers" then return end
+        if typeof(Api.Settings[Setting]) == "table" then
+            warn("Invalid Setting Name: cannot be table") return
+        elseif typeof(NewValue) == "table" then
+            warn("Invalid Setting Value: cannot be table in global setting") return
+        end
+        -- Setting modifirers
+        if Api.Settings._modifiers["global"][Setting] and Api.Settings._modifiers["global"][Setting].Check then
+            NewValue = Api.Settings._modifiers["global"][Setting].Check(NewValue)
+        end
+        Api.Settings[Setting] = NewValue
+        Api.Settings.Changed:Fire(Setting,NewValue,Cat)
+    else
+        if Cat == "Changed" then warn("Invalid Category Name") return end
+        if typeof(Api.Settings[Cat]) == "table" then
+        elseif typeof(Api.Settings[Cat]) == "nil" then
+            Api.Settings[Cat] = {}
+        else warn("Invalid Category: name cannot be same as global setting") return
+        end
+        -- Setting modifirers
+        if Api.Settings._modifiers[Cat] and Api.Settings._modifiers[Cat][Setting] and Api.Settings._modifiers[Cat][Setting].Check then
+            NewValue = Api.Settings._modifiers[Cat][Setting].Check(NewValue)
+        end
+        Api.Settings[Cat][Setting] = NewValue
+        Api.Settings.Changed:Fire(Setting,NewValue,Cat)
+    end
+end
+export type Modifier = {Text: string, Check: (Value: any) -> any}
+function Api:SetSettingModifier(Setting: string,Mod: Modifier,Cat: string?)
+    -- Validate
+    if typeof(Mod) ~= "table" then
+        warn("invalid modifier type") return
+    end
+    if typeof(Mod.Text) ~= "string" and typeof(Mod.Text) ~= "nil" then
+        warn("invalid modifier type") return
+    end
+    if typeof(Mod.Check) ~= "function" and typeof(Mod.Check) ~= "nil" then
+        warn("invalid modifier type") return
+    end
+    if typeof(Cat) ~= "string" then
+        Cat = "global"
+    end
+    if Cat == "global" then
+        if Setting == "Changed" then return end if Setting == "_modifiers" then return end
+    elseif Cat == "Changed" then warn("Invalid Category Name") return
+    end
+    -- Set Mod
+    Api.Settings._modifiers[Cat][Setting] = Mod
+end
+
+-- Themes
 local Themes = {}
 local CurrentTheme = 0
-for i,o in pairs(script:GetChildren()) do
+for _,o in pairs(script:GetChildren()) do
     if string.sub(o.Name,1,11) == "Stylesheet." then
         table.insert(Themes,string.sub(o.Name,12))
         if string.sub(o.Name,12) == Api.Settings.CurrentTheme then
@@ -54,30 +119,45 @@ local function UpdateTheme()
         ButtonSubColor:set(Style.ButtonSubColor)
         BackgroundSubColor:set(Style.BackgroundSubColor)
         BackgroundSubSubColor:set(Style.BackgroundSubSubColor)
-
-        for i = 1,#ThemeUpdateEvents,1 do
-            ThemeUpdateEvents[i]()
-        end
     end
 end
 
-function Api:UpdateTheme(Theme)
-    if Theme then
-        Api.Settings.CurrentTheme = Theme
+Api.Settings.Changed:Connect(function(Setting,Theme,Cat)
+    if Cat == "global" and Setting == "CurrentTheme" then
         UpdateTheme()
-    else
-        CurrentTheme = CurrentTheme + 1
+    end
+end)
+Api:SetSettingModifier("CurrentTheme",{
+    Text = "Theme";
+    Check = function(Theme)
+        if Theme then
+            if table.find(Themes,Theme) then
+                return Theme
+            end
+        end
+        CurrentTheme += 1
         if CurrentTheme > #Themes then
             CurrentTheme = 1
         end
 
-        Api.Settings.CurrentTheme = Themes[CurrentTheme]
+        return Themes[CurrentTheme]
+    end
+})
 
-        UpdateTheme()
+-- DEPRECATED FUNCTIONS:::
+function Api:UpdateTheme(Theme)
+    warn(':UpdateTheme is deprecated\ninstead use :SetSetting("CurrentTheme",value)')
+    Api:SetSetting("CurrentTheme",Theme)
+end
+function Api:ThemeUpdateEvent(f)
+    warn(':ThemeUpdateEvent is deprecated\ninstead use :Settings.Changed:Connect(f)')
+    if typeof(f) == "function" then
+        Api.Settings.Changed:Connect(f)
     end
 end
 UpdateTheme()
 
+-- Remote Events
 function Api:Fire(Key,...)
     game.ReplicatedStorage:WaitForChild("AdminCube").ACEvent:FireServer(Key,...)
 end
@@ -107,15 +187,13 @@ function Api:OnInvoke(Key,Callback)
     end
 end
 
-function Api:ThemeUpdateEvent(Func)
-    ThemeUpdateEvents[#ThemeUpdateEvents+1] = Func
-end
-
+-- Commands
 function Api:GetCommands()
     local Cmds,Alias,Rank = Api:Invoke("GetCommands")
     return Cmds,Alias,Rank
 end
 
+-- Window
 function Api:CreateWindow(Props: table,Component: GuiBase)
     Props = WindowModule:CheckTable(Props)
     local Window,Functions = WindowModule:CreateWindow({

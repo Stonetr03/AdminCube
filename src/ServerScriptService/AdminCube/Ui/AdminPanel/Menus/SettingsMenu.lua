@@ -10,7 +10,17 @@ local Computed = Fusion.Computed
 
 local Api = require(game.ReplicatedStorage:WaitForChild("AdminCube"):WaitForChild("Api"))
 
-local SetVis
+local Visible = Value(false)
+local Render = Value(Api.Settings)
+local CurrentSet = Value("global")
+
+Api.Settings.Changed:Connect(function()
+    Render:set(table.clone(Api.Settings))
+end)
+
+local SetVis = function(Vis)
+    Visible:set(Vis)
+end
 
 function MenuBtn(props)
     return New "TextButton" {
@@ -33,19 +43,13 @@ function MenuBtn(props)
 end
 
 function BackCallBack()
-    SetVis(false)
+    if CurrentSet:get() == "global" then
+        SetVis(false)
+    else
+        CurrentSet:set("global")
+    end
 end
 
-local Visible = Value(false)
-local ThemeBtnText = Value(Api.Settings.CurrentTheme);
-
-Api:ThemeUpdateEvent(function()
-    ThemeBtnText:set(Api.Settings.CurrentTheme)
-end)
-
-SetVis = function(Vis)
-    Visible:set(Vis)
-end
 
 function Menu()
     return New "Frame" {
@@ -67,23 +71,110 @@ function Menu()
                 PaddingRight = UDim.new(0,5);
             };
 
-            -- Theme button
-            ThemeButton = New "TextButton" {
-                ZIndex = 10;
-                BackgroundColor3 = Api.Style.ButtonColor;
-                BackgroundTransparency = Api.Style.ButtonTransparency;
-                TextColor3 = Api.Style.TextColor;
-                Size = UDim2.new(1,0,0,25);
-                Text = Computed(function()
-                    return "Theme : " .. tostring(ThemeBtnText:get())
-                end);
-                TextSize = 8;
-                Font = Enum.Font.Legacy;
-
-                [Event "MouseButton1Up"] = function()
-                    Api:UpdateTheme()
+            -- Buttons
+            Fusion.ForPairs(Computed(function()
+                local set = CurrentSet:get()
+                local ren = Render:get()
+                if set == "global" then
+                    return ren
                 end
-            };
+                if ren[set] and typeof(ren[set]) == "table" then
+                    return ren[set]
+                end
+            end),function(i,o)
+                if i == "Changed" or i == "_modifiers" then
+                    return i,nil;
+                end
+                local set2 = CurrentSet:get()
+                if Api.Settings._modifiers and Api.Settings._modifiers[set2] and Api.Settings._modifiers[set2][i] and Api.Settings._modifiers[set2][i].Type == "input" then
+                    local txtIn = Value("")
+                    return i, New "TextBox" {
+                        ZIndex = 10;
+                        BackgroundColor3 = Api.Style.ButtonColor;
+                        BackgroundTransparency = Api.Style.ButtonTransparency;
+                        TextColor3 = Api.Style.TextColor;
+                        Size = UDim2.new(1,0,0,25);
+                        ClearTextOnFocus = false;
+                        PlaceholderColor3 = Api.Style.TextColor;
+                        PlaceholderText = Computed(function()
+                            local set = CurrentSet:get()
+                            if typeof(o) == "table" and set == "global" then
+                                return i .. " Settings"
+                            end
+                            local name = i
+                            if Api.Settings._modifiers and Api.Settings._modifiers[set] and Api.Settings._modifiers[set][i] and Api.Settings._modifiers[set][i].Text then
+                                name = Api.Settings._modifiers[set][i].Text
+                            end
+                            return name .. " : " .. tostring(o)
+                        end);
+                        TextSize = 8;
+                        Font = Enum.Font.Legacy;
+                        Name = Computed(function()
+                            if typeof(o) == "table" then
+                                return 2 .. i
+                            end
+                            return 1 .. i
+                        end);
+
+                        [Fusion.Ref] = txtIn;
+                        [Event "FocusLost"] = function(enter)
+                            local input = txtIn:get().Text
+                            txtIn:get().Text = ""
+                            if enter == true then
+                                Api:SetSetting(i,input,CurrentSet:get())
+                            end
+                        end
+                    };
+                else
+                    return i, New "TextButton" {
+                        ZIndex = 10;
+                        BackgroundColor3 = Api.Style.ButtonColor;
+                        BackgroundTransparency = Api.Style.ButtonTransparency;
+                        TextColor3 = Api.Style.TextColor;
+                        Size = UDim2.new(1,0,0,25);
+                        Text = Computed(function()
+                            local set = CurrentSet:get()
+                            if typeof(o) == "table" and set == "global" then
+                                return i .. " Settings"
+                            end
+                            local name = i
+                            if Api.Settings._modifiers and Api.Settings._modifiers[set] and Api.Settings._modifiers[set][i] and Api.Settings._modifiers[set][i].Text then
+                                name = Api.Settings._modifiers[set][i].Text
+                            end
+                            return name .. " : " .. tostring(o)
+                        end);
+                        TextSize = 8;
+                        Font = Enum.Font.Legacy;
+                        Name = Computed(function()
+                            if typeof(o) == "table" then
+                                return 2 .. i
+                            end
+                            return 1 .. i
+                        end);
+
+                        [Event "MouseButton1Up"] = function()
+                            local set = CurrentSet:get()
+                            if set == "global" and typeof(o) == "table" then
+                                CurrentSet:set(i)
+                            else
+                                local v = nil;
+                                if Api.Settings._modifiers and Api.Settings._modifiers[set] and Api.Settings._modifiers[set][i] and Api.Settings._modifiers[set][i].Value and typeof(Api.Settings._modifiers[set][i].Value) == "table" then
+                                    pcall(function()
+                                        if table.find(Api.Settings._modifiers[set][i].Value,o) then
+                                            local k = table.find(Api.Settings._modifiers[set][i].Value,o) + 1
+                                            if k > #Api.Settings._modifiers[set][i].Value then
+                                                k = 1;
+                                            end
+                                            v = Api.Settings._modifiers[set][i].Value[k]
+                                        end
+                                    end)
+                                end
+                                Api:SetSetting(i,v,set)
+                            end
+                        end
+                    };
+                end
+            end,Fusion.cleanup);
         }
     }
 end

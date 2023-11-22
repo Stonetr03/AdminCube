@@ -89,6 +89,9 @@ function Api:SetSettingModifier(Setting: string,Mod: Modifier,Cat: string?)
     if typeof(Cat) ~= "string" then
         Cat = "global"
     end
+    if typeof(Api.Settings._modifiers[Cat]) ~= "table" then
+        Api.Settings._modifiers[Cat] = {}
+    end
     if Cat == "global" then
         if Setting == "Changed" then return end if Setting == "_modifiers" then return end
     elseif Cat == "Changed" then warn("Invalid Category Name") return

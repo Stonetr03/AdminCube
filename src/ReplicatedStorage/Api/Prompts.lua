@@ -6,7 +6,6 @@ local New = Fusion.New
 local Value = Fusion.Value
 local Event = Fusion.OnEvent
 local Children = Fusion.Children
-local Computed = Fusion.Computed
 
 function Boolean(props)
     local BackgroundColor = Value(Color3.fromRGB(0,207,0));
@@ -25,7 +24,7 @@ function Boolean(props)
         BackgroundTransparency = 1;
         Position = UDim2.new(0,0,0,props.Y);
         Size = UDim2.new(1,0,0,25);
-        ZIndex = 20;
+        ZIndex = props.ZIndex;
         [Children] = {
             Title = New "TextLabel" {
                 BackgroundTransparency = 1;
@@ -44,7 +43,7 @@ function Boolean(props)
                 Size = UDim2.new(0.175,0,0.9,0);
                 Text = "";
                 ZIndex = 21;
-    
+
                 [Event "MouseButton1Up"] = function()
                     if Enabled == true then
                         Enabled = false
@@ -92,7 +91,7 @@ function StringValue(props)
         BackgroundTransparency = 1;
         Position = UDim2.new(0,0,0,props.Y);
         Size = UDim2.new(1,0,0,25);
-        ZIndex = 20;
+        ZIndex = props.ZIndex;
         [Children] = {
             Title = New "TextLabel" {
                 BackgroundTransparency = 1;
@@ -116,7 +115,7 @@ function StringValue(props)
                 PlaceholderText = "Input";
                 TextScaled = true;
                 ZIndex = 21;
-    
+
                 [Fusion.Ref] = StringRef;
                 [Event "FocusLost"] = function()
                     props.UpdateValue(StringRef:get().Text)
@@ -146,7 +145,7 @@ function DropdownMenu(props)
         BackgroundTransparency = 1;
         Position = UDim2.new(0,0,0,props.Y);
         Size = UDim2.new(1,0,0,25);
-        ZIndex = 20;
+        ZIndex = props.ZIndex;
         [Children] = {
             Title = New "TextLabel" {
                 BackgroundTransparency = 1;
@@ -168,7 +167,7 @@ function DropdownMenu(props)
                 TextColor3 = props.Style.TextColor;
                 TextScaled = true;
                 ZIndex = 21;
-    
+
                 [Event "MouseButton1Up"] = function()
                     DropdownVis:set(not DropdownVis:get())
                 end;
@@ -207,7 +206,7 @@ function DropdownMenu(props)
                                     TextScaled = true;
                                     LayoutOrder = i;
                                     ZIndex = 25;
-                    
+
                                     [Event "MouseButton1Up"] = function()
                                         SelectedText:set("> " .. v)
                                         for _,b in pairs(Bindings) do
@@ -263,7 +262,7 @@ function ImageLabel(props)
         BackgroundTransparency = 1;
         Position = UDim2.new(0,0,0,props.Y);
         Size = UDim2.new(1,0,0,100);
-        ZIndex = 20;
+        ZIndex = props.ZIndex;
         [Children] = {
             Image = New "ImageLabel" {
                 AnchorPoint = Vector2.new(0,0.5);

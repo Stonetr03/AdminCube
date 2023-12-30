@@ -278,7 +278,8 @@ function ShowPrompt(Prompts)
                 DefaultValue = o.DefaultValue;
                 UpdateValue = function(NewValue)
                     CurrentValues[i] = NewValue
-                end
+                end;
+                ZIndex = #Prompts.Prompt - i + 20
             })
             CurrentValues[i] = o.DefaultValue
         elseif o.Type == "String" then
@@ -289,7 +290,8 @@ function ShowPrompt(Prompts)
                 DefaultValue = o.DefaultValue;
                 UpdateValue = function(NewValue)
                     CurrentValues[i] = NewValue
-                end
+                end;
+                ZIndex = #Prompts.Prompt - i + 20
             })
             CurrentValues[i] = o.DefaultValue
         elseif o.Type == "Dropdown" then
@@ -301,7 +303,8 @@ function ShowPrompt(Prompts)
                 DefaultValue = o.DefaultValue;
                 UpdateValue = function(NewValue)
                     CurrentValues[i] = NewValue
-                end
+                end;
+                ZIndex = #Prompts.Prompt - i + 20
             })
             CurrentValues[i] = o.DefaultValue
 
@@ -314,6 +317,7 @@ function ShowPrompt(Prompts)
                 Text2 = o.Text2;
                 Text3 = o.Text3;
                 Text4 = o.Text4;
+                ZIndex = #Prompts.Prompt - i + 20
             })
             Y += 75
         end

@@ -1,3 +1,3 @@
 -- Admin Cube
 
-return "v2.1.0"
+return "v2.2.0-dev1"

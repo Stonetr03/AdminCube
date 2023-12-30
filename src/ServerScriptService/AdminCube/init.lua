@@ -85,6 +85,7 @@ local function PlayerJoined(p)
         ScreenGui.Name = "__AdminCube_Main"
         ScreenGui.ResetOnSpawn = false
         ScreenGui.DisplayOrder = 10;
+        ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling;
         ScreenGui.Parent = p:WaitForChild("PlayerGui")
         local NewUi = script.Ui.Public:Clone()
         NewUi.Parent = ScreenGui

@@ -29,7 +29,7 @@ Plugins can add custom menus to Admin Cube's Admin Panel
 **Documentation for the Custom Command and Plugin Api is currently in the works.**
 
 ## Credits
-- Admin Cube uses [ForeverHD's Topbar+](https://github.com/1ForeverHD/TopbarPlus)
+- Admin Cube uses [ForeverHD's Topbar+](https://github.com/1ForeverHD/TopbarPlus) / [iamEvanYT's Fork v2.9.3](https://github.com/iamEvanYT/TopbarPlus/tree/v.2.9.3)
 - Admin Cube is designed and maintained by [@Stonetr03](https://github.com/Stonetr03)
 - Admin Cube uses [Fusion by elttob](https://elttob.uk/Fusion/0.2/)
 - Admin Cube uses [Signal by sleitnick](https://github.com/Sleitnick/RbxUtil)

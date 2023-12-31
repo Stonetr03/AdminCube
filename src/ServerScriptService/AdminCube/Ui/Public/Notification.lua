@@ -2,9 +2,9 @@
 
 local Api = require(game.ReplicatedStorage:WaitForChild("AdminCube"):WaitForChild("Api"))
 local Fusion = require(game.ReplicatedStorage:WaitForChild("AdminCube"):WaitForChild("Fusion"))
+local HttpService = game:GetService("HttpService")
 
 local New = Fusion.New
-local Computed = Fusion.Computed
 local Children = Fusion.Children
 local Value = Fusion.Value
 local Event = Fusion.OnEvent
@@ -12,9 +12,15 @@ local Event = Fusion.OnEvent
 local Module = {}
 
 -- Values
+local ActiveNotifications = {}
 local ToRender = Value({})
 
+local Debounce = false
 Api:OnEvent("Notification",function(Args)
+    repeat
+        task.wait()
+    until Debounce == false
+    Debounce = true
     -- Reload Notifications
     local Button = {}
     if Args.Button then
@@ -23,16 +29,37 @@ Api:OnEvent("Notification",function(Args)
     if not Args.Time then
         Args.Time = 10
     end
+    local UUID = HttpService:GenerateGUID()
     local Tab = ToRender:get()
     table.insert(Tab,{
         Image = Args.Image;
         Text = Args.Text;
-        TimePaused = false;
-        Time = Args.Time;
         Button = Button;
+        UUID = UUID;
     })
     ToRender:set(Tab)
+    table.insert(ActiveNotifications,{
+        TimePaused = false;
+        Time = Args.Time;
+        UUID = UUID;
+    })
+    Debounce = false;
 end)
+
+function Delete(UUID)
+    for _,v in pairs(ActiveNotifications) do
+        if v.UUID == UUID then
+            table.remove(ActiveNotifications,table.find(ActiveNotifications,v))
+        end
+    end
+    local tab = ToRender:get()
+    for _,v in pairs(tab) do
+        if v.UUID == UUID then
+            table.remove(tab,table.find(tab,v))
+        end
+    end
+    ToRender:set(tab)
+end
 
 function Module.Ui(props)
     return New "Frame" {
@@ -81,16 +108,18 @@ function Module.Ui(props)
                                     ZIndex = 3;
 
                                     [Event "MouseEnter"] = function()
-                                        local tab = ToRender:get()
-                                        tab[i].TimePaused = true
-                                        ToRender:set(tab)
+                                        for _,w in pairs(ActiveNotifications) do
+                                            if w.UUID == v.UUID then
+                                                w.TimePaused = true
+                                            end
+                                        end
                                     end;
                                     [Event "MouseLeave"] = function()
-                                        local tab = ToRender:get()
-                                        if tab[i] then
-                                            tab[i].TimePaused = false
-                                            tab[i].Time = 10
-                                            ToRender:set(tab)
+                                        for _,w in pairs(ActiveNotifications) do
+                                            if w.UUID == v.UUID then
+                                                w.TimePaused = false
+                                                w.Time = 10
+                                            end
                                         end
                                     end;
 
@@ -107,9 +136,7 @@ function Module.Ui(props)
                                             TextColor3 = Api.Style.TextColor;
                                             TextSize = 16;
                                             [Event "MouseButton1Up"] = function()
-                                                local tab = ToRender:get()
-                                                tab[i] = nil
-                                                ToRender:set(tab)
+                                                Delete(v.UUID)
                                             end;
                                         };
                                         Image = New "ImageLabel" {
@@ -159,9 +186,7 @@ function Module.Ui(props)
                                             Visible = ButtonVis;
                                             [Event "MouseButton1Up"] = function()
                                                 Api:Fire("_NotificationCallback",ButtonUUID)
-                                                local tab = ToRender:get()
-                                                tab[i] = nil
-                                                ToRender:set(tab)
+                                                Delete(v.UUID)
                                             end;
                                         }
                                     };
@@ -184,16 +209,18 @@ function Module.Ui(props)
                                     ZIndex = 3;
 
                                     [Event "MouseEnter"] = function()
-                                        local tab = ToRender:get()
-                                        tab[i].TimePaused = true
-                                        ToRender:set(tab)
+                                        for _,w in pairs(ActiveNotifications) do
+                                            if w.UUID == v.UUID then
+                                                w.TimePaused = true
+                                            end
+                                        end
                                     end;
                                     [Event "MouseLeave"] = function()
-                                        local tab = ToRender:get()
-                                        if tab[i] then
-                                            tab[i].TimePaused = false
-                                            tab[i].Time = 10
-                                            ToRender:set(tab)
+                                        for _,w in pairs(ActiveNotifications) do
+                                            if w.UUID == v.UUID then
+                                                w.TimePaused = false
+                                                w.Time = 10
+                                            end
                                         end
                                     end;
 
@@ -210,9 +237,7 @@ function Module.Ui(props)
                                             TextColor3 = Api.Style.TextColor;
                                             TextSize = 16;
                                             [Event "MouseButton1Up"] = function()
-                                                local tab = ToRender:get()
-                                                tab[i] = nil
-                                                ToRender:set(tab)
+                                                Delete(v.UUID)
                                             end;
                                         };
                                         Body = New "TextLabel" {
@@ -250,14 +275,12 @@ function Module.Ui(props)
                                             TextSize = 12;
                                             ZIndex = 10;
                                             TextScaled = true;
-        
+
                                             Text = ButtonTxt;
                                             Visible = ButtonVis;
                                             [Event "MouseButton1Up"] = function()
                                                 Api:Fire("_NotificationCallback",ButtonUUID)
-                                                local tab = ToRender:get()
-                                                tab[i] = nil
-                                                ToRender:set(tab)
+                                                Delete(v.UUID)
                                             end;
                                         }
                                     }
@@ -276,16 +299,15 @@ task.spawn(function()
     task.wait(1)
     while true do
         task.wait(1)
-        local Tab = ToRender:get()
-        for i,v in pairs(Tab) do
-            if Tab[i].TimePaused == false then
-                Tab[i].Time -= 1
-                if Tab[i].Time <= 0 then
-                    Tab[i] = nil
+        for _,v in pairs(ActiveNotifications) do
+            if v.TimePaused == false then
+                v.Time -= 1
+                if v.Time <= 0 then
+                    -- Delete
+                    Delete(v.UUID)
                 end
             end
         end
-        ToRender:set(Tab)
     end
 end)
 

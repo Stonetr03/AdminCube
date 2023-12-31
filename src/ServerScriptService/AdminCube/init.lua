@@ -146,21 +146,22 @@ local function PlayerJoined(p)
             end
         end
 
+        local Rank = Api:GetRank(p)
         task.spawn(function()
             task.wait(5)
-            if Api:GetRank(p) == 1 then
+            if Rank == 1 then
                 Api:Notification(p,true,"You're a VIP")
-            elseif Api:GetRank(p) == 2 then
+            elseif Rank == 2 then
                 Api:Notification(p,true,"You're a Mod")
-            elseif Api:GetRank(p) == 3 then
+            elseif Rank == 3 then
                 Api:Notification(p,true,"You're a Admin")
-            elseif Api:GetRank(p) == 4 then
+            elseif Rank == 4 then
                 Api:Notification(p,true,"You're a Owner")
             end
         end)
 
         -- Admin Panel
-        if DataStoreModule.ServerData[p.UserId].Rank >= 2 then
+        if Rank >= 2 then
             local Panel = script.Ui.AdminPanel:Clone()
             Panel.Parent = ScreenGui
         end

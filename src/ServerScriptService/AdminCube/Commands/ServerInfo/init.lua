@@ -10,8 +10,8 @@ Api:AddPanelMenu(script.ServerInfoMenu)
 -- Info
 local RS = Api:CreateRSFolder("ServerStats")
 
-local Response 
-local s,e = pcall(function()
+local Response
+local s,_ = pcall(function()
     Response = HttpService:GetAsync("http://ip-api.com/json/?fields=16393&lang=en")
 end)
 local Tab
@@ -19,17 +19,14 @@ if s then
     Tab = HttpService:JSONDecode(Response)
     if Tab.status == "fail" then
         Tab = {
-            country = "Http Error";
-            regionName = "Http Error";
+            country = "";
+            regionName = "";
         }
     end
 else
-    warn("HTTP ERROR")
-    print(e)
-    print(Response)
     Tab = {
-        country = "Http Error";
-        regionName = "Http Error";
+        country = "";
+        regionName = "";
     }
 end
 

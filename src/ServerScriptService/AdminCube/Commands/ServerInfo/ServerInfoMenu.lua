@@ -48,6 +48,13 @@ function Menu()
 
     local Next = 0
 
+    local Region = ServerStats:WaitForChild("Region").Value or ""
+    local Country = ServerStats:WaitForChild("Country").Value or ""
+    local RegionText = "Server Region : unknown"
+    if Region ~= "" or Country ~= "" then
+        RegionText = "Server Region : " .. Region .. ", " .. Country
+    end
+
     Stop = RunService.Heartbeat:Connect(function()
         if VisRef:get().Visible == true then
             Last = tick()
@@ -82,19 +89,19 @@ function Menu()
         [Fusion.Ref] = VisRef;
 
         [Children] = {
-            TitleTextBox1 = New "TextLabel" {
+            Title = New "TextLabel" {
                 Size = UDim2.new(1,0,0,20);
-                Text = "- Server Info -";
-                Font = Enum.Font.SourceSans;
+                Text = "Server Info";
+                Font = Enum.Font.SourceSansBold;
                 TextColor3 = Api.Style.TextColor;
-                BackgroundTransparency = 1;
-                TextSize = 25;
+                BackgroundColor3 = Api.Style.BackgroundSubSubColor;
+                TextScaled = true;
                 ZIndex = 10;
             };
             Region = New "TextLabel" {
                 Size = UDim2.new(1,0,0,20);
                 Position = UDim2.new(0,0,0,20);
-                Text = "Server Region : " .. ServerStats:WaitForChild("Region").Value .. ", " .. ServerStats:WaitForChild("Country").Value;
+                Text = RegionText;
                 Font = Enum.Font.SourceSans;
                 TextColor3 = Api.Style.TextColor;
                 BackgroundTransparency = 1;
@@ -139,6 +146,4 @@ Api:OnEvent("RemovePanel",function()
     Stop:Disconnect()
 end)
 
-
 return {MenuBtn,Menu,BackCallBack}
-

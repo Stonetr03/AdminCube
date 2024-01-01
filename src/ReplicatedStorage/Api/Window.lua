@@ -117,6 +117,17 @@ function Module:CreateWindow(props)
     if typeof(CustomBtns) ~= "table" then
         CustomBtns = {}
     end
+    for i,o in pairs(CustomBtns) do
+        if typeof(o) ~= "table" then
+            CustomBtns[i] = nil;
+        end
+        if typeof(o.Type) ~= "string" then
+            o.Type = "Text";
+        end
+        if typeof(o.Padding) ~= "number" then
+            o.Padding = 0;
+        end
+    end
     local Window = New "Frame" {
         -- Topbar Frame
         Parent = props.Parent;
@@ -252,6 +263,17 @@ function Module:CreateWindow(props)
 
             CustomButtons = Fusion.ForPairs(CustomBtns,function(i,o)
                 local Transparency = Value(1)
+                local Chi = nil;
+                if o.Type == "Image" then
+                    Chi = {New "ImageLabel" {
+                        AnchorPoint = Vector2.new(0.5,0.5);
+                        Position = UDim2.new(0.5,0,0.5,0);
+                        Size = UDim2.new(1,-o.Padding*2,1,-o.Padding*2);
+                        BackgroundTransparency = 1;
+                        Image = o.Text;
+                    }};
+                    o.Text = ""
+                end
                 return i,New "TextButton" {
                     BackgroundColor3 = props.Style.ButtonColor;
                     Size = UDim2.new(0,20,0,20);
@@ -275,6 +297,7 @@ function Module:CreateWindow(props)
                     [Event "MouseButton1Up"] = function()
                         o.Callback()
                     end;
+                    [Children] = Chi;
                 };
             end,Fusion.cleanup)
         }

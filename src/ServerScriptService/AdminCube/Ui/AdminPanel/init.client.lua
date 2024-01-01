@@ -43,13 +43,13 @@ local WindowFrame = New "Frame" {
                     PaddingRight = UDim.new(0,5);
                     PaddingTop = UDim.new(0,5);
                 };
-        
+
                 Grid = New "UIGridLayout" {
                     CellPadding = UDim2.new(0,5,0,5);
                     CellSize = UDim2.new(0.5,-3,0,25);
                     SortOrder = Enum.SortOrder.LayoutOrder;
                 };
-        
+
                 Buttons = MainMenus[1]();
             }
         };

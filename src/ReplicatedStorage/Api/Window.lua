@@ -139,32 +139,72 @@ function Module:CreateWindow(props)
             return UDim2.new(0,Size:get().X,0,20);
         end);
         Position = Position;
-        ZIndex = props.ZIndex;
+        ZIndex = Computed(function()
+            if props.Focus:get() == props.id then
+                return 2;
+            end
+            return 1;
+        end);
         Name = props.Name;
 
-        -- Drag
-        [Event "InputBegan"] = function(input)
-            if (input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch) and props.Draggable == true then
-                dragging = true
-                dragStart = input.Position
-                startPos = Position:get()
-
-                local con
-                con = input.Changed:Connect(function()
-                    if input.UserInputState == Enum.UserInputState.End then
-                        dragging = false
-                        con:Disconnect()
-                    end
-                end)
-            end
-        end;
-        [Event "InputChanged"] = function(input)
-            if input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then
-                dragInput = input
-            end
-        end;
-
         [Children] = {
+            -- Focus Button
+            Focus = New "TextButton" {
+                Size = Computed(function()
+                    local isVis = Minimize:get()
+                    if isVis == true then
+                        return UDim2.new(1,0,1,Size:get().Y + 1);
+                    end
+                    return UDim2.new(1,0,1,0);
+                end);
+                BackgroundTransparency = 1;
+                Text = "";
+                ZIndex = Computed(function()
+                    if props.Focus:get() == props.id then
+                        return -5;
+                    end
+                    return 4;
+                end);
+                [Event "MouseButton1Down"] = function()
+                    props:FocusWindow(props.id)
+                end;
+            };
+            DragFrame = New "Frame" {
+                BackgroundTransparency = 1;
+                Size = UDim2.new(1,0,1,0);
+                ZIndex = Computed(function()
+                    if props.Focus:get() == props.id then
+                        return -4;
+                    end
+                    return 5;
+                end);
+                -- Drag
+                [Event "InputBegan"] = function(input)
+                    if (input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch) and props.Draggable == true then
+                        if props.Focus:get() ~= props.id then
+                            props:FocusWindow(props.id)
+                        end
+
+                        dragging = true
+                        dragStart = input.Position
+                        startPos = Position:get()
+
+                        local con
+                        con = input.Changed:Connect(function()
+                            if input.UserInputState == Enum.UserInputState.End then
+                                dragging = false
+                                con:Disconnect()
+                            end
+                        end)
+                    end
+                end;
+                [Event "InputChanged"] = function(input)
+                    if input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then
+                        dragInput = input
+                    end
+                end;
+            };
+
             -- Container Frame
             Frame = New "Frame" {
                 Visible = Minimize;
@@ -174,7 +214,6 @@ function Module:CreateWindow(props)
                 Size = Computed(function()
                     return UDim2.new(1,0,0,Size:get().Y);
                 end);
-                ZIndex = props.ZIndex;
                 [Children] = {
                     Main = props.Main;
                     ResizeWindow;
@@ -186,8 +225,13 @@ function Module:CreateWindow(props)
                 Position = UDim2.new(0,2,0,2);
                 Size = UDim2.new(0,16,0,16);
                 Image = "rbxassetid://6064221669";
-                ZIndex = props.ZIndex;
                 Visible = TopbarVis;
+                ImageTransparency = Computed(function()
+                    if props.Focus:get() == props.id then
+                        return 0;
+                    end
+                    return .2;
+                end);
             };
             -- 25
             Title = New "TextLabel" {
@@ -197,8 +241,13 @@ function Module:CreateWindow(props)
                 TextColor3 = props.Style.ButtonColor;
                 Text = props.Title;
                 TextXAlignment = Enum.TextXAlignment.Left;
-                ZIndex = props.ZIndex;
                 Visible = TopbarVis;
+                TextTransparency = Computed(function()
+                    if props.Focus:get() == props.id then
+                        return 0;
+                    end
+                    return .2;
+                end);
             };
 
             CloseBtn = New "TextButton" {
@@ -212,8 +261,13 @@ function Module:CreateWindow(props)
                 TextColor3 = props.Style.TextColor;
                 AutoButtonColor = false;
                 BorderSizePixel = 0;
-                ZIndex = props.ZIndex;
                 Visible = TopbarVis;
+                TextTransparency = Computed(function()
+                    if props.Focus:get() == props.id then
+                        return 0;
+                    end
+                    return .2;
+                end);
 
                 [Event "MouseEnter"] = function()
                     CloseBtnTransparency:set(0.85)
@@ -240,8 +294,13 @@ function Module:CreateWindow(props)
                 TextColor3 = props.Style.TextColor;
                 AutoButtonColor = false;
                 BorderSizePixel = 0;
-                ZIndex = props.ZIndex;
                 Visible = TopbarVis;
+                TextTransparency = Computed(function()
+                    if props.Focus:get() == props.id then
+                        return 0;
+                    end
+                    return .2;
+                end);
 
                 [Event "MouseEnter"] = function()
                     MinimizeBtnTransparency:set(0.85)
@@ -271,6 +330,12 @@ function Module:CreateWindow(props)
                         Size = UDim2.new(1,-o.Padding*2,1,-o.Padding*2);
                         BackgroundTransparency = 1;
                         Image = o.Text;
+                        ImageTransparency = Computed(function()
+                            if props.Focus:get() == props.id then
+                                return 0;
+                            end
+                            return .2;
+                        end);
                     }};
                     o.Text = ""
                 end
@@ -285,8 +350,13 @@ function Module:CreateWindow(props)
                     TextColor3 = props.Style.TextColor;
                     AutoButtonColor = false;
                     BorderSizePixel = 0;
-                    ZIndex = props.ZIndex;
                     Visible = TopbarVis;
+                    TextTransparency = Computed(function()
+                        if props.Focus:get() == props.id then
+                            return 0;
+                        end
+                        return .2;
+                    end);
 
                     [Event "MouseEnter"] = function()
                         Transparency:set(0.85)

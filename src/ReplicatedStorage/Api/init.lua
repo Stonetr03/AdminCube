@@ -1,5 +1,6 @@
 -- Admin Cube - Client Api
 
+local HttpService = game:GetService("HttpService")
 local Fusion = require(game.ReplicatedStorage:WaitForChild("AdminCube"):WaitForChild("Fusion"))
 local Signal = require(game.ReplicatedStorage:WaitForChild("AdminCube"):WaitForChild("Packages"):WaitForChild("Signal"))
 local WindowModule = require(script.Window)
@@ -30,7 +31,8 @@ local Api = {
         ButtonTransparency = ButtonTransparency;
         ButtonSubColor = ButtonSubColor;
         BackgroundSubColor = BackgroundSubColor;
-    }
+    };
+    FocusedWindow = Value("");
 }
 
 -- Global Settings
@@ -190,6 +192,19 @@ function Api:OnInvoke(Key,Callback)
     end
 end
 
+-- Focusing
+local WindowIds = {}
+function Api:FocusWindow(id: string): nil
+    if table.find(WindowIds,id) then
+        Api.FocusedWindow:set(id)
+    else
+        warn("id " .. id .. " not found")
+    end
+end
+function Api:GetFocusedWindow(): string
+    return Api.FocusedWindow:get()
+end
+
 -- Commands
 function Api:GetCommands()
     local Cmds,Alias,Rank = Api:Invoke("GetCommands")
@@ -198,14 +213,17 @@ end
 
 -- Window
 function Api:CreateWindow(Props: table,Component: GuiBase)
+    local id = HttpService:GenerateGUID(true)
+    table.insert(WindowIds,id)
     Props = WindowModule:CheckTable(Props)
     local Window,Functions = WindowModule:CreateWindow({
+        Focus = Api.FocusedWindow;
+        id = id;
         Btns = Props.Buttons;
         Size = Props.Size;
         Main = Component;
         Title = Props.Title;
         Style = Api.Style;
-        ZIndex = Props.ZIndex;
         Position = Props.Position;
         Parent = game.Players.LocalPlayer.PlayerGui:FindFirstChild("__AdminCube_Main");
         Name = "Window-" .. Props.Title;
@@ -213,8 +231,10 @@ function Api:CreateWindow(Props: table,Component: GuiBase)
         ResizeableMinimum = Props.ResizeableMinimum;
         Draggable = Props.Draggable;
         HideTopbar = Props.HideTopbar;
+        FocusWindow = Api.FocusWindow;
     })
     local ReturnTab = {
+        id = id;
         OnClose = {}
     }
 
@@ -240,9 +260,14 @@ function Api:CreateWindow(Props: table,Component: GuiBase)
 
     ReturnTab.SetVis = function(Vis: boolean)
         Functions.SetVis:set(Vis)
+        if Vis == true then
+            Api:FocusWindow(id)
+        end
     end
     ReturnTab.SetSize = Functions.SetSize
     ReturnTab.SetPosition = Functions.SetPosition
+
+    Api:FocusWindow(id)
 
     return ReturnTab
 end
@@ -413,7 +438,6 @@ function ShowPrompt(Prompts)
     Window = Api:CreateWindow({
         Size = Vector2.new(250,((#Prompts.Prompt * 25) + 4 + 50 + Added));
         Title = "Prompt";
-        ZIndex = 19
     },PromptComp)
 end
 

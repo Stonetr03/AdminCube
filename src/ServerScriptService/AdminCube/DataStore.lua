@@ -2,9 +2,21 @@
 
 local DataStoreService = game:GetService("DataStoreService")
 local Settings = require(script.Parent:WaitForChild("Settings"))
-local DataStore = DataStoreService:GetDataStore(Settings.DataStoreKey)
+local DataStore
 local Create = require(script.Parent:WaitForChild("CreateModule"))
 local HttpService = game:GetService("HttpService")
+local RunService = game:GetService("RunService")
+
+local success,err = pcall(function()
+    DataStore = DataStoreService:GetDataStore(Settings.DataStoreKey)
+end)
+if not success or not DataStore then
+    -- This could fail if testing in studio in a unpublished place / local file
+    if not RunService:IsStudio() then
+        -- This prevents the error from running in studio.
+        warn("There was an error getting the datastore.\nData will not be saved!",success,err,DataStore)
+    end
+end
 
 local MessagingService = game:GetService("MessagingService")
 
@@ -191,20 +203,22 @@ function Module:ServerBan(Key, Banned)
     end
 end
 
-pcall(function()
-    MessagingService:SubscribeAsync("AdminCube-Data-Update",function(Data)
-        local Plr = Data.Data.Player
-        for _,p in pairs(game.Players:GetPlayers()) do
-            if p.UserId == Plr then
-                -- Kick Player
-                SavingFor[p.UserId] = true;
-                task.wait(1)
-                SavingFor[p.UserId] = true;
-    
-                p:Kick("Data updated by another server.")
+task.spawn(function()
+    pcall(function()
+        MessagingService:SubscribeAsync("AdminCube-Data-Update",function(Data)
+            local Plr = Data.Data.Player
+            for _,p in pairs(game.Players:GetPlayers()) do
+                if p.UserId == Plr then
+                    -- Kick Player
+                    SavingFor[p.UserId] = true;
+                    task.wait(1)
+                    SavingFor[p.UserId] = true;
+        
+                    p:Kick("Data updated by another server.")
+                end
             end
-        end
-    end);
+        end);
+    end)
 end)
 
 

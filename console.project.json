@@ -1,0 +1,42 @@
+{
+    "name": "Admin Cube - Console",
+    "tree": {
+        "$className": "DataModel",
+        
+        "ServerScriptService": {
+            "$className": "ServerScriptService",
+            
+            "MainModule": {
+                "$path": "console/src",
+
+                "Packages": {
+                    "$path": "Packages"
+                },
+                "DefaultSettings": {
+                    "$path": "src/ServerScriptService/AdminCube/DefaultSettings.lua"
+                },
+
+                "AdminCube": {
+                    "$path": "src/ServerScriptService/AdminCube",
+            
+                    "ReplicatedStorage": {
+                        "$path":"src/ReplicatedStorage",
+
+                        "Packages": {
+                            "$path":"Packages"
+                        },
+
+                        "Topbar": {
+                            "$path":"external/Topbar"
+                        }
+                    }
+                }
+            },
+
+            "Loader": {
+                "$path": "console/Test"
+            }
+            
+        }
+    }
+}

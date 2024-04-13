@@ -14,10 +14,6 @@
 
           "Packages": {
             "$path":"Packages"
-          },
-
-          "Topbar": {
-            "$path":"external/Topbar"
           }
         }
       },

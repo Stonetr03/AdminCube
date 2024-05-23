@@ -286,10 +286,6 @@ task.spawn(function()
     if s == false then
         LocalServer = true
     end
-
-    Module:OnInvoke("Response",function()
-        return true
-    end)
 end)
 
 return Module

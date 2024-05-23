@@ -6,6 +6,7 @@ local New = Fusion.New
 local Value = Fusion.Value
 local Event = Fusion.OnEvent
 local Children = Fusion.Children
+local Computed = Fusion.Computed
 
 local Api = require(game.ReplicatedStorage:WaitForChild("AdminCube"):WaitForChild("Api"))
 local ServerStats = game.ReplicatedStorage.AdminCube:WaitForChild("ServerStats")
@@ -40,16 +41,36 @@ function BackCallBack()
     Visible:set(false)
 end
 
+function FormatTime(time: number): string -- 94592
+    time = math.floor(time)
+    local day = math.floor(time / 86400)
+    time = time % 86400
+    local hrs = math.floor(time / 3600)
+    time = time % 3600
+    local min = math.floor(time / 60)
+    local sec = time % 60
+    if day > 0 then
+        return string.format("%d:%.2d:%.2d:%.2d",day,hrs,min,sec)
+    elseif hrs > 0 then
+        return string.format("%d:%.2d:%.2d",hrs,min,sec)
+    elseif min > 0 then
+        return string.format("%d:%.2d",min,sec)
+    else
+        return tostring(sec);
+    end
+end
+
 local Stop
+local Running = true
 
 function Menu()
     local Last, Start = 0,0
     local Updates = {}
 
-    local Next = 0
-
     local Region = ServerStats:WaitForChild("Region").Value or ""
     local Country = ServerStats:WaitForChild("Country").Value or ""
+    local StartTime = ServerStats:WaitForChild("Start").Value or 0
+    local Uptime = Value("")
     local RegionText = "Server Region : unknown"
     if Region ~= "" or Country ~= "" then
         RegionText = "Server Region : " .. Region .. ", " .. Country
@@ -66,14 +87,17 @@ function Menu()
             local CurrentFPS = (tick() - Start >= 1 and #Updates) or (#Updates / (tick() - Start))
             CurrentFPS = math.floor(CurrentFPS)
             Fps:set("Fps : " .. CurrentFPS)
+        end
+    end)
 
-            if Next < tick() then
-                Next = tick() + 5
-                local St = tick()
-                Api:Invoke("Response")
-                local Re = tick()
-                local Pi = tostring(math.floor((Re - St)*1000))
+    task.spawn(function()
+        while Running do
+            task.wait(1)
+            if VisRef:get().Visible == true then
+                local Pi = tostring(math.floor(game.Players.LocalPlayer:GetNetworkPing()*1000))
                 Ping:set("Ping : " .. Pi .. " ms")
+
+                Uptime:set(FormatTime(os.time() - StartTime));
             end
         end
     end)
@@ -108,9 +132,21 @@ function Menu()
                 TextSize = 20;
                 ZIndex = 10;
             };
-            Fps = New "TextLabel" {
+            Uptime = New "TextLabel" {
                 Size = UDim2.new(1,0,0,20);
                 Position = UDim2.new(0,0,0,40);
+                Text = Computed(function()
+                    return "Server Uptime : " .. Uptime:get();
+                end);
+                Font = Enum.Font.SourceSans;
+                TextColor3 = Api.Style.TextColor;
+                BackgroundTransparency = 1;
+                TextSize = 20;
+                ZIndex = 10;
+            };
+            Fps = New "TextLabel" {
+                Size = UDim2.new(1,0,0,20);
+                Position = UDim2.new(0,0,0,60);
                 Text = Fps;
                 Font = Enum.Font.SourceSans;
                 TextColor3 = Api.Style.TextColor;
@@ -120,7 +156,7 @@ function Menu()
             };
             Ping = New "TextLabel" {
                 Size = UDim2.new(1,0,0,20);
-                Position = UDim2.new(0,0,0,60);
+                Position = UDim2.new(0,0,0,80);
                 Text = Ping;
                 Font = Enum.Font.SourceSans;
                 TextColor3 = Api.Style.TextColor;
@@ -130,7 +166,7 @@ function Menu()
             };
             Version = New "TextLabel" {
                 Size = UDim2.new(1,0,0,20);
-                Position = UDim2.new(0,0,0,80);
+                Position = UDim2.new(0,0,0,100);
                 Text = "Admin Cube Version " .. ServerStats:WaitForChild("Version").Value;
                 Font = Enum.Font.SourceSans;
                 TextColor3 = Api.Style.TextColor;
@@ -144,6 +180,7 @@ end
 
 Api:OnEvent("RemovePanel",function()
     Stop:Disconnect()
+    Running = false
 end)
 
 return {MenuBtn,Menu,BackCallBack}

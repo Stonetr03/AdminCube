@@ -7,28 +7,33 @@ local Create = require(script.Parent:WaitForChild("CreateModule"))
 local HttpService = game:GetService("HttpService")
 local RunService = game:GetService("RunService")
 
-local success,err = pcall(function()
-    DataStore = DataStoreService:GetDataStore(Settings.DataStoreKey)
-end)
-if not success or not DataStore then
-    -- This could fail if testing in studio in a unpublished place / local file
-    if not RunService:IsStudio() then
-        -- This prevents the error from running in studio.
-        warn("There was an error getting the datastore.\nData will not be saved!",success,err,DataStore)
-    end
-end
-
 local MessagingService = game:GetService("MessagingService")
 
 local Module = {
     ServerData = {};
     ServerBans = {};
+    isFake = false;
 }
+
+local RetryAmount = 3; -- Amount of times to retry when getting data errors
+
+if RunService:IsStudio() then
+    local s,_ = pcall(function()
+        DataStore = DataStoreService:GetDataStore(Settings.DataStoreKey)
+    end)
+    if not s or not DataStore then
+        -- No Access to Api Services
+        Module.isFake = true;
+    end
+else
+    DataStore = DataStoreService:GetDataStore(Settings.DataStoreKey)
+end
 
 local SavingFor = {}
 local NeedsSaving = {}
 local LastSave = {}
 local StopSaving = {}
+local KeyInfo = {}
 
 local DefaultData = {
     Rank = 0; -- Player
@@ -54,16 +59,32 @@ local function CheckData(Data)
 end
 
 function Module:GetDataStore(Key)
-    local Data
-    local s,e = pcall(function()
-        Data = DataStore:GetAsync(Key)
-    end)
-    if not s then
-        warn(e)
-        -- No Data
+    local Data, tmpKeyInfo
+    local try = 0
+    while try < RetryAmount and Data == nil do
+        local s,e = pcall(function()
+            if Module.isFake then return end
+            Data, tmpKeyInfo = DataStore:GetAsync(Key)
+        end)
+        if s then
+            if Data == nil then
+                Data = DefaultData
+            end
+        else
+            -- No Data - Retry or Kick
+            warn("Failed to get data, retry " .. try .. ", error:",e)
+            task.wait(5);
+        end
+        try+=1;
     end
     if Data == nil then
-        Data = DefaultData
+        -- Something went wrong
+        if Settings.KickOnDataFail then
+            return false
+        else
+            StopSaving[Key] = true
+            Data = DefaultData
+        end
     end
 
     -- Check Data / Update Data
@@ -72,15 +93,16 @@ function Module:GetDataStore(Key)
     -- Save to Data Folder
     local EncodedValue = HttpService:JSONEncode(NewData)
     Create("StringValue",script.Parent.Data,{Name = tostring(Key),Value = EncodedValue})
-    
+
     SavingFor[Key] = false
     NeedsSaving[Key] = false
     LastSave[Key] = os.time()
+    KeyInfo[Key] = tmpKeyInfo;
 
     return NewData
 end
 
--- Save Data 
+-- Save Data
 function SaveDataStore(Key)
     if Settings.TempPerms == true then
         return false
@@ -89,6 +111,7 @@ function SaveDataStore(Key)
         return false
     end
     SavingFor[Key] = true
+    local newValue, newKeyInfo
     local s,e = pcall(function()
         -- Update String Value
         local Checker = script.Parent.Data:FindFirstChild(tostring(Key))
@@ -97,12 +120,26 @@ function SaveDataStore(Key)
         end
 
         -- Save to DataStore
-        DataStore:SetAsync(Key,Module.ServerData[Key])
+        if Module.isFake then return end
+        if StopSaving[Key] == true then return end
+        newValue, newKeyInfo = DataStore:UpdateAsync(Key,function(currentValue: any, currentKeyInfo: DataStoreKeyInfo): any | nil
+            if KeyInfo[Key] and currentKeyInfo.UpdatedTime > KeyInfo[Key].UpdatedTime then
+                -- Data was updated by another server
+                Module.ServerData[Key] = currentValue;
+                return nil;
+            end
+            -- Update Data
+            return Module.ServerData[Key], {Key}
+        end)
     end)
     if not s then
         warn(e)
     else
         NeedsSaving[Key] = false
+        if newValue ~= nil and newKeyInfo ~= nil then
+            Module.ServerData[Key] = newValue;
+            KeyInfo[Key] = newKeyInfo;
+        end
     end
     LastSave[Key] = os.time() + 60
     SavingFor[Key] = false
@@ -135,9 +172,11 @@ function Module:ExitDataStore(Key)
     end
 
     Module.ServerData[Key] = nil
-    NeedsSaving[Key] = false
-    LastSave[Key] = false
-    SavingFor[Key] = false
+    NeedsSaving[Key] = nil
+    LastSave[Key] = nil
+    SavingFor[Key] = nil
+    StopSaving[Key] = nil
+    KeyInfo[Key] = nil
 
     return
 end
@@ -159,6 +198,7 @@ end
 function Module:GetRecord(Key)
     local Data
     local s,e = pcall(function()
+        if Module.isFake then warn("Unable to get record, no api services") return end
         Data = DataStore:GetAsync(Key)
     end)
     if not s then
@@ -170,9 +210,11 @@ end
 
 function Module:UpdateRecord(Key,NewValue)
     if Module.ServerData[Key] == nil then
-        
+
         local s,e = pcall(function()
             -- Save to DataStore
+            if Module.isFake then warn("Unable to update record, no api services") return end
+            if StopSaving[Key] == true then return end
             DataStore:SetAsync(Key,NewValue)
         end)
         if not s then
@@ -185,7 +227,7 @@ function Module:UpdateRecord(Key,NewValue)
 
         return true
     else
-        
+
         Module.ServerData[Key] = NewValue
         NeedsSaving[Key] = true
         SaveDataStore(Key)
@@ -210,10 +252,8 @@ task.spawn(function()
             for _,p in pairs(game.Players:GetPlayers()) do
                 if p.UserId == Plr then
                     -- Kick Player
-                    SavingFor[p.UserId] = true;
-                    task.wait(1)
-                    SavingFor[p.UserId] = true;
-        
+                    StopSaving[p.UserId] = true;
+
                     p:Kick("Data updated by another server.")
                 end
             end

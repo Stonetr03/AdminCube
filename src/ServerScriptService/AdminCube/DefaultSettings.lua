@@ -25,6 +25,7 @@ return {
 
     Prefix = "!";
     DataStoreKey = "AdminCube-DataStore-1"; -- If Changed All Data is Reset
+    KickOnDataFail = true; -- Kicks the player if the data fails
     DisplayNames = true; -- Display Names Enabled / Disabled for Commands
     TempPerms = false;
 

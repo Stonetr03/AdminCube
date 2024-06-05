@@ -1,6 +1,7 @@
 -- Admin Cube
 
 local Api = require(script.Parent.Parent:WaitForChild("Api"))
+local TeleportService = game:GetService("TeleportService");
 
 Api:RegisterCommand("teleport","Teleports a player.",function(p,Args)
     local s,e = pcall(function()
@@ -74,5 +75,24 @@ Api:RegisterCommand("summon","Teleports all players to calling player.",function
         warn(e)
     end
 end,"2")
+
+Api:RegisterCommand("place","Teleports a player to another place.",function(p,Args)
+    local s,e = pcall(function()
+        if Api:GetRank(p) >= 3 then
+            local Targets = Api:GetPlayer(Args[1],p);
+            local PlaceId = tonumber(Args[2])
+            if Targets and #Targets > 0 and PlaceId then
+                TeleportService:TeleportAsync(PlaceId,Targets);
+            end
+        else
+            -- Invalid Rank Notification
+            Api:InvalidPermissionsNotification(p)
+        end
+    end)
+    if not s then
+        warn(e)
+    end
+
+end,"3;*[player];*[number:PlaceId]")
 
 return true

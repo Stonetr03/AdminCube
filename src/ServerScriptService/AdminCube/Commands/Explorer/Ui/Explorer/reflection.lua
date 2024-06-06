@@ -1,4 +1,4 @@
--- ReflectionMetadata - 54d23909e13709fbf926f3fe5c6ecd9dbb1cee2b - April 1st 2024
+-- ReflectionMetadata - 54d23909e13709fbf926f3fe5c6ecd9dbb1cee2b - June 5th 2024
 -- https://github.com/MaximumADHD/Roblox-Client-Tracker/blob/roblox/ReflectionMetadata.xml
 
 return [===[
@@ -8581,7 +8581,7 @@ return [===[
                         <string name="PropertyOrder">1001</string>
                         <bool name="FFlag">AnimatorIsThrottledPropertyEnabled</bool>
                     </Properties>
-            </Item>
+                </Item>
                 <Item class="ReflectionMetadataMember">
                     <Properties>
                         <string name="Name">RootMotion</string>

@@ -69,6 +69,7 @@ function Module.Ui(props)
         BackgroundTransparency = 1;
         Parent = props.Parent;
         Name = "NotificationFrame";
+        ZIndex = 4;
         [Children] = {
             UIListLayout = New "UIListLayout" {
                 Padding = UDim.new(0,5);

@@ -7,12 +7,12 @@ local New = Fusion.New
 local Children = Fusion.Children
 
 -- Topbar
-local Topbar = require(game.ReplicatedStorage:WaitForChild("AdminCube"):WaitForChild("Topbar"))
+local Topbar = require(game.ReplicatedStorage:WaitForChild("AdminCube"):WaitForChild("Packages"):WaitForChild("Topbar"))
 
 local icon = Topbar.new()
 icon:setImage("http://www.roblox.com/asset/?id=5010019455") -- 24x24
 icon:setName("AdminCubeMainAdminPanel")
-icon:setProperty("deselectWhenOtherIconSelected",false)
+icon:setImageScale(0.65)
 
 local NotificationEvent = Instance.new("BindableEvent")
 NotificationEvent.Name = "NotificationEvent";

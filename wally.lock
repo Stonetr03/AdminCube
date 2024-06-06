@@ -3,6 +3,11 @@
 registry = "test"
 
 [[package]]
+name = "1foreverhd/topbarplus"
+version = "3.0.2"
+dependencies = []
+
+[[package]]
 name = "elttob/fusion"
 version = "0.2.0"
 dependencies = []
@@ -14,5 +19,5 @@ dependencies = []
 
 [[package]]
 name = "stonetr03/admincube"
-version = "2.0.0-pre"
-dependencies = [["Fusion", "elttob/fusion@0.2.0"], ["Signal", "sleitnick/signal@1.5.0"]]
+version = "3.0.0-pre"
+dependencies = [["Fusion", "elttob/fusion@0.2.0"], ["Signal", "sleitnick/signal@1.5.0"], ["Topbar", "1foreverhd/topbarplus@3.0.2"]]

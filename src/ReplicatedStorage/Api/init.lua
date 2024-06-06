@@ -149,17 +149,6 @@ Api:SetSettingModifier("CurrentTheme",{
     end
 })
 
--- DEPRECATED FUNCTIONS:::
-function Api:UpdateTheme(Theme)
-    warn(':UpdateTheme is deprecated\ninstead use :SetSetting("CurrentTheme",value)')
-    Api:SetSetting("CurrentTheme",Theme)
-end
-function Api:ThemeUpdateEvent(f)
-    warn(':ThemeUpdateEvent is deprecated\ninstead use :Settings.Changed:Connect(f)')
-    if typeof(f) == "function" then
-        Api.Settings.Changed:Connect(f)
-    end
-end
 UpdateTheme()
 
 -- Remote Events

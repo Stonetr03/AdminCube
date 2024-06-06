@@ -7,7 +7,8 @@ local Api = require(script:WaitForChild("Api"))
 local Version = require(script:WaitForChild("Version"))
 local Log = require(script:WaitForChild("Log"))
 
-print("\n==================================\nAdmin Cube - By Stonetr03 Studios\n" .. Version .. "\n==================================")
+local prtStr = DataStoreModule.isFake and " - No Api Services" or ""
+print("\n==================================\nAdmin Cube - By Stonetr03 Studios\n" .. Version .. prtStr .. "\n==================================")
 
 local ConnectedPlrs = {}
 
@@ -49,16 +50,21 @@ local function PlayerJoined(p)
         -- Server Ban
         if DataStoreModule.ServerBans[p.UserId] then
             p:Kick("You are banned from this server.")
+            return false
         end
 
         ConnectedPlrs[p] = true
         -- Get Data
         local TempData = DataStoreModule:GetDataStore(p.UserId)
+        if TempData == false then
+            p:Kick("There was a problem while getting your data, please rejoin to try again.")
+            return false
+        end
         p.Chatted:Connect(function(c)
             CommandRunner(p,c)
         end)
 
-        -- Check Ban 
+        -- Check Ban
         if DataStoreModule.ServerData[p.UserId].Banned == true then
             if DataStoreModule.ServerData[p.UserId].BanTime == -1 then
                 -- Perm Ban

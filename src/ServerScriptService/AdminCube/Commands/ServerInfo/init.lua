@@ -33,5 +33,6 @@ end
 CreateModule("StringValue",RS,{Name = "Country", Value = Tab.country})
 CreateModule("StringValue",RS,{Name = "Region",Value = Tab.regionName})
 CreateModule("StringValue",RS,{Name = "Version", Value = Version})
+CreateModule("NumberValue",RS,{Name = "Start", Value = os.time()})
 
 return true

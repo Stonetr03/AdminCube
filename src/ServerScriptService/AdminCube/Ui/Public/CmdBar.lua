@@ -103,6 +103,7 @@ function Module.Ui(props)
         Visible = Computed(function()
             return Visible:get()
         end);
+        ZIndex = 3;
         [Children] = {
             TextBox = New "TextBox" {
                 AnchorPoint = Vector2.new(0,0.5);

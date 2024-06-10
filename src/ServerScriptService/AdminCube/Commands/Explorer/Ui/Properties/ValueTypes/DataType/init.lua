@@ -352,7 +352,9 @@ function Module.Ui(Shared: table, prop: string, CatTbl: table): GuiObject
             return strUi.Box(Text,function(str: string)
                 local new = TypesUi[CatTbl.Name].from(string.gsub(str,"%s",""));
                 if new then
-                    obj[prop] = new;
+                    pcall(function()
+                        obj[prop] = new;
+                    end)
                 end
             end,{con,Text});
         end
@@ -363,7 +365,9 @@ function Module.Ui(Shared: table, prop: string, CatTbl: table): GuiObject
         Text:set(tostring(obj[prop]))
     end)
     return strUi.Box(Text,function(str: string)
-        obj[prop] = str;
+        pcall(function()
+            obj[prop] = str;
+        end)
     end,{con,Text});
 end
 

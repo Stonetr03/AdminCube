@@ -53,7 +53,9 @@ function Module.Ui(Shared: table, prop: string): GuiObject
         Text:set(tostring(obj[prop]))
     end)
     return Module.Box(Text,function(str: string)
-        obj[prop] = str
+        pcall(function()
+            obj[prop] = str;
+        end);
     end,{con,Text});
 end
 

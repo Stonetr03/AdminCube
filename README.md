@@ -30,7 +30,9 @@ Plugins can add custom menus to Admin Cube's Admin Panel
 
 ## Credits
 - Admin Cube is designed and maintained by [@Stonetr03](https://github.com/Stonetr03)
-- Admin Cube uses [ForeverHD's Topbar+](https://github.com/1ForeverHD/TopbarPlus)
-- Admin Cube uses [Fusion by elttob](https://elttob.uk/Fusion/0.2/)
-- Admin Cube uses [Signal by sleitnick](https://github.com/Sleitnick/RbxUtil)
-- Admin Cube uses [F3X](https://www.roblox.com/library/142785488/Building-Tools-by-F3X) for Building Tools Command.
+- Admin Cube uses the following Modules:
+    - [Topbar+ by ForeverHD](https://github.com/1ForeverHD/TopbarPlus)
+    - [Fusion by elttob](https://elttob.uk/Fusion/0.2/)
+    - [Signal by sleitnick](https://github.com/Sleitnick/RbxUtil)
+    - [F3X](https://www.roblox.com/library/142785488/Building-Tools-by-F3X) for Building Tools Command.
+- In-Game Explorer Icons are [Vanilla 2.1 by elttob](https://github.com/dphfox/Vanilla) licensed under `CC BY-NC 4.0`.

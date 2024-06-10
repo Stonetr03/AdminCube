@@ -1,18 +1,19 @@
 -- Admin Cube
 
-local HttpService = game:GetService("HttpService")
-local Dump = HttpService:JSONDecode( require(script.Parent:WaitForChild("dump")) )
+local Api = require(game.ReplicatedStorage:WaitForChild("AdminCube"):WaitForChild("Api"))
+
+local Classes = Api:Invoke("CubeExplorer","Classes")
+if typeof(Classes) ~= "table" then
+    Classes = {}
+end
+local EnumList = Api:Invoke("CubeExplorer","Enums")
+if typeof(EnumList) ~= "table" then
+    EnumList = {}
+end
 
 local Module = {
-    Enums = {}
+    Enums = EnumList
 }
-
-for _,tbl: {Name: string,Items: table} in pairs(Dump.Enums) do
-    Module.Enums[tbl.Name] = {}
-    for _,i: {Name: string, Value: number} in pairs(tbl.Items) do
-        Module.Enums[tbl.Name][i.Name] = i.Value;
-    end
-end
 
 export type Category = {
     [string]: { -- Name of Property
@@ -34,7 +35,7 @@ function Module:GetProperties(Obj: Instance): Category
     repeat
 
         local found = false
-        for _,o in pairs(Dump.Classes) do
+        for _,o in pairs(Classes) do
             if o.Name == ClassToFind then
                 found = true
                 ClassToFind = o.Superclass

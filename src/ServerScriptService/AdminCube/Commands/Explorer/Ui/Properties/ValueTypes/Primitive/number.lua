@@ -16,7 +16,9 @@ function Module.Ui(Shared: table, prop: string): GuiObject
     return strUi.Box(Text,function(str: string)
         local new = tonumber(str)
         if new then
-            obj[prop] = new;
+            pcall(function()
+                obj[prop] = new;
+            end)
         end
     end,{con,Text});
 end

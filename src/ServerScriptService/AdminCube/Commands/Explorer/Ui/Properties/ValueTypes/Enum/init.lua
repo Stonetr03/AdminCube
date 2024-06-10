@@ -98,7 +98,9 @@ function Module.Ui(Shared: table, prop: string, CatTbl: table, AboveOthers: any)
                                 TextSize = 14;
                                 TextXAlignment = Enum.TextXAlignment.Left;
                                 [Event "MouseButton1Up"] = function()
-                                    obj[prop] = o
+                                    pcall(function()
+                                        obj[prop] = o
+                                    end)
                                 end;
                             };
                         end,Fusion.cleanup)

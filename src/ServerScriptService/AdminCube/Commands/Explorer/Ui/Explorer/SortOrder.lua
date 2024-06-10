@@ -1,19 +1,14 @@
 -- Admin Cube
 
-local ReflectionMetaData: string = require(script.Parent:WaitForChild("reflection"))
+local Api = require(game.ReplicatedStorage:WaitForChild("AdminCube"):WaitForChild("Api"))
 
-local Order = {}
-local Max = 0
-for m in string.gmatch(ReflectionMetaData,"<Properties>(.-)</Properties>") do
-    local Prop = string.match(m,'<string name="Name">(.-)</string>')
-    local Sort = string.match(m,'<string name="ExplorerOrder">(.-)</string>')
-    if typeof(Prop) == "string" and tonumber(Sort) then
-        Order[Prop] = tonumber(Sort)
-        if tonumber(Sort) > Max then
-            Max = tonumber(Sort)
-        end
-    end
+local Reflection = Api:Invoke("CubeExplorer","Reflection")
+if typeof(Reflection) ~= "table" or not Reflection.Order or not Reflection.Max then
+    Reflection = {Order = {}, Max = 0}
 end
+
+local Order = Reflection.Order
+local Max = Reflection.Max
 
 local Module = {
     Max = (Max+1)*1000

@@ -97,20 +97,20 @@ Api:OnEvent("AdminChat-Update",function()
 end)
 
 function Menu()
-    if GuiService:IsTenFootInterface() == true then
+    --if GuiService:IsTenFootInterface() == true then
         return New "TextLabel" {
             BackgroundColor3 = Api.Style.Background;
             Size = UDim2.new(1,0,1,0);
             TextSize = 15;
             TextWrapped = true;
-            TextColor3 = Color3.new(1,1,1);
-            Text = "Admin Chat is disabled on consoles.";
+            TextColor3 = Api.Style.TextColor;
+            Text = "Admin Chat is disabled due to Roblox now requiring the use of TextChatService, Admin Chat will be removed in a future update.\n\nSee Roblox's devforum post for information on the update.";
             ZIndex = 10;
             Font = Enum.Font.SourceSans;
             ClipsDescendants = true;
             Visible = Visible;
         }
-    end
+    --[[end
     return New "Frame" {
         Name = "AdminChat";
         BackgroundColor3 = Api.Style.Background;
@@ -160,7 +160,7 @@ function Menu()
                 end
             }
         }
-    }
+    }]]
 end
 
 return {MenuBtn,Menu,BackCallBack}

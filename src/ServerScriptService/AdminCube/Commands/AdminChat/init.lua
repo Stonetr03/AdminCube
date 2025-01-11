@@ -9,7 +9,7 @@ local Messages = {}
 Api:AddPanelMenu(script.AdminChatMenu)
 
 Api:OnEvent("AdminChat-Send",function(p,Msg)
-    if Api:GetRank(p) >= 2 then
+    --[[if Api:GetRank(p) >= 2 then
         local FilterMsg = ""
         local s,e = pcall(function()
             FilterMsg = ChatService:FilterStringForBroadcast(Msg,p)
@@ -46,23 +46,23 @@ Api:OnEvent("AdminChat-Send",function(p,Msg)
 			local Text = HttpService:JSONEncode({Name = p.Name, Msg = GreaterText})
             Api:BroadcastMessage("AdminChat",Text)
         end
-    end
+    end]]
 end)
 
 Api:SubscribeBroadcast("AdminChat",function(Encoded)
-    local Data = HttpService:JSONDecode(Encoded)
+    --[[local Data = HttpService:JSONDecode(Encoded)
     table.insert(Messages,1,{Name = Data.Name,Msg = Data.Msg})
     -- Clear last message so we dont have 800 messages stored in memory
     if #Messages >= 18 then
         Messages[18] = nil
     end
-    Api:Fire("all","AdminChat-Update")
+    Api:Fire("all","AdminChat-Update")]]
 end)
 
 Api:OnInvoke("AdminChat-Get",function(p)
-    if Api:GetRank(p) >= 2 then
+    --[[if Api:GetRank(p) >= 2 then
         return Messages
-    end
+    end]]
 end)
 
 return true

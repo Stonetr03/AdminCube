@@ -93,6 +93,7 @@ local function PlayerJoined(p)
         ScreenGui.DisplayOrder = 10;
         ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling;
         ScreenGui.Parent = p:WaitForChild("PlayerGui")
+        ScreenGui.ClipToDeviceSafeArea = false;
         local NewUi = script.Ui.Public:Clone()
         NewUi.Parent = ScreenGui
 

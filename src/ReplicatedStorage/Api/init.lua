@@ -263,7 +263,7 @@ end
 
 -- Prompts
 local PromptItems = require(script.Prompts)
-local PromptBoolean,PromptString,PromptDropdown,PromptImage = PromptItems[1],PromptItems[2],PromptItems[3],PromptItems[4]
+local PromptBoolean,PromptString,PromptDropdown,PromptImage,PromptInfo = PromptItems[1],PromptItems[2],PromptItems[3],PromptItems[4],PromptItems[5]
 
 local PromptOpen = false
 local Promptlocal = false
@@ -302,6 +302,7 @@ function ShowPrompt(Prompts)
                 Y = Y;
                 Title = o.Title;
                 DefaultValue = o.DefaultValue;
+                PlaceholderValue = o.PlaceholderValue;
                 UpdateValue = function(NewValue)
                     CurrentValues[i] = NewValue
                 end;
@@ -334,6 +335,13 @@ function ShowPrompt(Prompts)
                 ZIndex = #Prompts.Prompt - i + 20
             })
             Y += 75
+        elseif o.Type == "Info" then
+            ButtonFragments[i] = PromptInfo({
+                Style = Api.Style;
+                Y = Y;
+                Text = o.Text;
+                ZIndex = #Prompts.Prompt - i + 20
+            })
         end
         Y += 25
     end

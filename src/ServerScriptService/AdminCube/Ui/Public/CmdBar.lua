@@ -2,6 +2,7 @@
 
 local Fusion = require(game.ReplicatedStorage:WaitForChild("AdminCube"):WaitForChild("Fusion"))
 local UserInputService = game:GetService("UserInputService")
+local ContextActionService = game:GetService("ContextActionService");
 local HttpService = game:GetService("HttpService")
 local GuiService = game:GetService("GuiService")
 local Api = require(game.ReplicatedStorage:WaitForChild("AdminCube"):WaitForChild("Api"))
@@ -21,75 +22,37 @@ local InputRef = Value()
 
 local ClientSettings = HttpService:JSONDecode(game.ReplicatedStorage:WaitForChild("AdminCube"):WaitForChild("ClientSettings").Value)
 
-if ClientSettings.KeyboardNavDetour and ClientSettings.KeyboardNavDetour == true then
-    GuiService.AutoSelectGuiEnabled = false
-end
-
-local EnableNav = false
-UserInputService.InputBegan:Connect(function(Input)
-    if Input.KeyCode == Enum.KeyCode.Unknown then
-		return
-	end
-    if ClientSettings.KeyboardNavDetour and ClientSettings.KeyboardNavDetour == true then
-        if UserInputService:GetFocusedTextBox() == nil then
-
-            if Input.KeyCode == Enum.KeyCode.BackSlash then
-                if GuiService.SelectedObject == nil then
-                    Visible:set(true)
-                    Text:set("!")
-                    InputRef:get().Text = "!"
-                    EnableNav = true
-                    task.wait()
-                    InputRef:get():CaptureFocus()
-                else
-                    if ClientSettings.KeyboardNavEnabled and ClientSettings.KeyboardNavEnabled == true then
-                        GuiService.SelectedObject = nil
-                    end
-                end
-            elseif Input.KeyCode == Enum.KeyCode.Escape then
-                if ClientSettings.KeyboardNavEnabled and ClientSettings.KeyboardNavEnabled == true then
-                    if GuiService.SelectedObject ~= nil then
-                        GuiService.SelectedObject = nil
-                    end
-                end
+local ShowTooltip = Value(ClientSettings.KeyboardNavDetour and ClientSettings.KeyboardNavDetour == true);
+local last = 0;
+ContextActionService:BindActionAtPriority("AdminCube-CommandBar",function(_: string, state: Enum.UserInputState, _: InputObject)
+    if state == Enum.UserInputState.Begin then
+        if ClientSettings.KeyboardNavDetour and ClientSettings.KeyboardNavDetour == true then
+            -- Detour enabled
+            if last > 0 then
+                ShowTooltip:set(false);
             end
-        elseif UserInputService:GetFocusedTextBox() == InputRef:get() then
-            if Input.KeyCode == Enum.KeyCode.BackSlash and EnableNav == true then
-                InputRef:get():ReleaseFocus();
-                EnableNav = false;
-                Visible:set(false);
-                if ClientSettings.KeyboardNavEnabled and ClientSettings.KeyboardNavEnabled == true then
-                    if GuiService.SelectedObject == nil then
-                        GuiService:Select(game.Players.LocalPlayer:WaitForChild("PlayerGui"))
-                    else
-                        GuiService.SelectedObject = nil
-                    end
-                end
-            else
-                EnableNav = false
+            if os.clock() - last > 3 then
+                Visible:set(true)
+                Text:set("!")
+                InputRef:get().Text = "!"
+                task.wait()
+                InputRef:get():CaptureFocus()
+                last = os.clock();
+                return Enum.ContextActionResult.Sink;
             end
-        end
-
-        if Input.KeyCode == Enum.KeyCode.ButtonSelect then
-            if ClientSettings.XboxNavEnabled and ClientSettings.XboxNavEnabled == true then
-                if GuiService.SelectedObject == nil then
-                    GuiService:Select(game.Players.LocalPlayer:WaitForChild("PlayerGui"))
-                else
-                    GuiService.SelectedObject = nil
-                end
-            end
-        end
-
-    else
-        if Input.KeyCode == Enum.KeyCode.BackSlash then
+        else
+            -- Detour Disabled
             Visible:set(true)
             Text:set("!")
             InputRef:get().Text = "!"
             task.wait()
             InputRef:get():CaptureFocus()
+            return Enum.ContextActionResult.Sink;
         end
     end
-end)
+
+    return Enum.ContextActionResult.Pass;
+end,false,3000,Enum.KeyCode.BackSlash);
 
 function Module.Ui(props)
     return New "Frame" {
@@ -129,6 +92,17 @@ function Module.Ui(props)
                         Visible:set(false)
                     end
                 end
+            };
+            TextLabel = New "TextLabel" {
+                Visible = ShowTooltip;
+                AnchorPoint = Vector2.new(0,1);
+                BackgroundTransparency = 1;
+                TextColor3 = Color3.new(0.9,0.9,0.9);
+                TextSize = 18;
+                Size = UDim2.new(1,-10,0,20);
+                RichText = true;
+                Text = "For keyboard navigation, close and <i>`\\`</i>";
+                TextXAlignment = Enum.TextXAlignment.Right;
             }
         }
     }

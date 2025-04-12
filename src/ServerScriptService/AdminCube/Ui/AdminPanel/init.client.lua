@@ -13,6 +13,7 @@ local icon = Topbar.new()
 icon:setImage("http://www.roblox.com/asset/?id=5010019455") -- 24x24
 icon:setName("AdminCubeMainAdminPanel")
 icon:setImageScale(0.65)
+icon:autoDeselect(false)
 
 local NotificationEvent = Instance.new("BindableEvent")
 NotificationEvent.Name = "NotificationEvent";

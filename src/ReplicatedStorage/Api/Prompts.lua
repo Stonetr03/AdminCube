@@ -32,8 +32,13 @@ function Boolean(props)
                 Font = Enum.Font.SourceSans;
                 Text = props.Title;
                 TextColor3 = props.Style.TextColor;
-                TextSize = 20;
+                TextScaled = true;
                 ZIndex = 21;
+                [Children] = {
+                    New "UITextSizeConstraint" {
+                        MaxTextSize = 20;
+                    };
+                }
             };
             Tick = New "TextButton" {
                 AnchorPoint = Vector2.new(0.5,0.5);
@@ -86,6 +91,10 @@ function StringValue(props)
     if props.DefaultValue ~= nil and typeof(props.DefaultValue) == "string" then
         Text = props.DefaultValue
     end
+    local PlaceHolder = "Input"
+    if props.PlaceholderValue ~= nil and typeof(props.PlaceholderValue) == "string" then
+        PlaceHolder = props.PlaceholderValue
+    end
 
     return New "Frame" {
         BackgroundTransparency = 1;
@@ -99,8 +108,13 @@ function StringValue(props)
                 Font = Enum.Font.SourceSans;
                 Text = props.Title;
                 TextColor3 = props.Style.TextColor;
-                TextSize = 20;
+                TextScaled = true;
                 ZIndex = 21;
+                [Children] = {
+                    New "UITextSizeConstraint" {
+                        MaxTextSize = 20;
+                    };
+                }
             };
             Input = New "TextBox" {
                 BackgroundTransparency = 0.9;
@@ -112,7 +126,7 @@ function StringValue(props)
                 Font = Enum.Font.SourceSans;
                 TextColor3 = props.Style.TextColor;
                 Text = Text;
-                PlaceholderText = "Input";
+                PlaceholderText = PlaceHolder;
                 TextScaled = true;
                 ZIndex = 21;
 
@@ -153,8 +167,13 @@ function DropdownMenu(props)
                 Font = Enum.Font.SourceSans;
                 Text = props.Title;
                 TextColor3 = props.Style.TextColor;
-                TextSize = 20;
+                TextScaled = true;
                 ZIndex = 21;
+                [Children] = {
+                    New "UITextSizeConstraint" {
+                        MaxTextSize = 20;
+                    };
+                }
             };
             TextBtn = New "TextButton" {
                 BackgroundColor3 = props.Style.ButtonColor;
@@ -280,9 +299,13 @@ function ImageLabel(props)
                 Font = Enum.Font.SourceSans; 
                 Text = Text1;
                 TextColor3 = props.Style.TextColor;
-                TextSize = 20;
                 TextScaled = true;
                 ZIndex = 21;
+                [Children] = {
+                    New "UITextSizeConstraint" {
+                        MaxTextSize = 20;
+                    };
+                }
             };
             Text2 = New "TextLabel" {
                 BackgroundTransparency = 1;
@@ -291,9 +314,13 @@ function ImageLabel(props)
                 Font = Enum.Font.SourceSans; 
                 Text = Text2;
                 TextColor3 = props.Style.TextColor;
-                TextSize = 20;
                 TextScaled = true;
                 ZIndex = 21;
+                [Children] = {
+                    New "UITextSizeConstraint" {
+                        MaxTextSize = 20;
+                    };
+                }
             };
             Text3 = New "TextLabel" {
                 BackgroundTransparency = 1;
@@ -302,9 +329,13 @@ function ImageLabel(props)
                 Font = Enum.Font.SourceSans; 
                 Text = Text3;
                 TextColor3 = props.Style.TextColor;
-                TextSize = 20;
                 TextScaled = true;
                 ZIndex = 21;
+                [Children] = {
+                    New "UITextSizeConstraint" {
+                        MaxTextSize = 20;
+                    };
+                }
             };
             Text4 = New "TextLabel" {
                 BackgroundTransparency = 1;
@@ -313,13 +344,46 @@ function ImageLabel(props)
                 Font = Enum.Font.SourceSans; 
                 Text = Text4;
                 TextColor3 = props.Style.TextColor;
-                TextSize = 20;
                 TextScaled = true;
                 ZIndex = 21;
+                [Children] = {
+                    New "UITextSizeConstraint" {
+                        MaxTextSize = 20;
+                    };
+                }
             };
         }
     }
 end
 
+function InfoValue(props)
+    local Text = ""
+    if props.Text ~= nil and typeof(props.Text) == "string" then
+        Text = props.Text
+    end
 
-return {Boolean,StringValue,DropdownMenu,ImageLabel}
+    return New "Frame" {
+        BackgroundTransparency = 1;
+        Position = UDim2.new(0,0,0,props.Y);
+        Size = UDim2.new(1,0,0,25);
+        ZIndex = props.ZIndex;
+        [Children] = {
+            Title = New "TextLabel" {
+                BackgroundTransparency = 1;
+                Size = UDim2.new(1,0,1,0);
+                Font = Enum.Font.SourceSans;
+                Text = Text;
+                TextColor3 = props.Style.TextColor;
+                TextScaled = true;
+                ZIndex = 21;
+                [Children] = {
+                    New "UITextSizeConstraint" {
+                        MaxTextSize = 20;
+                    };
+                }
+            };
+        }
+    }
+end
+
+return {Boolean,StringValue,DropdownMenu,ImageLabel,InfoValue}

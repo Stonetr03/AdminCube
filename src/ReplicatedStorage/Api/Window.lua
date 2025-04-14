@@ -50,6 +50,12 @@ function Module:CreateWindow(props)
             local delta = input.Position - resizeStart
             local newSize = Vector2.new(startPos.X + delta.X, startPos.Y + delta.Y)
 
+            if newSize.X > props.ResizeableMaximum.X then
+                newSize = Vector2.new(props.ResizeableMaximum.X,newSize.Y)
+            end
+            if newSize.Y > props.ResizeableMaximum.Y then
+                newSize = Vector2.new(newSize.X,props.ResizeableMaximum.Y)
+            end
             if newSize.X < props.ResizeableMinimum.X then
                 newSize = Vector2.new(props.ResizeableMinimum.X,newSize.Y)
             end
@@ -384,6 +390,7 @@ local defaultProps = { -- These also need to be added to src/ReplicatedStorage/A
     --Position = UDim2.new(0.5,-(props.Size.X/2),0.5,-(props.Size.Y/2))
     Resizeable = false;
     ResizeableMinimum = Vector2.new(25,25);
+    ResizeableMaximum = Vector2.new(math.huge,math.huge);
     Draggable = true;
     HideTopbar = false;
 }

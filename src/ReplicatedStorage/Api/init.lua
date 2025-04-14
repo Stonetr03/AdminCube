@@ -5,6 +5,8 @@ local Fusion = require(game.ReplicatedStorage:WaitForChild("AdminCube"):WaitForC
 local Signal = require(game.ReplicatedStorage:WaitForChild("AdminCube"):WaitForChild("Packages"):WaitForChild("Signal"))
 local WindowModule = require(script.Window)
 
+local ScreenGui: ScreenGui = game.Players.LocalPlayer.PlayerGui:FindFirstChild("__AdminCube_Main");
+
 local New = Fusion.New
 local Value = Fusion.Value
 local Event = Fusion.OnEvent
@@ -201,7 +203,18 @@ function Api:GetCommands()
 end
 
 -- Window
-function Api:CreateWindow(Props: table,Component: GuiBase)
+function Api:CreateWindow(Props: {
+    Buttons: {};
+    Size: Vector2;
+    Title: string;
+    ZIndex: number;
+    Position: UDim2;
+    Resizeable: boolean;
+    ResizeableMinimum: Vector2;
+    ResizeableMaximum: Vector2;
+    Draggable: boolean;
+    HideTopbar: boolean;
+}, Component: GuiBase)
     local id = HttpService:GenerateGUID(true)
     table.insert(WindowIds,id)
     Props = WindowModule:CheckTable(Props)
@@ -214,10 +227,11 @@ function Api:CreateWindow(Props: table,Component: GuiBase)
         Title = Props.Title;
         Style = Api.Style;
         Position = Props.Position;
-        Parent = game.Players.LocalPlayer.PlayerGui:FindFirstChild("__AdminCube_Main");
+        Parent = ScreenGui;
         Name = "Window-" .. Props.Title;
         Resizeable = Props.Resizeable;
         ResizeableMinimum = Props.ResizeableMinimum;
+        ResizeableMaximum = Props.ResizeableMaximum;
         Draggable = Props.Draggable;
         HideTopbar = Props.HideTopbar;
         FocusWindow = Api.FocusWindow;
@@ -263,7 +277,7 @@ end
 
 -- Prompts
 local PromptItems = require(script.Prompts)
-local PromptBoolean,PromptString,PromptDropdown,PromptImage,PromptInfo = PromptItems[1],PromptItems[2],PromptItems[3],PromptItems[4],PromptItems[5]
+local PromptBoolean,PromptString,PromptDropdown,PromptImage,PromptInfo,DropdownList = PromptItems[1],PromptItems[2],PromptItems[3],PromptItems[4],PromptItems[5],PromptItems[6]
 
 local PromptOpen = false
 local Promptlocal = false
@@ -276,6 +290,8 @@ function ShowPrompt(Prompts)
     local CurrentValues = {}
     local Y = 27
     local ButtonFragments = {}
+
+    local DropdownObj
 
     local Added = 0
     for i,o in pairs(Prompts.Prompt) do
@@ -310,11 +326,17 @@ function ShowPrompt(Prompts)
             })
             CurrentValues[i] = o.DefaultValue
         elseif o.Type == "Dropdown" then
+            if not DropdownObj then
+                DropdownObj = DropdownList({
+                    Style = Api.Style;
+                });
+            end
             ButtonFragments[i] = PromptDropdown({
                 Style = Api.Style;
                 Y = Y;
                 Title = o.Title;
                 Value = o.Value;
+                Dropdown = DropdownObj;
                 DefaultValue = o.DefaultValue;
                 UpdateValue = function(NewValue)
                     CurrentValues[i] = NewValue
@@ -346,94 +368,96 @@ function ShowPrompt(Prompts)
         Y += 25
     end
 
-    local PromptComp = New "ScrollingFrame" {
-        BackgroundTransparency = 1;
-        Size = UDim2.new(1,0,1,0);
-        BottomImage = "";
-        CanvasSize = UDim2.new(0,0,0,Y+25);
-        MidImage = "rbxasset://textures/ui/Scroll/scroll-middle.png";
-        ScrollBarImageColor3 = Api.Style.ButtonColor;
-        ScrollBarThickness = 5;
-        ScrollingDirection = Enum.ScrollingDirection.Y;
-        TopImage = "";
-        ClipsDescendants = false;
-        [Children] = {
-            Title = New "TextLabel" {
-                BackgroundColor3 = Api.Style.ButtonColor;
-                BackgroundTransparency = 0.9;
-                BorderSizePixel = 0;
-                Size = UDim2.new(1,0,0,25);
-                Font = Enum.Font.SourceSans;
-                Text = Prompts.Title;
-                TextColor3 = Api.Style.TextColor;
-                TextSize = 25;
-                LayoutOrder = 1;
-                ZIndex = 20;
-            };
-            Buttons = ButtonFragments;
-            Frame = New "Frame" {
-                BackgroundTransparency = 1;
-                Position = UDim2.new(0,0,0, (#Prompts.Prompt * 25) +27 + Added);
-                Size = UDim2.new(1,0,0,25);
-                [Children] = {
-                    Confirm = New "TextButton" {
-                        BackgroundColor3 = Api.Style.ButtonColor;
-                        BackgroundTransparency = Api.Style.ButtonTransparency;
-                        BorderSizePixel = 0;
-                        Size = UDim2.new(0.5,-1,1,0);
-                        Font = Enum.Font.SourceSans;
-                        Text = "Confirm";
-                        TextColor3 = Api.Style.TextColor;
-                        TextSize = 22;
-                        ZIndex = 20;
+    local PromptComp = {
+        New "ScrollingFrame" {
+            BackgroundTransparency = 1;
+            Size = UDim2.new(1,0,1,0);
+            BottomImage = "";
+            CanvasSize = UDim2.new(0,0,0,Y+25);
+            MidImage = "rbxasset://textures/ui/Scroll/scroll-middle.png";
+            ScrollBarImageColor3 = Api.Style.ButtonColor;
+            ScrollBarThickness = 5;
+            ScrollingDirection = Enum.ScrollingDirection.Y;
+            TopImage = "";
+            [Children] = {
+                Title = New "TextLabel" {
+                    BackgroundColor3 = Api.Style.ButtonColor;
+                    BackgroundTransparency = 0.9;
+                    BorderSizePixel = 0;
+                    Size = UDim2.new(1,0,0,25);
+                    Font = Enum.Font.SourceSans;
+                    Text = Prompts.Title;
+                    TextColor3 = Api.Style.TextColor;
+                    TextSize = 25;
+                    LayoutOrder = 1;
+                    ZIndex = 20;
+                };
+                Buttons = ButtonFragments;
+                Frame = New "Frame" {
+                    BackgroundTransparency = 1;
+                    Position = UDim2.new(0,0,0, (#Prompts.Prompt * 25) +27 + Added);
+                    Size = UDim2.new(1,0,0,25);
+                    [Children] = {
+                        Confirm = New "TextButton" {
+                            BackgroundColor3 = Api.Style.ButtonColor;
+                            BackgroundTransparency = Api.Style.ButtonTransparency;
+                            BorderSizePixel = 0;
+                            Size = UDim2.new(0.5,-1,1,0);
+                            Font = Enum.Font.SourceSans;
+                            Text = "Confirm";
+                            TextColor3 = Api.Style.TextColor;
+                            TextSize = 22;
+                            ZIndex = 20;
 
-                        [Event "MouseButton1Up"] = function()
+                            [Event "MouseButton1Up"] = function()
 
-                            if Promptlocal == true then
-                                if typeof(localresponse) == "function" then
-                                    localresponse({true,CurrentValues})
+                                if Promptlocal == true then
+                                    if typeof(localresponse) == "function" then
+                                        localresponse({true,CurrentValues})
+                                    end
+                                else
+                                    Api:Fire("Prompts",{true,CurrentValues})
                                 end
-                            else
-                                Api:Fire("Prompts",{true,CurrentValues})
-                            end
 
-                            Window.unmount()
-                            PromptOpen = false
-                        end;
-                    };
-                    Cancel = New "TextButton" {
-                        BackgroundColor3 = Api.Style.ButtonColor;
-                        BackgroundTransparency = Api.Style.ButtonTransparency;
-                        BorderSizePixel = 0;
-                        Size = UDim2.new(0.5,-1,1,0);
-                        Position = UDim2.new(0.5,1,0,0);
-                        Font = Enum.Font.SourceSans;
-                        Text = "Cancel";
-                        TextColor3 = Api.Style.TextColor;
-                        TextSize = 22;
-                        ZIndex = 20;
+                                Window.unmount()
+                                PromptOpen = false
+                            end;
+                        };
+                        Cancel = New "TextButton" {
+                            BackgroundColor3 = Api.Style.ButtonColor;
+                            BackgroundTransparency = Api.Style.ButtonTransparency;
+                            BorderSizePixel = 0;
+                            Size = UDim2.new(0.5,-1,1,0);
+                            Position = UDim2.new(0.5,1,0,0);
+                            Font = Enum.Font.SourceSans;
+                            Text = "Cancel";
+                            TextColor3 = Api.Style.TextColor;
+                            TextSize = 22;
+                            ZIndex = 20;
 
-                        [Event "MouseButton1Up"] = function()
+                            [Event "MouseButton1Up"] = function()
 
-                            if Promptlocal == true then
-                                if typeof(localresponse) == "function" then
-                                    localresponse({false})
+                                if Promptlocal == true then
+                                    if typeof(localresponse) == "function" then
+                                        localresponse({false})
+                                    end
+                                else
+                                    Api:Fire("Prompts",{false})
                                 end
-                            else
-                                Api:Fire("Prompts",{false})
-                            end
 
-                            Window.unmount()
-                            PromptOpen = false
-                        end;
+                                Window.unmount()
+                                PromptOpen = false
+                            end;
+                        }
                     }
                 }
             }
-        }
+        };
+        DropdownObj and DropdownObj.Ui();
     }
 
     Window = Api:CreateWindow({
-        Size = Vector2.new(250,((#Prompts.Prompt * 25) + 4 + 50 + Added));
+        Size = Vector2.new(250,math.min(((#Prompts.Prompt * 25) + 4 + 50 + Added), ScreenGui.AbsoluteSize.Y));
         Title = "Prompt";
     },PromptComp)
 end

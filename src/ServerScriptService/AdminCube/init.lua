@@ -105,22 +105,24 @@ local function PlayerJoined(p)
         -- Update Rank if on Settings
         -- Group Settings
         for id,g in pairs(Settings.Groups) do
-            if p:IsInGroup(id) then
-                local Role = p:GetRankInGroup(id)
+            pcall(function()
+                if p:IsInGroup(id) then
+                    local Role = p:GetRankInGroup(id)
 
-                for gRank,aRank in pairs(g) do
-                    if aRank < 0 then
-                        aRank = 0
-                    elseif aRank > 4 then
-                        aRank = 4
+                    for gRank,aRank in pairs(g) do
+                        if aRank < 0 then
+                            aRank = 0
+                        elseif aRank > 4 then
+                            aRank = 4
+                        end
+                        if gRank == Role then
+                            -- Is in Group, And is role
+                            DataStoreModule:UpdateData(p.UserId,"Rank",aRank)
+                        end
                     end
-                    if gRank == Role then
-                        -- Is in Group, And is role
-                        DataStoreModule:UpdateData(p.UserId,"Rank",aRank)
-                    end
+
                 end
-
-            end
+            end)
         end
         -- Is on Defined Players list
         for i = 1,#Settings.Players,1 do

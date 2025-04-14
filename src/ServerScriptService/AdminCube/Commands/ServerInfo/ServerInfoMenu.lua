@@ -1,4 +1,4 @@
--- Admin Cube - Admin Chat Menu
+-- Admin Cube - Server Info Menu
 
 local Fusion = require(game.ReplicatedStorage:WaitForChild("AdminCube"):WaitForChild("Fusion"))
 

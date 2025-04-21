@@ -362,6 +362,7 @@ function ShowPrompt(Prompts)
                 Style = Api.Style;
                 Y = Y;
                 Text = o.Text;
+                RichText = o.RichText or false;
                 ZIndex = #Prompts.Prompt - i + 20
             })
         end

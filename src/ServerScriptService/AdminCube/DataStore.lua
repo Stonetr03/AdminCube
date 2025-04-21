@@ -12,9 +12,9 @@ local MessagingService = game:GetService("MessagingService")
 local Module = {
     ServerData = {};
     ServerBans = {};
+    TimeTrack = {}; -- [Key]: {atJoin: number, stamp: number}
     isFake = false;
 }
-
 local RetryAmount = 3; -- Amount of times to retry when getting data errors
 
 if RunService:IsStudio() then
@@ -37,12 +37,12 @@ local KeyInfo = {}
 
 local DefaultData = {
     Rank = 0; -- Player
-    Banned = false; -- True / False
-    BanTime = 0; -- UTC Unban Time
-    BanReason = ""; -- Ban Reason
+    FirstJoin = 0;
+    TimePlayed = 0;
+    Notes = "";
 }
 
-local function CheckData(Data)
+local function CheckData(Data): {}
     if typeof(Data) ~= "table" then
         Data = {}
     end
@@ -55,6 +55,11 @@ local function CheckData(Data)
             NewData[o] = i
         end
     end
+
+    if NewData.FirstJoin == 0 then
+        NewData.FirstJoin = os.time();
+    end
+
     return NewData
 end
 
@@ -95,9 +100,13 @@ function Module:GetDataStore(Key)
     Create("StringValue",script.Parent.Data,{Name = tostring(Key),Value = EncodedValue})
 
     SavingFor[Key] = false
-    NeedsSaving[Key] = false
+    NeedsSaving[Key] = true
     LastSave[Key] = os.time()
     KeyInfo[Key] = tmpKeyInfo;
+    Module.TimeTrack[Key] = {
+        atJoin = NewData.TimePlayed;
+        stamp = DateTime.now().UnixTimestamp;
+    }
 
     return NewData
 end
@@ -118,6 +127,9 @@ function SaveDataStore(Key)
         if Checker then
             Checker.Value = HttpService:JSONEncode(Module.ServerData[Key])
         end
+
+        -- Update Time Played
+        Module.ServerData[Key].TimePlayed = Module.TimeTrack[Key].atJoin + DateTime.now().UnixTimestamp - Module.TimeTrack[Key].stamp;
 
         -- Save to DataStore
         if Module.isFake then return end
@@ -167,9 +179,7 @@ function Module:ExitDataStore(Key)
         Checker:Destroy()
     end
 
-    if NeedsSaving[Key] == true then
-        SaveDataStore(Key)
-    end
+    SaveDataStore(Key)
 
     Module.ServerData[Key] = nil
     NeedsSaving[Key] = nil
@@ -177,6 +187,7 @@ function Module:ExitDataStore(Key)
     SavingFor[Key] = nil
     StopSaving[Key] = nil
     KeyInfo[Key] = nil
+    Module.TimeTrack[Key] = nil;
 
     return
 end
@@ -198,7 +209,7 @@ end
 function Module:GetRecord(Key)
     local Data
     local s,e = pcall(function()
-        if Module.isFake then warn("Unable to get record, no api services") return end
+        if Module.isFake then warn("Unable to get record, no api services"); return end
         Data = DataStore:GetAsync(Key)
     end)
     if not s then
@@ -213,9 +224,9 @@ function Module:UpdateRecord(Key,NewValue)
 
         local s,e = pcall(function()
             -- Save to DataStore
-            if Module.isFake then warn("Unable to update record, no api services") return end
+            if Module.isFake then warn("Unable to update record, no api services"); return end
             if StopSaving[Key] == true then return end
-            DataStore:SetAsync(Key,NewValue)
+            DataStore:SetAsync(Key,NewValue,{Key})
         end)
         if not s then
             warn(e)
@@ -233,6 +244,7 @@ function Module:UpdateRecord(Key,NewValue)
         SaveDataStore(Key)
     end
 
+    return true
 end
 
 function Module:ServerBan(Key, Banned)

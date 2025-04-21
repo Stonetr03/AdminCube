@@ -26,7 +26,7 @@ function Module:GetRank(p)
     return Data.Rank
 end
 
-function Module:GetPlayer(Text: string,p: Player): table -- Name Requested to Find, Player who Sent
+function Module:GetPlayer(Text: string,p: Player): {Player} -- Name Requested to Find, Player who Sent
     if Text == "" or Text == nil then
         Text = string.lower(p.Name)
     end
@@ -168,6 +168,7 @@ game.ReplicatedStorage:WaitForChild("AdminCube").ACFunc.OnServerInvoke = functio
             return o.Callback(p,...)
         end
     end
+    return
 end
 
 function Module:AddPanelMenu(Menu)
@@ -247,7 +248,7 @@ end
 
 -- Prompts
 local OpenPrompts = {}
-function Module:ShowPrompt(p,Prompts,Response)
+function Module:ShowPrompt(p: Player, Prompts: {}, Response: ({}) -> ())
     if OpenPrompts[p] ~= nil then
         -- Another prompt is open
         return false
@@ -255,6 +256,7 @@ function Module:ShowPrompt(p,Prompts,Response)
     OpenPrompts[p] = {Prompts,Response}
 
     Module:Fire(p,"Prompts",Prompts)
+    return true
 end
 Module:OnEvent("Prompts",function(p,Results)
     if OpenPrompts[p] ~= nil then
@@ -272,10 +274,11 @@ Module:OnInvoke("GetCommands",function(p)
         local Rank = Module:GetRank(p)
         return Cmd,Alias,Rank
     end
+    return {},{},0;
 end)
 
 task.spawn(function()
-    local s,e = pcall(function()
+    local s,_ = pcall(function()
         MessagingService:SubscribeAsync("AdminCube",function(Data)
             for i = 1,#BroadcastCallbacks[Data.Data.Key],1 do
                 BroadcastCallbacks[Data.Data.Key][i](Data.Data.Msg)

@@ -431,6 +431,7 @@ function InfoValue(props)
                 Text = Text;
                 TextColor3 = props.Style.TextColor;
                 TextScaled = true;
+                RichText = props.RichText;
                 ZIndex = 21;
                 [Children] = {
                     New "UITextSizeConstraint" {

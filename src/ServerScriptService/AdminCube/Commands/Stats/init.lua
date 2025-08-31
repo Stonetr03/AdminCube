@@ -10,6 +10,6 @@ Api:RegisterCommand("stats","Opens a stats window.",function(p)
         warn(e)
     end
 
-end,"0;[player]",{"performancestats","pf","performance"})
+end,"0",{"performancestats","pf","performance"})
 
 return true

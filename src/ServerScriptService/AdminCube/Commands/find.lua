@@ -54,7 +54,7 @@ Api:RegisterCommand("find","Checks if a Player is in the game.",function(p,Args)
         warn(e)
     end
 
-end,"2;*[string:player];")
+end,"2;*[string:Player]")
 
 Api:SubscribeBroadcast("FindPlayer",function(Encoded)
     local Data = HttpService:JSONDecode(Encoded)

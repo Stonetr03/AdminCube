@@ -1,7 +1,7 @@
 -- Admin Cube
 
-local Fusion = require(game.ReplicatedStorage:WaitForChild("AdminCube"):WaitForChild("Fusion"))
-local Api = require(game.ReplicatedStorage:WaitForChild("AdminCube"):WaitForChild("Api"))
+local Fusion = (require(game.ReplicatedStorage:WaitForChild("AdminCube"):WaitForChild("Fusion")) :: any)
+local Api = (require(game.ReplicatedStorage:WaitForChild("AdminCube"):WaitForChild("Api")) :: any)
 local strUi = require(script.Parent:WaitForChild("Primitive"):WaitForChild("string"))
 
 local New = Fusion.New

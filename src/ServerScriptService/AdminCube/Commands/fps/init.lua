@@ -10,6 +10,6 @@ Api:RegisterCommand("fps","Opens a fps counter window.",function(p)
         warn(e)
     end
 
-end,"0;[player]")
+end,"0")
 
 return true

@@ -23,6 +23,6 @@ Api:RegisterCommand("kick","Kicks a player.",function(p,Args)
         warn(e)
     end
 
-end,"2;*[player];[string:Reason]")
+end,"2;*[players];[string:Reason]")
 
 return true

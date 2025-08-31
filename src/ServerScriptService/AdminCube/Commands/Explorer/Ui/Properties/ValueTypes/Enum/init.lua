@@ -1,7 +1,7 @@
 -- Admin Cube
 
-local Fusion = require(game.ReplicatedStorage:WaitForChild("AdminCube"):WaitForChild("Fusion"))
-local Api = require(game.ReplicatedStorage:WaitForChild("AdminCube"):WaitForChild("Api"))
+local Fusion = (require(game.ReplicatedStorage:WaitForChild("AdminCube"):WaitForChild("Fusion")) :: any)
+local Api = (require(game.ReplicatedStorage:WaitForChild("AdminCube"):WaitForChild("Api")) :: any)
 local UserInputService = game:GetService("UserInputService")
 
 local props = require(script.Parent.Parent:WaitForChild("Props"))
@@ -14,7 +14,7 @@ local Computed = Fusion.Computed
 
 local Module = {}
 
-function Module.Ui(Shared: table, prop: string, CatTbl: table, AboveOthers: any): GuiObject
+function Module.Ui(Shared: {[any]: any}, prop: string, CatTbl: {[any]: any}, AboveOthers: any): {GuiObject}
     local obj = Shared.Selection:get(false) :: Instance
     local Text = Value(string.split(tostring(obj[prop]),".")[3])
     local Visible = Value(false)
@@ -25,7 +25,7 @@ function Module.Ui(Shared: table, prop: string, CatTbl: table, AboveOthers: any)
     return {
         New "TextButton" {
             BackgroundTransparency = 1;
-            Font = Enum.Font.SourceSans;
+            FontFace = Api.Style.Font;
             Position = UDim2.new(0.5,5,0,0);
             Size = UDim2.new(0.5,-6,1,0);
             TextColor3 = Api.Style.TextColor;
@@ -91,7 +91,7 @@ function Module.Ui(Shared: table, prop: string, CatTbl: table, AboveOthers: any)
                         Fusion.ForPairs(props.Enums[CatTbl.Name],function(i,o)
                             return i, New "TextButton" {
                                 BackgroundTransparency = 1;
-                                Font = Enum.Font.SourceSans;
+                                FontFace = Api.Style.Font;
                                 Size = UDim2.new(1,0,0,20);
                                 Text = i;
                                 TextColor3 = Api.Style.TextColor;

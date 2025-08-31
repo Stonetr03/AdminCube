@@ -322,7 +322,7 @@ Api:RegisterCommand("ban","Bans a player.",function(p: Player, args: {string})
 
     end
     return false;
-end,"3;[string]")
+end,"3;[string:Player]")
 
 Api:RegisterCommand("unban","Unbans a player.",function(p: Player, args: {string})
     local Target = args[1]
@@ -474,7 +474,7 @@ Api:RegisterCommand("unban","Unbans a player.",function(p: Player, args: {string
         end
         return;
     end)
-end,"3;[player]")
+end,"3;[string:Player]")
 
 Api:RegisterCommand("serverban", "Bans a player from the server.", function(p: Player, args: {string})
     if Api:GetRank(p) >= 3 then
@@ -572,6 +572,6 @@ Api:RegisterCommand("serverban", "Bans a player from the server.", function(p: P
             return;
         end);
     end
-end, "3;[player]")
+end, "3;[string:Player]")
 
 return true

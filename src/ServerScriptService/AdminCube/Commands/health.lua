@@ -19,7 +19,7 @@ Api:RegisterCommand("heal","Heals Player's Character",function(p,Args)
         warn(e)
     end
 
-end,"2;*[player]")
+end,"2;*[players]")
 
 Api:RegisterCommand("health","Sets a Player's Health",function(p,Args)
     local s,e = pcall(function()
@@ -38,7 +38,7 @@ Api:RegisterCommand("health","Sets a Player's Health",function(p,Args)
         warn(e)
     end
 
-end,"2;*[player];*[number:Health]")
+end,"2;*[players];*[number:Health]")
 
 Api:RegisterCommand("damage","Damages a Player's Health",function(p,Args)
     local s,e = pcall(function()
@@ -57,6 +57,6 @@ Api:RegisterCommand("damage","Damages a Player's Health",function(p,Args)
         warn(e)
     end
 
-end,"2;*[player];*[number:Damage]")
+end,"2;*[players];*[number:Damage]")
 
 return true

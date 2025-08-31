@@ -1,7 +1,7 @@
 -- Admin Cube
 
-local Api = require(game.ReplicatedStorage:WaitForChild("AdminCube"):WaitForChild("Api"))
-local Fusion = require(game.ReplicatedStorage:WaitForChild("AdminCube"):WaitForChild("Fusion"))
+local Api = (require(game.ReplicatedStorage:WaitForChild("AdminCube"):WaitForChild("Api")) :: any)
+local Fusion = (require(game.ReplicatedStorage:WaitForChild("AdminCube"):WaitForChild("Fusion")) :: any)
 local HttpService = game:GetService("HttpService")
 
 local New = Fusion.New
@@ -132,7 +132,7 @@ function Module.Ui(props)
                                             Position = UDim2.new(1,0,0,0);
                                             Size = UDim2.new(0,16,0,16);
                                             ZIndex = 5;
-                                            Font = Enum.Font.SourceSansBold;
+                                            FontFace = Api.Style.FontBold;
                                             Text = "X";
                                             TextColor3 = Api.Style.TextColor;
                                             TextSize = 16;
@@ -152,7 +152,7 @@ function Module.Ui(props)
                                             Position = UDim2.new(0,84,0,24);
                                             Size = UDim2.new(0,160,0,80);
                                             ZIndex = 5;
-                                            Font = Enum.Font.SourceSans;
+                                            FontFace = Api.Style.Font;
                                             Text = v.Text;
                                             TextColor3 = Api.Style.TextColor;
                                             TextSize = 16;
@@ -165,7 +165,7 @@ function Module.Ui(props)
                                             Position = UDim2.new(0,3,0,0);
                                             Size = UDim2.new(0.8,0,0,20);
                                             ZIndex = 5;
-                                            Font = Enum.Font.SourceSans;
+                                            FontFace = Api.Style.Font;
                                             Text = "Admin Cube";
                                             TextColor3 = Api.Style.TextColor;
                                             TextSize = 15;
@@ -179,6 +179,7 @@ function Module.Ui(props)
                                             BorderSizePixel = 0;
                                             Size = UDim2.new(0, 100,0, 30);
                                             TextColor3 = Api.Style.TextColor;
+                                            FontFace = Api.Style.Font;
                                             TextSize = 12;
                                             ZIndex = 10;
                                             TextScaled = true;
@@ -233,7 +234,7 @@ function Module.Ui(props)
                                             Position = UDim2.new(1,0,0,0);
                                             Size = UDim2.new(0,16,0,16);
                                             ZIndex = 5;
-                                            Font = Enum.Font.SourceSansBold;
+                                            FontFace = Api.Style.FontBold;
                                             Text = "X";
                                             TextColor3 = Api.Style.TextColor;
                                             TextSize = 16;
@@ -246,7 +247,7 @@ function Module.Ui(props)
                                             Position = UDim2.new(0,2,0,24);
                                             Size = UDim2.new(0,246,0,80);
                                             ZIndex = 5;
-                                            Font = Enum.Font.SourceSans;
+                                            FontFace = Api.Style.Font;
                                             Text = v.Text;
                                             TextColor3 = Api.Style.TextColor;
                                             TextSize = 16;
@@ -259,7 +260,7 @@ function Module.Ui(props)
                                             Position = UDim2.new(0,3,0,0);
                                             Size = UDim2.new(0.8,0,0,20);
                                             ZIndex = 5;
-                                            Font = Enum.Font.SourceSans;
+                                            FontFace = Api.Style.Font;
                                             Text = "Admin Cube";
                                             TextColor3 = Api.Style.TextColor;
                                             TextSize = 15;
@@ -276,6 +277,7 @@ function Module.Ui(props)
                                             TextSize = 12;
                                             ZIndex = 10;
                                             TextScaled = true;
+                                            FontFace = Api.Style.Font;
 
                                             Text = ButtonTxt;
                                             Visible = ButtonVis;

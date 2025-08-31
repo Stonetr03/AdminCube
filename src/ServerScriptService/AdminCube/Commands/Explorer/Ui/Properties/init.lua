@@ -1,7 +1,7 @@
 -- Admin Cube
 
-local Fusion = require(game.ReplicatedStorage:WaitForChild("AdminCube"):WaitForChild("Fusion"))
-local Api = require(game.ReplicatedStorage:WaitForChild("AdminCube"):WaitForChild("Api"))
+local Fusion = (require(game.ReplicatedStorage:WaitForChild("AdminCube"):WaitForChild("Fusion")) :: any)
+local Api = (require(game.ReplicatedStorage:WaitForChild("AdminCube"):WaitForChild("Api")) :: any)
 local props = require(script:WaitForChild("Props"))
 
 local New = Fusion.New
@@ -19,7 +19,7 @@ local ValueTypesUi = {
     Class = require(script:WaitForChild("ValueTypes"):WaitForChild("Class"));
 }
 
-function Module.Category(Shared: table,Cat: string,Props: table): GuiObject
+function Module.Category(Shared: {[any]: any},Cat: string,Props: {[any]: any}): GuiObject
     local ScrollSize = Value(Vector2.new(0,0))
     local Visible = Value(true)
     local Above = Value(false)
@@ -85,7 +85,7 @@ function Module.Category(Shared: table,Cat: string,Props: table): GuiObject
                         Position = UDim2.new(0,20,0,0);
                         BackgroundTransparency = 1;
                         TextColor3 = Api.Style.TextColor;
-                        Font = Enum.Font.SourceSansBold;
+                        FontFace = Api.Style.FontBold;
                         TextSize = 14;
                         Text = Cat;
                         TextXAlignment = Enum.TextXAlignment.Left;
@@ -107,7 +107,7 @@ function Module.Category(Shared: table,Cat: string,Props: table): GuiObject
                             end
                             return newProps
                         end
-                    end),function(i: string,o: table) -- Property Name, ValueType Table:: {Category: string, Name: string}
+                    end),function(i: string,o: {Category: string, Name: string, Tags: {string}}) -- Property Name, ValueType Table:: {Category: string, Name: string}
                         -- Properties List
                         local PropUi
                         local AboveOthers = Value(false)
@@ -152,7 +152,7 @@ function Module.Category(Shared: table,Cat: string,Props: table): GuiObject
                                 -- Name
                                 New "TextLabel" {
                                     BackgroundTransparency = 1;
-                                    Font = Enum.Font.SourceSans;
+                                    FontFace = Api.Style.Font;
                                     Position = UDim2.new(0,20,0,0);
                                     Size = UDim2.new(0.5,-20,1,0);
                                     TextColor3 = Api.Style.TextColor;
@@ -173,7 +173,7 @@ function Module.Category(Shared: table,Cat: string,Props: table): GuiObject
     }
 end
 
-function Module.Ui(Shared: table): GuiObject
+function Module.Ui(Shared: {[any]: any}): {GuiObject}
     local ScrollSize = Value(Vector2.new(0,0));
     return {
         -- Search Box
@@ -181,10 +181,11 @@ function Module.Ui(Shared: table): GuiObject
             BackgroundTransparency = Api.Style.ButtonTransparency;
             BackgroundColor3 = Api.Style.ButtonColor;
             Size = UDim2.new(1,0,0,25);
-            Font = Enum.Font.SourceSans;
+            FontFace = Api.Style.Font;
             TextSize = 16;
             PlaceholderText = "Filter Properties";
             TextColor3 = Api.Style.TextColor;
+            PlaceholderColor3 = Api.Style.TextSubColor;
             ClearTextOnFocus = true;
             [Fusion.OnChange "Text"] = function(txt)
                 if txt then

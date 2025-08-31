@@ -1,6 +1,6 @@
 -- Admin Cube
 
-local Api = require(game.ReplicatedStorage:WaitForChild("AdminCube"):WaitForChild("Api"))
+local Api = (require(game.ReplicatedStorage:WaitForChild("AdminCube"):WaitForChild("Api")) :: any)
 
 local Classes = Api:Invoke("CubeExplorer","Classes")
 if typeof(Classes) ~= "table" then

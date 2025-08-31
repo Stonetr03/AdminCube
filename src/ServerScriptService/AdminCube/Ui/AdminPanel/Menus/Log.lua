@@ -1,7 +1,7 @@
 -- Admin Cube - Log Menu
 
-local Fusion = require(game.ReplicatedStorage:WaitForChild("AdminCube"):WaitForChild("Fusion"))
-local Api = require(game.ReplicatedStorage:WaitForChild("AdminCube"):WaitForChild("Api"))
+local Fusion = (require(game.ReplicatedStorage:WaitForChild("AdminCube"):WaitForChild("Fusion")) :: any)
+local Api = (require(game.ReplicatedStorage:WaitForChild("AdminCube"):WaitForChild("Api")) :: any)
 
 local New = Fusion.New
 local Value = Fusion.Value
@@ -23,8 +23,8 @@ function MenuBtn(props)
         BorderSizePixel = 0;
         BackgroundColor3 = Api.Style.ButtonColor;
         TextColor3 = Api.Style.TextColor;
-        TextSize = 8;
-        Font = Enum.Font.Legacy;
+        TextSize = 20;
+        FontFace = Api.Style.Font;
         [Event "MouseButton1Up"] = function()
             SetVis(true)
             props.SetVis(false)
@@ -91,27 +91,27 @@ function Menu()
                             BackgroundTransparency = 1;
                             TextColor3 = Api.Style.TextColor;
                             Text = "Time";
-                            TextSize = 8;
+                            TextScaled = true;
                             Size = UDim2.new(0,80,1,0);
-                            Font = Enum.Font.Legacy;
+                            FontFace = Api.Style.FontBold;
                         };
                         Player = New "TextLabel" {
                             BackgroundTransparency = 1;
                             TextColor3 = Api.Style.TextColor;
                             Text = "Player";
-                            TextSize = 8;
+                            TextScaled = true;
                             Size = UDim2.new(0,80,1,0);
                             Position = UDim2.new(0,80,0,0);
-                            Font = Enum.Font.Legacy;
+                            FontFace = Api.Style.FontBold;
                         };
                         Action = New "TextLabel" {
                             BackgroundTransparency = 1;
                             TextColor3 = Api.Style.TextColor;
                             Text = "Action";
-                            TextSize = 8;
+                            TextScaled = true;
                             Size = UDim2.new(0,190,1,0);
                             Position = UDim2.new(0,160,0,0);
-                            Font = Enum.Font.Legacy;
+                            FontFace = Api.Style.FontBold;
                         };
                     }
                 }
@@ -141,28 +141,28 @@ function Menu()
                                     BackgroundTransparency = 1;
                                     TextColor3 = Api.Style.TextColor;
                                     Text = os.date("%X",tonumber(NewLog.Name));
-                                    TextSize = 8;
+                                    TextSize = 20;
                                     Size = UDim2.new(0,80,1,0);
-                                    Font = Enum.Font.Legacy;
+                                    FontFace = Api.Style.Font;
                                 };
                                 Player = New "TextLabel" {
                                     BackgroundTransparency = 1;
                                     TextColor3 = Api.Style.TextColor;
                                     Text = NewLog:WaitForChild("Player").Value.Name;
-                                    TextSize = 8;
+                                    TextSize = 20;
                                     Size = UDim2.new(0,80,1,0);
                                     Position = UDim2.new(0,80,0,0);
-                                    Font = Enum.Font.Legacy;
+                                    FontFace = Api.Style.Font;
                                 };
                                 Action = New "TextLabel" {
                                     BackgroundTransparency = 1;
                                     TextColor3 = Api.Style.TextColor;
                                     Text = NewLog:WaitForChild("Text").Value;
-                                    TextSize = 8;
+                                    TextSize = 20;
                                     Size = UDim2.new(0,190,1,0);
                                     Position = UDim2.new(0,160,0,0);
                                     TextXAlignment = Enum.TextXAlignment.Left;
-                                    Font = Enum.Font.Legacy;
+                                    FontFace = Api.Style.Font;
                                 };
                                 ColorFrame = New "Frame" {
                                     Size = UDim2.new(0,3,1,-2);

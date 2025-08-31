@@ -1,7 +1,7 @@
 -- Admin Cube
 
-local Fusion = require(game.ReplicatedStorage:WaitForChild("AdminCube"):WaitForChild("Fusion"))
-local Api = require(game.ReplicatedStorage:WaitForChild("AdminCube"):WaitForChild("Api"))
+local Fusion = (require(game.ReplicatedStorage:WaitForChild("AdminCube"):WaitForChild("Fusion")) :: any)
+local Api = (require(game.ReplicatedStorage:WaitForChild("AdminCube"):WaitForChild("Api")) :: any)
 
 local New = Fusion.New
 local Value = Fusion.Value
@@ -10,7 +10,7 @@ local Computed = Fusion.Computed
 
 local Module = {}
 
-function Module.Ui(Shared: table, prop: string): GuiObject
+function Module.Ui(Shared: {[any]: any}, prop: string): GuiObject
     local obj = Shared.Selection:get(false)
     local Visible = Value(obj[prop]);
     local con = obj:GetPropertyChangedSignal(prop):Connect(function()

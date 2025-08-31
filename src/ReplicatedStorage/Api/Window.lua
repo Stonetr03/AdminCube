@@ -2,7 +2,7 @@
 
 local Module = {}
 
-local Fusion = require(game.ReplicatedStorage:WaitForChild("AdminCube"):WaitForChild("Fusion"))
+local Fusion = (require(game.ReplicatedStorage:WaitForChild("AdminCube"):WaitForChild("Fusion")) :: any)
 local UserInputService = game:GetService("UserInputService")
 
 local New = Fusion.New
@@ -246,6 +246,7 @@ function Module:CreateWindow(props)
                 BackgroundTransparency = 1;
                 TextColor3 = props.Style.ButtonColor;
                 Text = props.Title;
+                FontFace = props.Style.Font;
                 TextXAlignment = Enum.TextXAlignment.Left;
                 Visible = TopbarVis;
                 TextTransparency = Computed(function()
@@ -262,7 +263,7 @@ function Module:CreateWindow(props)
                 BackgroundTransparency = CloseBtnTransparency;
                 Position = UDim2.new(1,-20,0,0);
                 Text = "X";
-                Font = Enum.Font.SourceSans;
+                FontFace = props.Style.Font;
                 TextSize = 20;
                 TextColor3 = props.Style.TextColor;
                 AutoButtonColor = false;
@@ -295,7 +296,7 @@ function Module:CreateWindow(props)
                 BackgroundTransparency = MinimizeBtnTransparency;
                 Position = UDim2.new(1,-40,0,0);
                 Text = MiniText;
-                Font = Enum.Font.SourceSans;
+                FontFace = props.Style.Font;
                 TextSize = 20;
                 TextColor3 = props.Style.TextColor;
                 AutoButtonColor = false;
@@ -351,7 +352,7 @@ function Module:CreateWindow(props)
                     BackgroundTransparency = Transparency;
                     Position = UDim2.new(1,-((i*20)+40),0,0);
                     Text = o.Text;
-                    Font = Enum.Font.SourceSans;
+                    FontFace = props.Style.Font;
                     TextSize = 20;
                     TextColor3 = props.Style.TextColor;
                     AutoButtonColor = false;
@@ -394,7 +395,7 @@ local defaultProps = { -- These also need to be added to src/ReplicatedStorage/A
     Draggable = true;
     HideTopbar = false;
 }
-function Module:CheckTable(t: table): table
+function Module:CheckTable(t: {[any]: any}): {[any]: any}
     if typeof(t) ~= "table" then
         t = {}
     end

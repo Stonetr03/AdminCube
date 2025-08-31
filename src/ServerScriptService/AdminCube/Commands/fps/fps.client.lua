@@ -1,7 +1,7 @@
 -- Admin Cube
 
-local Fusion = require(game.ReplicatedStorage:WaitForChild("AdminCube"):WaitForChild("Fusion"))
-local Api = require(game.ReplicatedStorage:WaitForChild("AdminCube"):WaitForChild("Api"))
+local Fusion = (require(game.ReplicatedStorage:WaitForChild("AdminCube"):WaitForChild("Fusion")) :: any)
+local Api = (require(game.ReplicatedStorage:WaitForChild("AdminCube"):WaitForChild("Api")) :: any)
 local RunService = game:GetService("RunService")
 
 local New = Fusion.New
@@ -20,8 +20,8 @@ local WindowFrame = New "TextLabel" {
     Text = Computed(function()
         return "Fps: " .. tostring(Text:get())
     end);
-    TextSize = 12;
-    Font = Enum.Font.Legacy;
+    TextSize = 22;
+    FontFace = Api.Style.Font;
 };
 
 local Window = Api:CreateWindow({

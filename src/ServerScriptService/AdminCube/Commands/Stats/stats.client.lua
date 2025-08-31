@@ -1,7 +1,7 @@
 -- Admin Cube
 
-local Fusion = require(game.ReplicatedStorage:WaitForChild("AdminCube"):WaitForChild("Fusion"))
-local Api = require(game.ReplicatedStorage:WaitForChild("AdminCube"):WaitForChild("Api"))
+local Fusion = (require(game.ReplicatedStorage:WaitForChild("AdminCube"):WaitForChild("Fusion")) :: any)
+local Api = (require(game.ReplicatedStorage:WaitForChild("AdminCube"):WaitForChild("Api")) :: any)
 local TextService = game:GetService("TextService")
 local RunService = game:GetService("RunService")
 local Stats = game:GetService("Stats")
@@ -112,7 +112,7 @@ function MainButton(Mark: string, Position: UDim2): GuiObject
         Size = UDim2.new(0,125,0,25);
         TextColor3 = Api.Style.TextColor;
         TextSize = 12;
-        Font = Enum.Font.Legacy;
+        FontFace = Api.Style.Font;
         Position = Position;
         RichText = true;
         Text = Computed(function()
@@ -142,7 +142,7 @@ function PhyText(Mark: string, Position: UDim2): GuiObject
         Size = UDim2.new(0.5,0,0,25);
         TextColor3 = Api.Style.TextColor;
         TextSize = 12;
-        Font = Enum.Font.Legacy;
+        FontFace = Api.Style.Font;
         Position = Position;
         RichText = true;
         Text = Computed(function()
@@ -208,7 +208,7 @@ local WindowFrame = New "Frame" {
                     TextColor3 = Api.Style.TextColor;
                     TextSize = 12;
                     RichText = true;
-                    FontFace = Font.new("rbxasset://fonts/families/LegacyArial.json",Enum.FontWeight.Bold);
+                    FontFace = Api.Style.FontBold;
                     Text = Computed(function()
                         local txt = Format[Tab:get()]
                         if typeof(txt) == "string" then
@@ -224,7 +224,7 @@ local WindowFrame = New "Frame" {
                     Position = UDim2.new(0,0,0,25);
                     TextColor3 = Api.Style.TextColor;
                     TextScaled = true;
-                    Font = Enum.Font.Legacy;
+                    FontFace = Api.Style.Font;
                     Text = Computed(function()
                         local txt = Targets[Tab:get()]
                         if typeof(txt) == "number" then
@@ -243,7 +243,7 @@ local WindowFrame = New "Frame" {
                     TextColor3 = Api.Style.TextColor;
                     TextSize = 12;
                     RichText = true;
-                    Font = Enum.Font.Legacy;
+                    FontFace = Api.Style.Font;
                     Text = Computed(function()
                         local Avgs = AvgVal:get()
                         local TabTxt = Tab:get()
@@ -291,7 +291,7 @@ local WindowFrame = New "Frame" {
                             TextSize = 8;
                             TextXAlignment = Enum.TextXAlignment.Left;
                             TextYAlignment = Enum.TextYAlignment.Top;
-                            Font = Enum.Font.Legacy;
+                            FontFace = Api.Style.Font;
                         };
                         -- Min
                         New "TextLabel" {
@@ -303,7 +303,7 @@ local WindowFrame = New "Frame" {
                             TextSize = 8;
                             TextXAlignment = Enum.TextXAlignment.Left;
                             TextYAlignment = Enum.TextYAlignment.Bottom;
-                            Font = Enum.Font.Legacy;
+                            FontFace = Api.Style.Font;
                         };
                         New "Frame" {
                             Size = UDim2.new(1,0,1,0);

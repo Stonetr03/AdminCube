@@ -1,7 +1,7 @@
 -- Admin Cube
 
-local Fusion = require(game.ReplicatedStorage:WaitForChild("AdminCube"):WaitForChild("Fusion"))
-local Api = require(game.ReplicatedStorage:WaitForChild("AdminCube"):WaitForChild("Api"))
+local Fusion = (require(game.ReplicatedStorage:WaitForChild("AdminCube"):WaitForChild("Fusion")) :: any)
+local Api = (require(game.ReplicatedStorage:WaitForChild("AdminCube"):WaitForChild("Api")) :: any)
 
 local New = Fusion.New
 local Value = Fusion.Value
@@ -14,7 +14,7 @@ function Module.Box(Text: any, UpdateText: (any) -> (), toClean: any): GuiObject
     return New "TextBox" {
         BackgroundTransparency = 1;
         ClearTextOnFocus = false;
-        Font = Enum.Font.SourceSans;
+        FontFace = Api.Style.Font;
         Position = UDim2.new(0.5,5,0,0);
         Size = UDim2.new(0.5,-6,1,0);
         TextColor3 = Api.Style.TextColor;

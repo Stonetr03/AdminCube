@@ -1,6 +1,6 @@
 -- Admin Cube - Settings Menu
 
-local Fusion = require(game.ReplicatedStorage:WaitForChild("AdminCube"):WaitForChild("Fusion"))
+local Fusion = (require(game.ReplicatedStorage:WaitForChild("AdminCube"):WaitForChild("Fusion")) :: any)
 
 local New = Fusion.New
 local Value = Fusion.Value
@@ -8,7 +8,7 @@ local Event = Fusion.OnEvent
 local Children = Fusion.Children
 local Computed = Fusion.Computed
 
-local Api = require(game.ReplicatedStorage:WaitForChild("AdminCube"):WaitForChild("Api"))
+local Api = (require(game.ReplicatedStorage:WaitForChild("AdminCube"):WaitForChild("Api")) :: any)
 
 local Visible = Value(false)
 local Render = Value(Api.Settings)
@@ -33,8 +33,8 @@ function MenuBtn(props)
         BorderSizePixel = 0;
         BackgroundColor3 = Api.Style.ButtonColor;
         TextColor3 = Api.Style.TextColor;
-        TextSize = 8;
-        Font = Enum.Font.Legacy;
+        TextSize = 20;
+        FontFace = Api.Style.Font;
         [Event "MouseButton1Up"] = function()
             SetVis(true)
             props.SetVis(false)
@@ -81,6 +81,7 @@ function Menu()
                 if ren[set] and typeof(ren[set]) == "table" then
                     return ren[set]
                 end
+                return
             end),function(i,o)
                 if i == "Changed" or i == "_modifiers" then
                     return i,nil;
@@ -107,8 +108,8 @@ function Menu()
                             end
                             return name .. " : " .. tostring(o)
                         end);
-                        TextSize = 8;
-                        Font = Enum.Font.Legacy;
+                        TextSize = 20;
+                        FontFace = Api.Style.Font;
                         Name = Computed(function()
                             if typeof(o) == "table" then
                                 return 2 .. i
@@ -143,8 +144,8 @@ function Menu()
                             end
                             return name .. " : " .. tostring(o)
                         end);
-                        TextSize = 8;
-                        Font = Enum.Font.Legacy;
+                        TextSize = 20;
+                        FontFace = Api.Style.Font;
                         Name = Computed(function()
                             if typeof(o) == "table" then
                                 return 2 .. i
@@ -161,7 +162,7 @@ function Menu()
                                 if Api.Settings._modifiers and Api.Settings._modifiers[set] and Api.Settings._modifiers[set][i] and Api.Settings._modifiers[set][i].Value and typeof(Api.Settings._modifiers[set][i].Value) == "table" then
                                     pcall(function()
                                         if table.find(Api.Settings._modifiers[set][i].Value,o) then
-                                            local k = table.find(Api.Settings._modifiers[set][i].Value,o) + 1
+                                            local k = (table.find(Api.Settings._modifiers[set][i].Value,o) :: number) + 1
                                             if k > #Api.Settings._modifiers[set][i].Value then
                                                 k = 1;
                                             end

@@ -91,8 +91,7 @@ Api:RegisterCommand("explorer","Explorer / Properties Window",function(p,Args)
     if not s then
         warn(e)
     end
-
-end,"4;*[player]",{"ex"})
+end,"4",{"ex"})
 
 Api:OnInvoke("CubeExplorer",function(p,Arg)
     if Allowed[p] then

@@ -1,11 +1,9 @@
 -- Admin Cube
 
-local Fusion = require(game.ReplicatedStorage:WaitForChild("AdminCube"):WaitForChild("Fusion"))
-local UserInputService = game:GetService("UserInputService")
+local Fusion = (require(game.ReplicatedStorage:WaitForChild("AdminCube"):WaitForChild("Fusion")) :: any)
 local ContextActionService = game:GetService("ContextActionService");
 local HttpService = game:GetService("HttpService")
-local GuiService = game:GetService("GuiService")
-local Api = require(game.ReplicatedStorage:WaitForChild("AdminCube"):WaitForChild("Api"))
+local Api = (require(game.ReplicatedStorage:WaitForChild("AdminCube"):WaitForChild("Api")) :: any)
 
 local New = Fusion.New
 local Computed = Fusion.Computed
@@ -81,7 +79,7 @@ function Module.Ui(props)
                     return Text:get()
                 end);
                 TextColor3 = Color3.new(1,1,1);
-                Font = Enum.Font.SourceSans;
+                FontFace = Api.Style.Font;
 
                 [Fusion.Ref] = InputRef;
                 [Event "FocusLost"] = function(_,Enter)
@@ -103,6 +101,7 @@ function Module.Ui(props)
                 RichText = true;
                 Text = "For keyboard navigation, close and <i>`\\`</i>";
                 TextXAlignment = Enum.TextXAlignment.Right;
+                FontFace = Api.Style.Font;
             }
         }
     }

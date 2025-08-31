@@ -1,6 +1,6 @@
 -- Admin Cube - Server Info Menu
 
-local Fusion = require(game.ReplicatedStorage:WaitForChild("AdminCube"):WaitForChild("Fusion"))
+local Fusion = (require(game.ReplicatedStorage:WaitForChild("AdminCube"):WaitForChild("Fusion")) :: any)
 
 local New = Fusion.New
 local Value = Fusion.Value
@@ -8,7 +8,7 @@ local Event = Fusion.OnEvent
 local Children = Fusion.Children
 local Computed = Fusion.Computed
 
-local Api = require(game.ReplicatedStorage:WaitForChild("AdminCube"):WaitForChild("Api"))
+local Api = (require(game.ReplicatedStorage:WaitForChild("AdminCube"):WaitForChild("Api")) :: any)
 local ServerStats = game.ReplicatedStorage.AdminCube:WaitForChild("ServerStats")
 local RunService = game:GetService("RunService")
 
@@ -28,8 +28,8 @@ function MenuBtn(props)
         BorderSizePixel = 0;
         BackgroundColor3 = Api.Style.ButtonColor;
         TextColor3 = Api.Style.TextColor;
-        TextSize = 8;
-        Font = Enum.Font.Legacy;
+        TextSize = 20;
+        FontFace = Api.Style.Font;
         [Event "MouseButton1Up"] = function()
             Visible:set(true)
             props.SetVis(false)
@@ -116,7 +116,7 @@ function Menu()
             Title = New "TextLabel" {
                 Size = UDim2.new(1,0,0,20);
                 Text = "Server Info";
-                Font = Enum.Font.SourceSansBold;
+                FontFace = Api.Style.FontBold;
                 TextColor3 = Api.Style.TextColor;
                 BackgroundColor3 = Api.Style.BackgroundSubSubColor;
                 TextScaled = true;
@@ -126,7 +126,7 @@ function Menu()
                 Size = UDim2.new(1,0,0,20);
                 Position = UDim2.new(0,0,0,20);
                 Text = RegionText;
-                Font = Enum.Font.SourceSans;
+                FontFace = Api.Style.Font;
                 TextColor3 = Api.Style.TextColor;
                 BackgroundTransparency = 1;
                 TextSize = 20;
@@ -138,7 +138,7 @@ function Menu()
                 Text = Computed(function()
                     return "Server Uptime : " .. Uptime:get();
                 end);
-                Font = Enum.Font.SourceSans;
+                FontFace = Api.Style.Font;
                 TextColor3 = Api.Style.TextColor;
                 BackgroundTransparency = 1;
                 TextSize = 20;
@@ -148,7 +148,7 @@ function Menu()
                 Size = UDim2.new(1,0,0,20);
                 Position = UDim2.new(0,0,0,60);
                 Text = Fps;
-                Font = Enum.Font.SourceSans;
+                FontFace = Api.Style.Font;
                 TextColor3 = Api.Style.TextColor;
                 BackgroundTransparency = 1;
                 TextSize = 20;
@@ -158,7 +158,7 @@ function Menu()
                 Size = UDim2.new(1,0,0,20);
                 Position = UDim2.new(0,0,0,80);
                 Text = Ping;
-                Font = Enum.Font.SourceSans;
+                FontFace = Api.Style.Font;
                 TextColor3 = Api.Style.TextColor;
                 BackgroundTransparency = 1;
                 TextSize = 20;
@@ -168,7 +168,7 @@ function Menu()
                 Size = UDim2.new(1,0,0,20);
                 Position = UDim2.new(0,0,0,100);
                 Text = "Admin Cube Version " .. ServerStats:WaitForChild("Version").Value;
-                Font = Enum.Font.SourceSans;
+                FontFace = Api.Style.Font;
                 TextColor3 = Api.Style.TextColor;
                 BackgroundTransparency = 1;
                 TextSize = 20;

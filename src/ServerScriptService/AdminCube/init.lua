@@ -175,6 +175,7 @@ local function PlayerJoined(p)
             Panel.Parent = ScreenGui
         end
     end
+    return true;
 end
 
 Players.PlayerAdded:Connect(function(p)

@@ -44,6 +44,7 @@ end
 
 local Colors = {
     Command = Color3.new(0, .5, 1);
+    CommandBlock = Color3.fromRGB(255, 170, 0);
     Warn = Color3.new(1, 1, 0);
     Error = Color3.new(1, 0, 0);
 };

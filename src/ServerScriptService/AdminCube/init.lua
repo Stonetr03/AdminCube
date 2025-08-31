@@ -17,7 +17,7 @@ local function CommandRunner(p,str)
         return
     end
 
-    local Commands,Aliases = Api:GetCommands()
+    local Commands,Aliases,Hooks = Api:GetCommands()
     local s,e = pcall(function()
         str = string.lower(str)
         local Split = str:split(" ")
@@ -29,18 +29,52 @@ local function CommandRunner(p,str)
             for i = 2, #Split,1 do
                 table.insert(args,Split[i])
             end
+
+            if typeof(Hooks[Command]) == "table" and typeof(Hooks[Command].pre) == "table" then
+                for _,f in pairs(Hooks[Command].pre) do
+                    if f(p, args) == false then
+                        Log:log("CommandBlock",p,"Blocked " .. str)
+                        return;
+                    end
+                end
+            end
+
             Commands[Command].Run(p,args)
             Log:log("Command",p,str)
+
+            if typeof(Hooks[Command]) == "table" and typeof(Hooks[Command].post) == "table" then
+                for _,f in pairs(Hooks[Command].post) do
+                    f(p, args)
+                end
+            end
+
         elseif Aliases[Command] then
             local args = {}
             for i = 2, #Split,1 do
                 table.insert(args,Split[i])
             end
+
+            if typeof(Hooks[Aliases[Command]]) == "table" and typeof(Hooks[Aliases[Command]].pre) == "table" then
+                for _,f in pairs(Hooks[Aliases[Command]].pre) do
+                    if f(p, args) == false then
+                        Log:log("CommandBlock",p,"Blocked " .. str)
+                        return;
+                    end
+                end
+            end
+
             Commands[Aliases[Command]].Run(p,args)
             Log:log("Command",p,str)
+
+            if typeof(Hooks[Aliases[Command]]) == "table" and typeof(Hooks[Aliases[Command]].post) == "table" then
+                for _,f in pairs(Hooks[Aliases[Command]].post) do
+                    f(p, args)
+                end
+            end
         else
             Api:Notification(p,false,"Invalid Command")
         end
+        return;
     end)
     if not s then warn("Command Runner Error : " .. e) end
 end

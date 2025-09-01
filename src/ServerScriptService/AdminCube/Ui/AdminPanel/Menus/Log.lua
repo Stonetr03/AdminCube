@@ -47,6 +47,7 @@ local Colors = {
     CommandBlock = Color3.fromRGB(255, 170, 0);
     Warn = Color3.new(1, 1, 0);
     Error = Color3.new(1, 0, 0);
+    Info = Color3.new(0.5,0.5,0.5);
 };
 local function GetColor(Type)
     if typeof(Type) == "string" then
@@ -134,6 +135,13 @@ function Menu()
                         SortOrder = Enum.SortOrder.LayoutOrder;
                     };
                     List = Fusion.ForPairs(log,function(i,NewLog)
+                        local logTime = os.date("%X",tonumber(NewLog.Name));
+                        local logText = NewLog:WaitForChild("Text").Value;
+                        local plrObj = NewLog:WaitForChild("Player").Value;
+                        local logPlr = "-"
+                        if plrObj then
+                            logPlr = plrObj.Name
+                        end
                         return i, New "Frame" {
                             Size = UDim2.new(1,0,0,20);
                             BackgroundTransparency = 1;
@@ -141,7 +149,7 @@ function Menu()
                                 Time = New "TextLabel" {
                                     BackgroundTransparency = 1;
                                     TextColor3 = Api.Style.TextColor;
-                                    Text = os.date("%X",tonumber(NewLog.Name));
+                                    Text = logTime;
                                     TextSize = 20;
                                     Size = UDim2.new(0,80,1,0);
                                     FontFace = Api.Style.Font;
@@ -149,7 +157,7 @@ function Menu()
                                 Player = New "TextLabel" {
                                     BackgroundTransparency = 1;
                                     TextColor3 = Api.Style.TextColor;
-                                    Text = NewLog:WaitForChild("Player").Value.Name;
+                                    Text = logPlr;
                                     TextSize = 20;
                                     Size = UDim2.new(0,80,1,0);
                                     Position = UDim2.new(0,80,0,0);
@@ -158,7 +166,7 @@ function Menu()
                                 Action = New "TextLabel" {
                                     BackgroundTransparency = 1;
                                     TextColor3 = Api.Style.TextColor;
-                                    Text = NewLog:WaitForChild("Text").Value;
+                                    Text = logText;
                                     TextSize = 20;
                                     Size = UDim2.new(0,190,1,0);
                                     Position = UDim2.new(0,160,0,0);

@@ -12,6 +12,7 @@ print("\n==================================\nAdmin Cube - By Stonetr03 Studios\n
 
 local ConnectedPlrs = {}
 
+-- Updates to the command runner should also be changed in Api.CallOriginalCommand;
 local function CommandRunner(p,str)
     if string.sub(str,1,1) == Settings.Prefix then else
         return

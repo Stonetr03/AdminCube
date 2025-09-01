@@ -5,6 +5,7 @@ local Api = require(script.Parent.Parent:WaitForChild("Api"))
 local DataStore = require(script.Parent.Parent:WaitForChild("DataStore"))
 local GroupService = game:GetService("GroupService")
 local StrMod = require(game.ReplicatedStorage:WaitForChild("AdminCube"):WaitForChild("StrMod")) :: any
+local Log = require(script.Parent.Parent:WaitForChild("Log"))
 
 local cache = {} -- https://developer.roblox.com/en-us/api-reference/function/Players/GetUserIdFromNameAsync
 function getUserIdFromUsername(name: string): number
@@ -308,6 +309,7 @@ Api:RegisterCommand("ban","Bans a player.",function(p: Player, args: {string})
                             })
                         end)
                         if s then
+                            Log:log("Warn", p, UserName .. " was banned from the game.");
                             Api:Notification(p,Content,UserName .. " has been banned from the game.");
                         else
                             Api:Notification(p,false,string.format("There was a problem while banning %s, %s.",UserName,e));
@@ -426,7 +428,8 @@ Api:RegisterCommand("unban","Unbans a player.",function(p: Player, args: {string
                         if NewResponse[1] == true then
                             -- Unban Player
                             DataStore:ServerBan(UserId,false)
-                            Api:Notification(p,Content,Response[2][1] .. " has been unbanned from the game.")
+                            Api:Notification(p,Content,Response[2][1] .. " has been unbanned from the server.")
+                            Log:log("Warn", p, UserName .. " was unbanned from the server.");
                         end
                     end)
                 else
@@ -462,6 +465,7 @@ Api:RegisterCommand("unban","Unbans a player.",function(p: Player, args: {string
                                 })
                             end)
                             if s then
+                                Log:log("Warn", p, UserName .. " was unbanned from the game.");
                                 Api:Notification(p,Content,UserName .. " has been unbanned from the game.");
                             else
                                 Api:Notification(p,false,string.format("There was a problem while unbanning %s, %s.",UserName,e));
@@ -563,6 +567,7 @@ Api:RegisterCommand("serverban", "Bans a player from the server.", function(p: P
                             Players:GetPlayerByUserId(UserId):Kick(CurrentBanReason)
                         end
 
+                        Log:log("Warn", p, UserName .. " was banned from the server.");
                         Api:Notification(p,Content,UserName .. " has been banned from the server.")
 
                     end

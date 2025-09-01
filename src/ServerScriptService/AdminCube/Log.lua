@@ -6,13 +6,13 @@ local Module = {}
 local Log = {}
 local Folder
 
-function Module:init(f)
+function Module:init(f: Folder)
     if f:IsA("Folder") then
         Folder = f
     end
 end
 
-function Module:log(Type,p,Text)
+function Module:log(Type: "Command" | "CommandBlock" | "Warn" | "Error" | "Info", p: Player?, Text: string)
     if Folder then
         table.insert(Log,{
             Type = Type;

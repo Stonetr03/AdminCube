@@ -9,7 +9,7 @@ local MessagingService = game:GetService("MessagingService")
 local CreateModule = require(script.Parent.CreateModule)
 
 local Module = {}
-local Commands = {} :: {
+local Commands = {} :: { -- List of commands that can be called from clients
     [string]: {
         Name: string,
         Desc: string,
@@ -17,6 +17,15 @@ local Commands = {} :: {
         Args: string
     }
 }
+local CommandOrder = {} :: { -- Order that commands have been loaded, Used to call overwritten commands.
+    [number]: {
+        Name: string,
+        Desc: string,
+        Run: (p: Player, Args: {string}) -> (),
+        Args: string
+    }
+}
+
 local Aliases = {} :: {
     [string]: string; -- Alias: Command
 }
@@ -160,17 +169,67 @@ end
     @param Alias {string} - Array of strings that are command aliases.
 ]]
 function Module:RegisterCommand(Name: string, Desc: string, Run: (p: Player, Args: {string}) -> (), Arg: string, Alias: {string}?)
+    if typeof(Commands[Name]) == "table" then
+        Log:log("Info", nil, `Command {Name} has been overwritten.`);
+    end
     Commands[Name] = {
         Name = Name;
         Desc = Desc;
         Run = Run;
         Args = Arg;
     }
+    table.insert(CommandOrder,Commands[Name])
     if typeof(Alias) == "table" then
         for _,o in pairs(Alias) do
             Aliases[o] = Name
         end
     end
+end
+
+--[[
+    Calls a command. Used to call commands that have been overwritten.
+
+    @param Command string - Name of the command.
+    @param p Player - Player Argument to be passed to command.
+    @param args {string} - Array of strings to be passed to command.
+    @param n number? - Optional (Default = 1), Occurance number, used if command has been overwritten multiple times.
+    @return boolean - Successfully called a command.
+]]
+function Module:CallOriginalCommand(Command: string, p: Player, args: {string}, n: number?): boolean
+    local c: number = (n :: number);
+    if typeof(n) ~= "number" or n <= 0 then
+        c = 1;
+    end
+    for _,cmd in pairs(CommandOrder) do
+        if cmd.Name == Command then
+            c = c - 1;
+
+            if c == 0 then
+                local str = `{Command} {table.concat(args," ")}`
+
+                if typeof(Hooks[Command]) == "table" and typeof(Hooks[Command].pre) == "table" then
+                    for _,f in pairs(Hooks[Command].pre) do
+                        if f(p, args) == false then
+                            Log:log("CommandBlock",p,"Blocked Original " .. str)
+                            return false;
+                        end
+                    end
+                end
+
+                cmd.Run(p, args)
+                Log:log("Command",p,"Original: " .. str)
+
+                if typeof(Hooks[Command]) == "table" and typeof(Hooks[Command].post) == "table" then
+                    for _,f in pairs(Hooks[Command].post) do
+                        f(p, args)
+                    end
+                end
+
+                return true;
+            end
+        end
+    end
+    return false
 end
 
 --[[
@@ -358,7 +417,7 @@ function Module:CreateRSFolder(FolderName: string): Folder?
     end
 end
 
-Log:init(Module:CreateRSFolder("Log"))
+Log:init((Module:CreateRSFolder("Log") :: Folder))
 
 --[[
     Sends a notification to a player

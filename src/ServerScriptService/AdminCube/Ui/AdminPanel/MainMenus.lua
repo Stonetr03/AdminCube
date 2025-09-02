@@ -1,6 +1,6 @@
 -- Admin Cube
 
-local Fusion = require(game.ReplicatedStorage:WaitForChild("AdminCube"):WaitForChild("Fusion"))
+local Fusion = (require(game.ReplicatedStorage:WaitForChild("AdminCube"):WaitForChild("Fusion")) :: any)
 
 local Value = Fusion.Value
 

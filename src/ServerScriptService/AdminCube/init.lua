@@ -12,12 +12,13 @@ print("\n==================================\nAdmin Cube - By Stonetr03 Studios\n
 
 local ConnectedPlrs = {}
 
+-- Updates to the command runner should also be changed in Api.CallOriginalCommand;
 local function CommandRunner(p,str)
     if string.sub(str,1,1) == Settings.Prefix then else
         return
     end
 
-    local Commands,Aliases = Api:GetCommands()
+    local Commands,Aliases,Hooks = Api:GetCommands()
     local s,e = pcall(function()
         str = string.lower(str)
         local Split = str:split(" ")
@@ -29,18 +30,52 @@ local function CommandRunner(p,str)
             for i = 2, #Split,1 do
                 table.insert(args,Split[i])
             end
+
+            if typeof(Hooks[Command]) == "table" and typeof(Hooks[Command].pre) == "table" then
+                for _,f in pairs(Hooks[Command].pre) do
+                    if f(p, args) == false then
+                        Log:log("CommandBlock",p,"Blocked " .. str)
+                        return;
+                    end
+                end
+            end
+
             Commands[Command].Run(p,args)
             Log:log("Command",p,str)
+
+            if typeof(Hooks[Command]) == "table" and typeof(Hooks[Command].post) == "table" then
+                for _,f in pairs(Hooks[Command].post) do
+                    f(p, args)
+                end
+            end
+
         elseif Aliases[Command] then
             local args = {}
             for i = 2, #Split,1 do
                 table.insert(args,Split[i])
             end
+
+            if typeof(Hooks[Aliases[Command]]) == "table" and typeof(Hooks[Aliases[Command]].pre) == "table" then
+                for _,f in pairs(Hooks[Aliases[Command]].pre) do
+                    if f(p, args) == false then
+                        Log:log("CommandBlock",p,"Blocked " .. str)
+                        return;
+                    end
+                end
+            end
+
             Commands[Aliases[Command]].Run(p,args)
             Log:log("Command",p,str)
+
+            if typeof(Hooks[Aliases[Command]]) == "table" and typeof(Hooks[Aliases[Command]].post) == "table" then
+                for _,f in pairs(Hooks[Aliases[Command]].post) do
+                    f(p, args)
+                end
+            end
         else
             Api:Notification(p,false,"Invalid Command")
         end
+        return;
     end)
     if not s then warn("Command Runner Error : " .. e) end
 end
@@ -93,6 +128,7 @@ local function PlayerJoined(p)
         ScreenGui.DisplayOrder = 10;
         ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling;
         ScreenGui.Parent = p:WaitForChild("PlayerGui")
+        ScreenGui.ClipToDeviceSafeArea = false;
         local NewUi = script.Ui.Public:Clone()
         NewUi.Parent = ScreenGui
 
@@ -104,22 +140,24 @@ local function PlayerJoined(p)
         -- Update Rank if on Settings
         -- Group Settings
         for id,g in pairs(Settings.Groups) do
-            if p:IsInGroup(id) then
-                local Role = p:GetRankInGroup(id)
+            pcall(function()
+                if p:IsInGroup(id) then
+                    local Role = p:GetRankInGroup(id)
 
-                for gRank,aRank in pairs(g) do
-                    if aRank < 0 then
-                        aRank = 0
-                    elseif aRank > 4 then
-                        aRank = 4
+                    for gRank,aRank in pairs(g) do
+                        if aRank < 0 then
+                            aRank = 0
+                        elseif aRank > 4 then
+                            aRank = 4
+                        end
+                        if gRank == Role then
+                            -- Is in Group, And is role
+                            DataStoreModule:UpdateData(p.UserId,"Rank",aRank)
+                        end
                     end
-                    if gRank == Role then
-                        -- Is in Group, And is role
-                        DataStoreModule:UpdateData(p.UserId,"Rank",aRank)
-                    end
+
                 end
-
-            end
+            end)
         end
         -- Is on Defined Players list
         for i = 1,#Settings.Players,1 do
@@ -172,6 +210,7 @@ local function PlayerJoined(p)
             Panel.Parent = ScreenGui
         end
     end
+    return true;
 end
 
 Players.PlayerAdded:Connect(function(p)

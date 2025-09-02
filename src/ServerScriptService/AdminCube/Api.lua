@@ -9,8 +9,36 @@ local MessagingService = game:GetService("MessagingService")
 local CreateModule = require(script.Parent.CreateModule)
 
 local Module = {}
-local Commands = {}
-local Aliases = {}
+local Commands = {} :: { -- List of commands that can be called from clients
+    [string]: {
+        Name: string,
+        Desc: string,
+        Run: (p: Player, Args: {string}) -> (),
+        Args: string
+    }
+}
+local CommandOrder = {} :: { -- Order that commands have been loaded, Used to call overwritten commands.
+    [number]: {
+        Name: string,
+        Desc: string,
+        Run: (p: Player, Args: {string}) -> (),
+        Args: string
+    }
+}
+
+local Aliases = {} :: {
+    [string]: string; -- Alias: Command
+}
+local Hooks = {} :: {
+    [string]: {
+        pre: {
+            (p: Player, args: string) -> (boolean)
+        },
+        post: {
+            (p: Player, args: string) -> (boolean)
+        }
+    }
+}
 
 local RS = script.Parent.ReplicatedStorage
 RS.Name = "AdminCube"
@@ -21,12 +49,25 @@ CreateModule("StringValue",RS,{Name = "ClientSettings",Value = HttpService:JSONE
 
 local LocalServer = false
 
-function Module:GetRank(p)
+--[[
+    Returns a player's rank.
+
+    @param p Player - Player to get rank.
+    @return number - Rank of player.
+]]
+function Module:GetRank(p: Player): number
     local Data = DataStore.ServerData[p.UserId]
     return Data.Rank
 end
 
-function Module:GetPlayer(Text: string,p: Player): table -- Name Requested to Find, Player who Sent
+--[[
+    Gets a list of players from a given string.
+
+    @param Text string - String to find players in.
+    @param p Player - Player who sent the message.
+    @return {Player} - Array of players. **Note**: It is possible that no players are returned.
+]]
+function Module:GetPlayer(Text: string,p: Player): {Player} -- Name Requested to Find, Player who Sent
     if Text == "" or Text == nil then
         Text = string.lower(p.Name)
     end
@@ -106,13 +147,38 @@ function Module:GetPlayer(Text: string,p: Player): table -- Name Requested to Fi
     return Plrs
 end
 
-function Module:RegisterCommand(Name,Desc,Run,Arg,Alias) -- Arg {[Player],[String],etc} -- Alias {"A","B", etc}
+--[[
+    Registers a Command with the Command Runner.
+
+    __**Command Argument String**__
+
+    The command argument string allows the ui to prompt for the command to be ran.\
+    Parameters are not checked for valididy before being passed to the callback function.
+    
+    The Argument String is separated by `;`.\
+    The Argument String format is `Rank Numerical Requirement ; Command Parameters...`\
+    Valid parameters types include `player`, `players`, `string`, and `number`.\
+    Required fields are denoted by `*` before the brackets.\
+    Custom field names can be included by following the type by `:` and the name of the field.\
+    Example from Speed Command: `"2;*[players];[number:Speed]"`
+
+    @param Name string - Name of the command.
+    @param Desc string - Description of the command.
+    @param Run (p: Player, Args: {string}) -> () - Callback function.
+    @param Arg string - Command Argument String, see above.
+    @param Alias {string} - Array of strings that are command aliases.
+]]
+function Module:RegisterCommand(Name: string, Desc: string, Run: (p: Player, Args: {string}) -> (), Arg: string, Alias: {string}?)
+    if typeof(Commands[Name]) == "table" then
+        Log:log("Info", nil, `Command {Name} has been overwritten.`);
+    end
     Commands[Name] = {
         Name = Name;
         Desc = Desc;
         Run = Run;
         Args = Arg;
     }
+    table.insert(CommandOrder,Commands[Name])
     if typeof(Alias) == "table" then
         for _,o in pairs(Alias) do
             Aliases[o] = Name
@@ -120,19 +186,122 @@ function Module:RegisterCommand(Name,Desc,Run,Arg,Alias) -- Arg {[Player],[Strin
     end
 end
 
-function Module:GetCommands()
-    return Commands,Aliases
+--[[
+    Calls a command. Used to call commands that have been overwritten.
+
+    @param Command string - Name of the command.
+    @param p Player - Player Argument to be passed to command.
+    @param args {string} - Array of strings to be passed to command.
+    @param n number? - Optional (Default = 1), Occurance number, used if command has been overwritten multiple times.
+    @return boolean - Successfully called a command.
+]]
+function Module:CallOriginalCommand(Command: string, p: Player, args: {string}, n: number?): boolean
+    local c: number = (n :: number);
+    if typeof(n) ~= "number" or n <= 0 then
+        c = 1;
+    end
+    for _,cmd in pairs(CommandOrder) do
+        if cmd.Name == Command then
+            c = c - 1;
+
+            if c == 0 then
+                local str = `{Command} {table.concat(args," ")}`
+
+                if typeof(Hooks[Command]) == "table" and typeof(Hooks[Command].pre) == "table" then
+                    for _,f in pairs(Hooks[Command].pre) do
+                        if f(p, args) == false then
+                            Log:log("CommandBlock",p,"Blocked Original " .. str)
+                            return false;
+                        end
+                    end
+                end
+
+                cmd.Run(p, args)
+                Log:log("Command",p,"Original: " .. str)
+
+                if typeof(Hooks[Command]) == "table" and typeof(Hooks[Command].post) == "table" then
+                    for _,f in pairs(Hooks[Command].post) do
+                        f(p, args)
+                    end
+                end
+
+                return true;
+            end
+        end
+    end
+    return false
 end
 
-function Module:Fire(p,Key,...)
+--[[
+    Registers a PreHook.
+
+    @param Command string
+    @param Callback (p: Player, args: {string}) -> (boolean) - This must return a boolean value, true to continue with the command, or false to stop the command from running.
+]]
+function Module:PreHook(Command: string, Callback: (p: Player, args: {string}) -> (boolean))
+    if typeof(Hooks[Command]) ~= "table" then
+        Hooks[Command] = {
+            pre = {},
+            post = {}
+        }
+    end
+    table.insert(Hooks[Command].pre,Callback)
+end
+
+--[[
+    Registers a PostHook.
+
+    @param Command string
+    @param Callback (p: Player, args: {string}) -> ()
+]]
+function Module:PostHook(Command: string, Callback: (p: Player, args: {string}) -> ())
+    if typeof(Hooks[Command]) ~= "table" then
+        Hooks[Command] = {
+            pre = {},
+            post = {}
+        }
+    end
+    table.insert(Hooks[Command].post,Callback)
+end
+
+--[[
+    Returns the commands and aliases registered with the command runner.
+
+    @return Command List - {[string]: {Name: string, Desc: string, Run: (p: Player, Args: {string}) -> (), Args: string}}
+    @return Alias List - {[string]: string} - Alias: Command
+    @return Hooks List - {[string]: {pre: {(p: Player, args: string) -> (boolean)}, post: {(p: Player, args: string) -> (boolean)}}}
+]]
+function Module:GetCommands(): ({[string]: {Name: string, Desc: string, Run: (p: Player, Args: {string}) -> (), Args: string}}, {[string]: string}, {[string]: {pre: {(p: Player, args: string) -> (boolean)}, post: {(p: Player, args: string) -> (boolean)}}})
+    return Commands,Aliases, Hooks
+end
+
+--[[
+    Fires an event to a client, Sending remote event.
+
+    @param p Player, {Players}, or "all" - Player to send event to.
+    @param Key string - SendReceive Key
+    @param ... parameters to send in the event.
+]]
+function Module:Fire(p: Player | {Player} | "all", Key: string, ...: any)
     if p == "all" then
         game.ReplicatedStorage:WaitForChild("AdminCube").ACEvent:FireAllClients(Key,...)
+    elseif typeof(p) == "table" then
+        for _,plr in pairs(p) do
+            game.ReplicatedStorage:WaitForChild("AdminCube").ACEvent:FireClient(plr,Key,...)
+        end
     else
         game.ReplicatedStorage:WaitForChild("AdminCube").ACEvent:FireClient(p,Key,...)
     end
 end
 
-function Module:OnEvent(Key,Callback)
+--[[
+    Receives an event from a client, Receiving remote event.
+
+    @param Key string - SendReceive Key
+    @param Callback (p: Player, ...) -> () - Callback function
+    @return {Disconnect: (self: any) -> ()} - Disconnect function
+]]
+function Module:OnEvent(Key: string, Callback: (p: Player, any) -> ()): {Disconnect: (self: any) -> ()}
     local con = game.ReplicatedStorage:WaitForChild("AdminCube").ACEvent.OnServerEvent:Connect(function(p,CallingKey,...)
         if CallingKey == Key then
             Callback(p,...)
@@ -145,12 +314,26 @@ function Module:OnEvent(Key,Callback)
     return ReturnTab
 end
 
-function Module:Invoke(p,Key,...)
-    game.ReplicatedStorage:WaitForChild("AdminCube").ACFunc:InvokeClient(p,Key,...)
+--[[
+    Invokes a client, Sending remote function.
+
+    @param p Player
+    @param Key string - SendReceive Key
+    @param ... parameters to send to client.
+]]
+function Module:Invoke(p: Player, Key: string, ...: any)
+    return game.ReplicatedStorage:WaitForChild("AdminCube").ACFunc:InvokeClient(p,Key,...)
 end
 
 local RemoteFunctions = {}
-function Module:OnInvoke(Key,Callback)
+--[[
+    Receives an invoke from a client, Receiving remote function.
+
+    @parma Key string - SendReceive Key
+    @param Callback (p: Player, any) -> (any)
+    @return {Disconnect: (self: any) -> ()} - Disconnect function
+]]
+function Module:OnInvoke(Key: string, Callback: (p: Player, any) -> (any)): {Disconnect: (self: any) -> ()}
     local Tab = {
         Key = Key;
         Callback = Callback;
@@ -158,7 +341,9 @@ function Module:OnInvoke(Key,Callback)
     table.insert(RemoteFunctions,Tab)
     local ReturnTab = {}
     function ReturnTab:Disconnect()
-        table.remove(RemoteFunctions,table.find(RemoteFunctions,Tab))
+        if table.find(RemoteFunctions,Tab) then
+            table.remove(RemoteFunctions,table.find(RemoteFunctions,Tab))
+        end
     end
     return ReturnTab
 end
@@ -168,15 +353,27 @@ game.ReplicatedStorage:WaitForChild("AdminCube").ACFunc.OnServerInvoke = functio
             return o.Callback(p,...)
         end
     end
+    return
 end
 
-function Module:AddPanelMenu(Menu)
+--[[
+    Adds a AdminPanel Menu.
+
+    @param Menu Instance
+]]
+function Module:AddPanelMenu(Menu: Instance)
     Menu.Parent = script.Parent.Ui.AdminPanel.Menus
 end
 
 local BroadcastCallbacks = {}
 
-function Module:SubscribeBroadcast(Key,Callback)
+--[[
+    Subscribes to a message broadcast
+
+    @param Key string - SendReceive key
+    @param Callback (any) -> ()
+]]
+function Module:SubscribeBroadcast(Key: string, Callback: (any) -> ())
     if BroadcastCallbacks[Key] == nil then
         BroadcastCallbacks[Key] = {}
     end
@@ -184,7 +381,13 @@ function Module:SubscribeBroadcast(Key,Callback)
 
 end
 
-function Module:BroadcastMessage(Key,Message)
+--[[
+    Broadcasts a message to other servers.
+
+    @param Key string - SendReceive key
+    @param Message any
+]]
+function Module:BroadcastMessage(Key: string, Message: any)
     if LocalServer == true then
         for i = 1,#BroadcastCallbacks[Key],1 do
             BroadcastCallbacks[Key][i](Message)
@@ -194,7 +397,13 @@ function Module:BroadcastMessage(Key,Message)
     end
 end
 
-function Module:CreateRSFolder(FolderName)
+--[[
+    Creates a folder in ReplicatedStorage
+
+    @param FolderName string
+    @return Folder | nil - Returns nil if a instance exists with the same name, and isn't a folder.
+]]
+function Module:CreateRSFolder(FolderName: string): Folder?
     local Check = RS:FindFirstChild(FolderName)
     if Check then
         if Check:IsA("Folder") then
@@ -208,9 +417,19 @@ function Module:CreateRSFolder(FolderName)
     end
 end
 
-Log:init(Module:CreateRSFolder("Log"))
+Log:init((Module:CreateRSFolder("Log") :: Folder))
 
-function Module:Notification(p: Player,Image: string|boolean,Text: string,ButtonText: string?,ButtonFunc,Time: number?) -- Image - True for Headshot, False for No-Image, Other for image
+--[[
+    Sends a notification to a player
+
+    @param p Player
+    @param Image string | boolean, true for player's headshot, false for no image, or string
+    @param Text string - Text to show in notification
+    @param ButtonText string? - Text to show on notification button
+    @param ButtonFunc () -> ()? - Callback function when button is pressed
+    @param Time number? - Time to display notification, maximum of 119 seconds.
+]]
+function Module:Notification(p: Player, Image: string | boolean, Text: string, ButtonText: string?, ButtonFunc: (p: Player) -> ()?, Time: number?)
     local Button = {}
     if typeof(Time) == "number" then
         if Time > 119 then
@@ -240,14 +459,19 @@ function Module:Notification(p: Player,Image: string|boolean,Text: string,Button
     return true
 end
 
-function Module:InvalidPermissionsNotification(p)
+--[[
+    Sends a invalid permissions notification to the given player.
+
+    @param p Player
+]]
+function Module:InvalidPermissionsNotification(p: Player)
     Module:Notification(p,false,"Invalid Permissions")
     return true
 end
 
 -- Prompts
 local OpenPrompts = {}
-function Module:ShowPrompt(p,Prompts,Response)
+function Module:ShowPrompt(p: Player, Prompts: {}, Response: ({}) -> ()): boolean
     if OpenPrompts[p] ~= nil then
         -- Another prompt is open
         return false
@@ -255,6 +479,7 @@ function Module:ShowPrompt(p,Prompts,Response)
     OpenPrompts[p] = {Prompts,Response}
 
     Module:Fire(p,"Prompts",Prompts)
+    return true
 end
 Module:OnEvent("Prompts",function(p,Results)
     if OpenPrompts[p] ~= nil then
@@ -272,10 +497,11 @@ Module:OnInvoke("GetCommands",function(p)
         local Rank = Module:GetRank(p)
         return Cmd,Alias,Rank
     end
+    return {},{},0;
 end)
 
 task.spawn(function()
-    local s,e = pcall(function()
+    local s,_ = pcall(function()
         MessagingService:SubscribeAsync("AdminCube",function(Data)
             for i = 1,#BroadcastCallbacks[Data.Data.Key],1 do
                 BroadcastCallbacks[Data.Data.Key][i](Data.Data.Msg)

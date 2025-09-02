@@ -15,6 +15,6 @@ Api:RegisterCommand("panel","Opens Admin Panel from chat.",function(p)
         warn(e)
     end
 
-end,"2;[player]",{"openpanel"})
+end,"2",{"openpanel"})
 
 return true

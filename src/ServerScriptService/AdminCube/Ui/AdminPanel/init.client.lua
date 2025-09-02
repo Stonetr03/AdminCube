@@ -1,18 +1,19 @@
 -- Admin Cube
 
-local Fusion = require(game.ReplicatedStorage:WaitForChild("AdminCube"):WaitForChild("Fusion"))
-local Api = require(game.ReplicatedStorage:WaitForChild("AdminCube"):WaitForChild("Api"))
+local Fusion = (require(game.ReplicatedStorage:WaitForChild("AdminCube"):WaitForChild("Fusion")) :: any)
+local Api = (require(game.ReplicatedStorage:WaitForChild("AdminCube"):WaitForChild("Api")) :: any)
 
 local New = Fusion.New
 local Children = Fusion.Children
 
 -- Topbar
-local Topbar = require(game.ReplicatedStorage:WaitForChild("AdminCube"):WaitForChild("Packages"):WaitForChild("Topbar"))
+local Topbar = (require(game.ReplicatedStorage:WaitForChild("AdminCube"):WaitForChild("Packages"):WaitForChild("Topbar")) :: any)
 
 local icon = Topbar.new()
 icon:setImage("http://www.roblox.com/asset/?id=5010019455") -- 24x24
 icon:setName("AdminCubeMainAdminPanel")
 icon:setImageScale(0.65)
+icon:autoDeselect(false)
 
 local NotificationEvent = Instance.new("BindableEvent")
 NotificationEvent.Name = "NotificationEvent";

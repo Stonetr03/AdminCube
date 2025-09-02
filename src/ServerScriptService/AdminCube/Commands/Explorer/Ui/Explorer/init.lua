@@ -1,7 +1,7 @@
 -- Admin Cube
 
-local Fusion = require(game.ReplicatedStorage:WaitForChild("AdminCube"):WaitForChild("Fusion"))
-local Api = require(game.ReplicatedStorage:WaitForChild("AdminCube"):WaitForChild("Api"))
+local Fusion = (require(game.ReplicatedStorage:WaitForChild("AdminCube"):WaitForChild("Fusion")) :: any)
+local Api = (require(game.ReplicatedStorage:WaitForChild("AdminCube"):WaitForChild("Api")) :: any)
 local Icons = require(script:WaitForChild("Icons"))
 local SortOrder = require(script:WaitForChild("SortOrder"))
 
@@ -132,6 +132,7 @@ function Module.Box(Object: Instance,Order: number,ObjectsOpen: table,Shared: ta
                 TextSize = 14;
                 TextXAlignment = Enum.TextXAlignment.Left;
                 Text = Name;
+                FontFace = Api.Style.Font;
             };
             -- Objects
             Computed(function()

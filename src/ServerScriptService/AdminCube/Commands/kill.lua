@@ -17,6 +17,6 @@ Api:RegisterCommand("kill","Kills a player.",function(p,Args)
         warn(e)
     end
 
-end,"2;*[player]")
+end,"2;*[players]")
 
 return true
